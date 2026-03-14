@@ -4,6 +4,9 @@ import 'leaflet/dist/leaflet.css'
 import { db, type Falla } from '../../lib/db'
 import { SEED_FALLAS } from '../../lib/jcf-seed'
 import FallaMarker from './FallaMarker'
+import BottomSheet from '../../components/BottomSheet'
+import Badge from '../../components/Badge'
+import ProgressRing from '../../components/ProgressRing'
 
 const VALENCIA_CENTER: [number, number] = [39.4699, -0.3763]
 
@@ -133,6 +136,7 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
   const [flyTarget, setFlyTarget] = useState<[number, number] | null>(null)
   const [userPos, setUserPos] = useState<[number, number] | null>(null)
   const [showNearby, setShowNearby] = useState(false)
+  const [selectedFalla, setSelectedFalla] = useState<Falla | null>(null)
 
   const fallasCercanas = userPos
     ? fallas
@@ -208,8 +212,7 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
           <FallaMarker
             key={falla.id}
             falla={falla}
-            onOpenCamera={onOpenCamera}
-            onGoToFicha={onGoToFicha}
+            onClick={setSelectedFalla}
           />
         ))}
         <UserLocationControl onLocation={setUserPos} />
@@ -277,6 +280,66 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
         </div>
       )}
 
+      {/* Overlay bloqueador del mapa cuando sheet abierto */}
+      {selectedFalla && (
+        <div
+          style={{ position: 'absolute', inset: 0, zIndex: 499 }}
+          onClick={() => setSelectedFalla(null)}
+        />
+      )}
+
+      {/* BottomSheet de falla */}
+      <BottomSheet
+        isOpen={selectedFalla !== null}
+        onClose={() => setSelectedFalla(null)}
+        title={selectedFalla?.nombre ?? ''}
+      >
+        {selectedFalla && (
+          <div style={{ padding: '12px 20px 8px' }}>
+            {/* Info compacta */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '10px' }}>
+              <ProgressRing percentage={selectedFalla.completitud_pct} size={48} strokeWidth={4} />
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: '14px', fontWeight: 600, color: '#fff', marginBottom: '2px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                  {selectedFalla.artista}
+                </div>
+                <div style={{ fontSize: '12px', color: '#8e8e93', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <span>{selectedFalla.barrio}</span>
+                  <span>·</span>
+                  <Badge categoria={selectedFalla.categoria} size="sm" />
+                </div>
+              </div>
+              {selectedFalla.completitud_pct > 0 && (
+                <div style={{ fontSize: '15px', fontWeight: 700, color: '#FF6B35', flexShrink: 0 }}>
+                  {selectedFalla.completitud_pct}%
+                </div>
+              )}
+            </div>
+            {selectedFalla.lema && (
+              <div style={{ fontSize: '12px', color: '#636366', fontStyle: 'italic', marginBottom: '12px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                "{selectedFalla.lema}"
+              </div>
+            )}
+            {/* Botones */}
+            <div style={{ display: 'flex', gap: '10px', paddingBottom: '4px' }}>
+              <button
+                onClick={() => { setSelectedFalla(null); onOpenCamera?.(selectedFalla.id) }}
+                style={{ flex: 1, padding: '11px 0', background: 'linear-gradient(135deg, #FF6B35, #ff9500)', border: 'none', borderRadius: '12px', color: '#fff', fontSize: '14px', fontWeight: 700, cursor: 'pointer', fontFamily: 'Inter, -apple-system, sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', boxShadow: '0 4px 16px rgba(255,107,53,0.3)' }}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><circle cx="12" cy="13" r="4" stroke="#fff" strokeWidth="2"/></svg>
+                Escanear
+              </button>
+              <button
+                onClick={() => { setSelectedFalla(null); onGoToFicha?.(selectedFalla.id) }}
+                style={{ flex: 1, padding: '11px 0', background: '#2c2c2e', border: '0.5px solid #3a3a3c', borderRadius: '12px', color: '#8e8e93', fontSize: '14px', fontWeight: 600, cursor: 'pointer', fontFamily: 'Inter, -apple-system, sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 12h6M9 16h4M7 4H4a2 2 0 00-2 2v14a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2h-3" stroke="#8e8e93" strokeWidth="2" strokeLinecap="round"/><path d="M9 4h6a1 1 0 010 2H9a1 1 0 010-2z" stroke="#8e8e93" strokeWidth="2"/></svg>
+                Ver ficha
+              </button>
+            </div>
+          </div>
+        )}
+      </BottomSheet>
     </div>
   )
 }
