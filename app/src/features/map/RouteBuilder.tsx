@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import BottomSheet from '../../components/BottomSheet'
-import { db, type Falla } from '../../lib/db'
+import { db } from '../../lib/db'
 import { calcularRuta, type RouteParams, type RouteResult } from '../../lib/routing'
 import { SEED_FALLAS } from '../../lib/jcf-seed'
 
