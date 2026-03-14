@@ -10,6 +10,7 @@ export interface Falla {
   anyo: number
   lat: number
   lng: number
+  tipo?: 'grande' | 'infantil'
   estado: 'pendiente' | 'en_progreso' | 'completa'
   completitud_pct: number
   notas?: string

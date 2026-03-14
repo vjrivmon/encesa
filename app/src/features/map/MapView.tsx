@@ -1,16 +1,69 @@
-import { useEffect, useState, useRef } from 'react'
-import { MapContainer, TileLayer, CircleMarker, Circle, useMap } from 'react-leaflet'
+import { useEffect, useRef, useState, useCallback } from 'react'
+import { MapContainer, TileLayer, CircleMarker, Circle, Polyline, Marker, useMap } from 'react-leaflet'
+import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { db, type Falla } from '../../lib/db'
 import { SEED_FALLAS } from '../../lib/jcf-seed'
-import FallaMarker from './FallaMarker'
 import BottomSheet from '../../components/BottomSheet'
 import Badge from '../../components/Badge'
 import ProgressRing from '../../components/ProgressRing'
+import RouteBuilder from './RouteBuilder'
+import type { RouteResult } from '../../lib/routing'
 
 const VALENCIA_CENTER: [number, number] = [39.4699, -0.3763]
 
-// ─── Componente interno: geolocalización + botón centrar ───────────────────
+// ─── Icono con número para fallas de la ruta ──────────────────────────────────
+function createNumberedIcon(num: number, active: boolean): L.DivIcon {
+  const bg = active ? '#FF6B35' : '#2c2c2e'
+  const border = active ? '#fff' : '#FF6B35'
+  const color = '#fff'
+  return L.divIcon({
+    className: '',
+    html: `<div style="
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: ${bg};
+      border: 2.5px solid ${border};
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Inter, -apple-system, sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: ${color};
+      line-height: 1;
+    ">${num}</div>`,
+    iconSize: [26, 26],
+    iconAnchor: [13, 13],
+  })
+}
+
+function createColoredIcon(color: string, opacity = 1): L.DivIcon {
+  return L.divIcon({
+    className: '',
+    html: `<div style="
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background-color: ${color};
+      border: 2px solid rgba(255,255,255,0.8);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+      opacity: ${opacity};
+    "></div>`,
+    iconSize: [18, 18],
+    iconAnchor: [9, 9],
+  })
+}
+
+const ESTADO_COLOR: Record<Falla['estado'], string> = {
+  pendiente: '#8e8e93',
+  en_progreso: '#FF6B35',
+  completa: '#34c759',
+}
+
+// ─── Geolocalización + botón centrar ─────────────────────────────────────────
 function UserLocationControl({ onLocation }: { onLocation: (pos: [number, number]) => void }) {
   const map = useMap()
   const [position, setPosition] = useState<[number, number] | null>(null)
@@ -47,7 +100,6 @@ function UserLocationControl({ onLocation }: { onLocation: (pos: [number, number
 
   return (
     <>
-      {/* Marcador de posicion del usuario */}
       {position && (
         <>
           <Circle
@@ -63,7 +115,6 @@ function UserLocationControl({ onLocation }: { onLocation: (pos: [number, number
         </>
       )}
 
-      {/* Boton centrar en mi ubicacion */}
       <div
         onClick={centerOnMe}
         style={{
@@ -86,15 +137,38 @@ function UserLocationControl({ onLocation }: { onLocation: (pos: [number, number
         }}
       >
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="3.5" stroke={position ? '#0a84ff' : '#8e8e93'} strokeWidth="2"/>
-          <path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke={position ? '#0a84ff' : '#8e8e93'} strokeWidth="2" strokeLinecap="round"/>
-          <circle cx="12" cy="12" r="9" stroke={position ? '#0a84ff' : '#8e8e93'} strokeWidth="1.5" strokeDasharray="3 2"/>
+          <circle cx="12" cy="12" r="3.5" stroke={position ? '#0a84ff' : '#8e8e93'} strokeWidth="2" />
+          <path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke={position ? '#0a84ff' : '#8e8e93'} strokeWidth="2" strokeLinecap="round" />
+          <circle cx="12" cy="12" r="9" stroke={position ? '#0a84ff' : '#8e8e93'} strokeWidth="1.5" strokeDasharray="3 2" />
         </svg>
       </div>
     </>
   )
 }
 
+// ─── Fly suave al target ───────────────────────────────────────────────────────
+function MapFlyer({ target }: { target: [number, number] | null }) {
+  const map = useMap()
+  const prevTarget = useRef<[number, number] | null>(null)
+  if (target && target !== prevTarget.current) {
+    prevTarget.current = target
+    map.flyTo(target, 18, { animate: true, duration: 0.8 })
+  }
+  return null
+}
+
+// ─── Fly al paso activo de la ruta ────────────────────────────────────────────
+function MapRouteStep({ falla }: { falla: Falla | null }) {
+  const map = useMap()
+  const prevId = useRef<string | null>(null)
+  if (falla && falla.id !== prevId.current) {
+    prevId.current = falla.id
+    map.flyTo([falla.lat, falla.lng], 17, { animate: true, duration: 0.6 })
+  }
+  return null
+}
+
+// ─── Seed data helper ─────────────────────────────────────────────────────────
 async function ensureSeedData(fallas: Falla[]): Promise<Falla[]> {
   if (fallas.length === 0) {
     const now = new Date().toISOString()
@@ -115,28 +189,40 @@ function distanciaMetros(lat1: number, lng1: number, lat2: number, lng2: number)
   const R = 6371000
   const dLat = (lat2 - lat1) * Math.PI / 180
   const dLng = (lng2 - lng1) * Math.PI / 180
-  const a = Math.sin(dLat / 2) ** 2 +
-    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng / 2) ** 2
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLng / 2) ** 2
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
 }
 
+// ─── Props ────────────────────────────────────────────────────────────────────
 interface MapViewProps {
   onOpenCamera?: (fallaId: string) => void
   onGoToFicha?: (fallaId: string) => void
 }
 
-function MapFlyer({ target }: { target: [number, number] | null }) {
-  const map = useMap()
-  if (target) map.flyTo(target, 18, { animate: true, duration: 0.8 })
-  return null
-}
-
+// ─── Componente principal ─────────────────────────────────────────────────────
 export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
   const [fallas, setFallas] = useState<Falla[]>([])
   const [flyTarget, setFlyTarget] = useState<[number, number] | null>(null)
   const [userPos, setUserPos] = useState<[number, number] | null>(null)
   const [showNearby, setShowNearby] = useState(false)
   const [selectedFalla, setSelectedFalla] = useState<Falla | null>(null)
+
+  // ─── Estado de ruta ─────────────────────────────────────────────────────────
+  const [showRouteBuilder, setShowRouteBuilder] = useState(false)
+  const [activeRoute, setActiveRoute] = useState<RouteResult | null>(null)
+  const [routeStep, setRouteStep] = useState(0)
+
+  const handleUserLocation = useCallback((pos: [number, number]) => {
+    setUserPos(pos)
+  }, [])
+
+  // Conjunto de IDs en ruta para lookup rápido
+  const routeFallaIds = activeRoute
+    ? new Set(activeRoute.fallas.map(f => f.id))
+    : new Set<string>()
 
   const fallasCercanas = userPos
     ? fallas
@@ -159,6 +245,20 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
   const globalPct = fallas.length > 0
     ? Math.round(fallas.reduce((sum, f) => sum + f.completitud_pct, 0) / fallas.length)
     : 0
+
+  // Falla activa en navegación
+  const activeStepFalla = activeRoute?.fallas[routeStep] ?? null
+
+  // Distancia al siguiente punto (desde posicion actual o paso previo)
+  const distNextM = activeRoute && activeRoute.fallas.length > 0
+    ? (() => {
+        const prev = routeStep === 0
+          ? (userPos ?? [activeRoute.fallas[0].lat, activeRoute.fallas[0].lng] as [number, number])
+          : [activeRoute.fallas[routeStep - 1].lat, activeRoute.fallas[routeStep - 1].lng] as [number, number]
+        const cur = activeRoute.fallas[routeStep]
+        return Math.round(distanciaMetros(prev[0], prev[1], cur.lat, cur.lng))
+      })()
+    : null
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
@@ -208,24 +308,102 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {fallas.map(falla => (
-          <FallaMarker
-            key={falla.id}
-            falla={falla}
-            onClick={setSelectedFalla}
+
+        {/* Marcadores de fallas */}
+        {fallas.map(falla => {
+          if (activeRoute) {
+            const routeIdx = activeRoute.fallas.findIndex(rf => rf.id === falla.id)
+            if (routeIdx >= 0) {
+              const isActive = routeIdx === routeStep
+              const icon = createNumberedIcon(routeIdx + 1, isActive)
+              return (
+                <Marker
+                  key={falla.id}
+                  position={[falla.lat, falla.lng]}
+                  icon={icon}
+                  eventHandlers={{ click: () => setSelectedFalla(falla) }}
+                />
+              )
+            } else {
+              const color = ESTADO_COLOR[falla.estado]
+              const icon = createColoredIcon(color, 0.3)
+              return (
+                <Marker
+                  key={falla.id}
+                  position={[falla.lat, falla.lng]}
+                  icon={icon}
+                  eventHandlers={{ click: () => setSelectedFalla(falla) }}
+                />
+              )
+            }
+          }
+          const color = ESTADO_COLOR[falla.estado]
+          const icon = createColoredIcon(color)
+          return (
+            <Marker
+              key={falla.id}
+              position={[falla.lat, falla.lng]}
+              icon={icon}
+              eventHandlers={{ click: () => setSelectedFalla(falla) }}
+            />
+          )
+        })}
+
+        {/* Polyline de la ruta */}
+        {activeRoute && activeRoute.waypoints.length > 1 && (
+          <Polyline
+            positions={activeRoute.waypoints}
+            pathOptions={{ color: '#FF6B35', weight: 4, opacity: 0.85 }}
           />
-        ))}
-        <UserLocationControl onLocation={setUserPos} />
+        )}
+
+        <UserLocationControl onLocation={handleUserLocation} />
         <MapFlyer target={flyTarget} />
+        <MapRouteStep falla={activeStepFalla} />
       </MapContainer>
 
-      {/* Panel fallas cercanas */}
-      {fallasCercanas.length > 0 && (
+      {/* Botón "+" — abrir RouteBuilder */}
+      <div
+        onClick={() => setShowRouteBuilder(true)}
+        style={{
+          position: 'absolute',
+          bottom: activeRoute ? '108px' : '12px',
+          left: '12px',
+          zIndex: 500,
+          width: '44px',
+          height: '44px',
+          borderRadius: '12px',
+          background: activeRoute
+            ? 'rgba(255,107,53,0.2)'
+            : 'rgba(28,28,30,0.92)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          border: activeRoute ? '1px solid #FF6B35' : '0.5px solid #3a3a3c',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          boxShadow: '0 2px 12px rgba(0,0,0,0.3)',
+          transition: 'bottom 0.3s ease',
+        }}
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M12 5v14M5 12h14"
+            stroke={activeRoute ? '#FF6B35' : '#fff'}
+            strokeWidth="2.5"
+            strokeLinecap="round"
+          />
+        </svg>
+      </div>
+
+      {/* Panel fallas cercanas — solo si no hay ruta activa */}
+      {!activeRoute && fallasCercanas.length > 0 && (
         <div
           style={{
             position: 'absolute',
             bottom: '12px',
-            left: '12px',
+            left: '68px',
             right: '68px',
             zIndex: 500,
           }}
@@ -248,7 +426,7 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
                 {fallasCercanas.length} falla{fallasCercanas.length > 1 ? 's' : ''} a menos de 300m
               </span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ transform: showNearby ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>
-                <path d="M6 9l6 6 6-6" stroke="#8e8e93" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M6 9l6 6 6-6" stroke="#8e8e93" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
             {showNearby && (
@@ -256,7 +434,11 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
                 {fallasCercanas.map(({ falla, dist }) => (
                   <div
                     key={falla.id}
-                    onClick={(e) => { e.stopPropagation(); setFlyTarget([falla.lat, falla.lng]); setShowNearby(false) }}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setFlyTarget([falla.lat, falla.lng])
+                      setShowNearby(false)
+                    }}
                     style={{
                       display: 'flex',
                       justifyContent: 'space-between',
@@ -280,6 +462,143 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
         </div>
       )}
 
+      {/* Chip de navegación de ruta */}
+      {activeRoute && activeRoute.fallas.length > 0 && (
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '12px',
+            left: '68px',
+            right: '68px',
+            zIndex: 500,
+          }}
+        >
+          <div
+            style={{
+              background: 'rgba(28,28,30,0.96)',
+              backdropFilter: 'blur(14px)',
+              WebkitBackdropFilter: 'blur(14px)',
+              border: '1px solid #FF6B35',
+              borderRadius: '16px',
+              padding: '12px 14px 10px',
+              boxShadow: '0 4px 20px rgba(255,107,53,0.2)',
+              position: 'relative',
+            }}
+          >
+            {/* Botón X para limpiar ruta */}
+            <div
+              onClick={() => { setActiveRoute(null); setRouteStep(0) }}
+              style={{
+                position: 'absolute',
+                top: '-10px',
+                right: '-10px',
+                width: '24px',
+                height: '24px',
+                borderRadius: '50%',
+                background: '#3a3a3c',
+                border: '1.5px solid #FF6B35',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                zIndex: 1,
+              }}
+            >
+              <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
+                <path d="M1 1l10 10M11 1L1 11" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
+              </svg>
+            </div>
+
+            {/* Fila principal: prev / info / next */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              {/* Botón anterior */}
+              <div
+                onClick={() => setRouteStep(s => Math.max(0, s - 1))}
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '8px',
+                  background: routeStep === 0 ? '#2c2c2e' : 'rgba(255,107,53,0.15)',
+                  border: routeStep === 0 ? '0.5px solid #3a3a3c' : '1px solid #FF6B35',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: routeStep === 0 ? 'not-allowed' : 'pointer',
+                  flexShrink: 0,
+                }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                  <path d="M15 18l-6-6 6-6" stroke={routeStep === 0 ? '#636366' : '#FF6B35'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+
+              {/* Info de la parada */}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: '13px', fontWeight: 700, color: '#fff', fontFamily: 'Inter, -apple-system, sans-serif', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                  Parada {routeStep + 1} / {activeRoute.fallas.length}
+                  {activeStepFalla && (
+                    <span style={{ color: '#FF6B35', fontWeight: 400 }}>
+                      {' · '}{activeStepFalla.nombre}
+                    </span>
+                  )}
+                </div>
+                {activeStepFalla && (
+                  <div style={{ fontSize: '11px', color: '#8e8e93', fontFamily: 'Inter, -apple-system, sans-serif', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', marginTop: '2px' }}>
+                    {distNextM !== null && `${distNextM}m · `}{activeStepFalla.artista}
+                  </div>
+                )}
+              </div>
+
+              {/* Botón siguiente */}
+              <div
+                onClick={() => setRouteStep(s => Math.min(activeRoute.fallas.length - 1, s + 1))}
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '8px',
+                  background: routeStep === activeRoute.fallas.length - 1 ? '#2c2c2e' : 'rgba(255,107,53,0.15)',
+                  border: routeStep === activeRoute.fallas.length - 1 ? '0.5px solid #3a3a3c' : '1px solid #FF6B35',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: routeStep === activeRoute.fallas.length - 1 ? 'not-allowed' : 'pointer',
+                  flexShrink: 0,
+                }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                  <path d="M9 18l6-6-6-6" stroke={routeStep === activeRoute.fallas.length - 1 ? '#636366' : '#FF6B35'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+            </div>
+
+            {/* Barra de progreso de ruta */}
+            <div style={{ marginTop: '8px', height: '2px', background: '#3a3a3c', borderRadius: '1px', overflow: 'hidden' }}>
+              <div
+                style={{
+                  height: '100%',
+                  width: `${((routeStep + 1) / activeRoute.fallas.length) * 100}%`,
+                  background: 'linear-gradient(90deg, #FF6B35, #ff9500)',
+                  borderRadius: '1px',
+                  transition: 'width 0.3s ease',
+                }}
+              />
+            </div>
+
+            {/* Distancia total y tiempo estimado */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '6px' }}>
+              <span style={{ fontSize: '10px', color: '#636366', fontFamily: 'Inter, -apple-system, sans-serif' }}>
+                {activeRoute.distanciaMetros >= 1000
+                  ? `${(activeRoute.distanciaMetros / 1000).toFixed(1)} km`
+                  : `${activeRoute.distanciaMetros} m`} en total
+              </span>
+              <span style={{ fontSize: '10px', color: '#636366', fontFamily: 'Inter, -apple-system, sans-serif' }}>
+                ~{activeRoute.duracionMinutos} min · {activeRoute.fallas.length} fallas
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Overlay bloqueador del mapa cuando sheet abierto */}
       {selectedFalla && (
         <div
@@ -296,7 +615,6 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
       >
         {selectedFalla && (
           <div style={{ padding: '12px 20px 8px' }}>
-            {/* Info compacta */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '10px' }}>
               <ProgressRing percentage={selectedFalla.completitud_pct} size={48} strokeWidth={4} />
               <div style={{ flex: 1, minWidth: 0 }}>
@@ -320,26 +638,48 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
                 "{selectedFalla.lema}"
               </div>
             )}
-            {/* Botones */}
+            {/* En ruta: indicar número de parada */}
+            {routeFallaIds.has(selectedFalla.id) && activeRoute && (
+              <div style={{ fontSize: '12px', color: '#FF6B35', fontWeight: 600, marginBottom: '10px', fontFamily: 'Inter, -apple-system, sans-serif' }}>
+                Parada #{activeRoute.fallas.findIndex(f => f.id === selectedFalla.id) + 1} de la ruta
+              </div>
+            )}
             <div style={{ display: 'flex', gap: '10px', paddingBottom: '4px' }}>
               <button
                 onClick={() => { setSelectedFalla(null); onOpenCamera?.(selectedFalla.id) }}
                 style={{ flex: 1, padding: '11px 0', background: 'linear-gradient(135deg, #FF6B35, #ff9500)', border: 'none', borderRadius: '12px', color: '#fff', fontSize: '14px', fontWeight: 700, cursor: 'pointer', fontFamily: 'Inter, -apple-system, sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', boxShadow: '0 4px 16px rgba(255,107,53,0.3)' }}
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><circle cx="12" cy="13" r="4" stroke="#fff" strokeWidth="2"/></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <circle cx="12" cy="13" r="4" stroke="#fff" strokeWidth="2" />
+                </svg>
                 Escanear
               </button>
               <button
                 onClick={() => { setSelectedFalla(null); onGoToFicha?.(selectedFalla.id) }}
                 style={{ flex: 1, padding: '11px 0', background: '#2c2c2e', border: '0.5px solid #3a3a3c', borderRadius: '12px', color: '#8e8e93', fontSize: '14px', fontWeight: 600, cursor: 'pointer', fontFamily: 'Inter, -apple-system, sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 12h6M9 16h4M7 4H4a2 2 0 00-2 2v14a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2h-3" stroke="#8e8e93" strokeWidth="2" strokeLinecap="round"/><path d="M9 4h6a1 1 0 010 2H9a1 1 0 010-2z" stroke="#8e8e93" strokeWidth="2"/></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path d="M9 12h6M9 16h4M7 4H4a2 2 0 00-2 2v14a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2h-3" stroke="#8e8e93" strokeWidth="2" strokeLinecap="round" />
+                  <path d="M9 4h6a1 1 0 010 2H9a1 1 0 010-2z" stroke="#8e8e93" strokeWidth="2" />
+                </svg>
                 Ver ficha
               </button>
             </div>
           </div>
         )}
       </BottomSheet>
+
+      {/* RouteBuilder sheet */}
+      <RouteBuilder
+        isOpen={showRouteBuilder}
+        onClose={() => setShowRouteBuilder(false)}
+        userPos={userPos}
+        onRouteReady={(result) => {
+          setActiveRoute(result)
+          setRouteStep(0)
+        }}
+      />
     </div>
   )
 }
