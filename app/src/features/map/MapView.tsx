@@ -418,7 +418,7 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
         onClick={() => setShowRouteBuilder(true)}
         style={{
           position: 'absolute',
-          bottom: activeRoute ? '108px' : '61px',
+          bottom: activeRoute ? '150px' : '61px',
           left: '12px',
           zIndex: 500,
           width: '44px',
@@ -512,12 +512,12 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
         </div>
       )}
 
-      {/* Chip de navegación de ruta — arriba del mapa */}
+      {/* Chip de navegación de ruta — abajo del mapa */}
       {activeRoute && activeRoute.fallas.length > 0 && (
         <div
           style={{
             position: 'absolute',
-            top: '8px',
+            bottom: '12px',
             left: '8px',
             right: '8px',
             zIndex: 500,
