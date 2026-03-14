@@ -427,9 +427,7 @@ export default function MapView({ onOpenCamera, onGoToFicha, activeRoute, setAct
         onClick={() => setShowRouteBuilder(true)}
         style={{
           position: 'fixed',
-          bottom: activeRoute
-            ? 'calc(86px + env(safe-area-inset-bottom, 0px) + 145px)'
-            : 'calc(86px + env(safe-area-inset-bottom, 0px) + 61px)',
+          bottom: 'calc(86px + env(safe-area-inset-bottom, 0px) + 61px)',
           left: '12px',
           zIndex: 500,
           width: '44px',
@@ -523,12 +521,12 @@ export default function MapView({ onOpenCamera, onGoToFicha, activeRoute, setAct
         </div>
       )}
 
-      {/* Chip de navegación de ruta — fixed al viewport */}
+      {/* Chip de navegación de ruta — fixed bajo el NavBar */}
       {activeRoute && activeRoute.fallas.length > 0 && (
         <div
           style={{
             position: 'fixed',
-            bottom: 'calc(86px + env(safe-area-inset-bottom, 0px) + 12px)',
+            top: 'calc(44px + env(safe-area-inset-top, 0px) + 8px)',
             left: '8px',
             right: '8px',
             zIndex: 1002,

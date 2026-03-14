@@ -159,7 +159,7 @@ export async function calcularRuta(
 
   // 4. Routing
   try {
-    if (seleccionadas.length <= 12) {
+    if (seleccionadas.length <= 25) {
       // OSRM TSP real
       const result = await osrmTrip(params.userPos, seleccionadas)
       return {
