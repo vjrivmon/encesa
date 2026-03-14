@@ -86,6 +86,7 @@ export default function SyncView() {
 
       let uploaded = 0
       let errors = 0
+      let lastError = ''
 
       // Upload fallas metadata
       for (const falla of fallas) {
@@ -134,7 +135,7 @@ export default function SyncView() {
             .from('fotos')
             .getPublicUrl(path)
 
-          await supabase.from('fotos').upsert({
+          const { error: insertError } = await supabase.from('fotos').upsert({
             id: foto.id,
             falla_id: foto.falla_id,
             angulo: foto.angulo ?? 'frontal',
@@ -142,9 +143,15 @@ export default function SyncView() {
             synced: true,
             capturada_at: foto.capturada_at ?? new Date().toISOString(),
           })
-          await db.fotos.update(foto.id, { synced: true, url_storage: publicUrl })
-          uploaded++
+          if (!insertError) {
+            await db.fotos.update(foto.id, { synced: true, url_storage: publicUrl })
+            uploaded++
+          } else {
+            lastError = `DB insert: ${insertError.message}`
+            errors++
+          }
         } else {
+          lastError = `Storage: ${uploadError.message}`
           errors++
         }
       }
@@ -153,10 +160,12 @@ export default function SyncView() {
       localStorage.setItem('encesa_last_sync', now)
 
       setSyncResult({
-        ok: errors === 0,
-        message: errors === 0
+        ok: errors === 0 && uploaded > 0,
+        message: errors === 0 && uploaded > 0
           ? `Sync completado: ${uploaded} registros subidos`
-          : `Sync parcial: ${uploaded} ok, ${errors} errores`,
+          : uploaded === 0 && errors === 0
+            ? `Sin fotos pendientes (${fotos.length} encontradas, ${allFotos.length} en DB)`
+            : `Sync parcial: ${uploaded} ok, ${errors} errores${lastError ? ` — ${lastError}` : ''}`,
       })
       await loadStats()
     } catch (err) {
