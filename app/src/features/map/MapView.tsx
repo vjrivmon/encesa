@@ -68,7 +68,7 @@ function UserLocationControl({ onLocation }: { onLocation: (pos: [number, number
         onClick={centerOnMe}
         style={{
           position: 'absolute',
-          bottom: '100px',
+          bottom: '12px',
           right: '12px',
           zIndex: 500,
           width: '44px',
@@ -224,7 +224,7 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
         <div
           style={{
             position: 'absolute',
-            bottom: '100px',
+            bottom: '12px',
             left: '12px',
             right: '68px',
             zIndex: 500,
