@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import BottomSheet from '../../components/BottomSheet'
 import { db, type Falla } from '../../lib/db'
 import { calcularRuta, type RouteParams, type RouteResult } from '../../lib/routing'
+import { SEED_FALLAS } from '../../lib/jcf-seed'
 
 // ─── Constantes ───────────────────────────────────────────────────────────────
 
@@ -58,7 +59,6 @@ interface RouteBuilderProps {
 // ─── Componente ───────────────────────────────────────────────────────────────
 
 export default function RouteBuilder({ isOpen, onClose, userPos, onRouteReady }: RouteBuilderProps) {
-  const [fallas, setFallas] = useState<Falla[]>([])
   const [selectedBarrios, setSelectedBarrios] = useState<string[]>([])
   const [selectedCats, setSelectedCats] = useState<string[]>([])
   const [timeOption, setTimeOption] = useState<TimeOption>('2h')
@@ -67,24 +67,17 @@ export default function RouteBuilder({ isOpen, onClose, userPos, onRouteReady }:
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  // Cargar fallas al abrir
-  useEffect(() => {
-    if (isOpen) {
-      db.fallas.toArray().then(setFallas)
-    }
-  }, [isOpen])
-
-  // Top-15 barrios por número de fallas
+  // Top-15 barrios por número de fallas — siempre del seed (nombres reales)
   const topBarrios = useMemo(() => {
     const counts: Record<string, number> = {}
-    fallas.forEach(f => {
-      if (f.barrio) counts[f.barrio] = (counts[f.barrio] ?? 0) + 1
+    SEED_FALLAS.forEach(f => {
+      if (f.barrio && f.barrio.length > 2) counts[f.barrio] = (counts[f.barrio] ?? 0) + 1
     })
     return Object.entries(counts)
       .sort((a, b) => b[1] - a[1])
       .slice(0, 15)
       .map(([barrio]) => barrio)
-  }, [fallas])
+  }, [])
 
   function toggleBarrio(b: string) {
     setSelectedBarrios(prev =>
@@ -114,7 +107,8 @@ export default function RouteBuilder({ isOpen, onClose, userPos, onRouteReady }:
         soloPendientes,
         tipo,
       }
-      const result = await calcularRuta(params, fallas)
+      const fallasDDB = await db.fallas.toArray()
+      const result = await calcularRuta(params, fallasDDB)
       if (result.fallas.length === 0) {
         setError('No se encontraron fallas con estos filtros')
         setLoading(false)

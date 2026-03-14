@@ -57,6 +57,17 @@ html, body, #root {
   background: #2c2c2e;
 }
 
+/* Atribución mínima (requerida por OSM ToS) */
+.leaflet-control-attribution {
+  background: transparent !important;
+  font-size: 9px !important;
+  opacity: 0.35 !important;
+  color: #8e8e93 !important;
+}
+.leaflet-control-attribution a {
+  color: #8e8e93 !important;
+}
+
 /* Scrollbar styles */
 ::-webkit-scrollbar {
   width: 4px;

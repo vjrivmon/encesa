@@ -1,4 +1,10 @@
 import type { Falla } from './db'
+import { SEED_FALLAS } from './jcf-seed'
+
+// Mapa id → barrio real (del seed actualizado con point-in-polygon)
+const BARRIO_REAL: Record<string, string> = Object.fromEntries(
+  SEED_FALLAS.map(f => [f.id, f.barrio])
+)
 
 export interface RouteParams {
   userPos: [number, number]
@@ -109,7 +115,7 @@ export async function calcularRuta(
   // 1. Filtrar
   let candidatas = todasFallas.filter(f => {
     if (params.soloPendientes && f.estado === 'completa') return false
-    if (params.barrios.length > 0 && !params.barrios.includes(f.barrio)) return false
+    if (params.barrios.length > 0 && !params.barrios.includes(BARRIO_REAL[f.id] ?? f.barrio)) return false
     if (params.categorias.length > 0) {
       const catMap: Record<string, Falla['categoria']> = {
         Especial: 'especial',
