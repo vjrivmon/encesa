@@ -560,7 +560,7 @@ export const JCF_FALLAS_2026: FallaData[] =
     "nombre": "Exposició-Misser Mascó",
     "barrio": "E",
     "artista": "Banyuls & Ruiz",
-    "categoria": "tercera",
+    "categoria": "especial",
     "lema": "Meditem",
     "anyo": 2026,
     "lat": 39.475304228431845,
@@ -824,7 +824,7 @@ export const JCF_FALLAS_2026: FallaData[] =
     "nombre": "Avinguda Regne de València-Duc de Calàbria",
     "barrio": "E",
     "artista": "Sergio Musoles Ros",
-    "categoria": "tercera",
+    "categoria": "especial",
     "lema": "La falla del Regne ¡Animal!",
     "anyo": 2026,
     "lat": 39.4637036789513,
@@ -2980,7 +2980,7 @@ export const JCF_FALLAS_2026: FallaData[] =
     "nombre": "Sueca-Literat Azorín",
     "barrio": "E",
     "artista": "Pedro Santaeulalia Serrán",
-    "categoria": "tercera",
+    "categoria": "especial",
     "lema": "Onírica",
     "anyo": 2026,
     "lat": 39.46035936819095,
@@ -3816,7 +3816,7 @@ export const JCF_FALLAS_2026: FallaData[] =
     "nombre": "Plaça del Pilar",
     "barrio": "E",
     "artista": "Paco Torres Josa",
-    "categoria": "tercera",
+    "categoria": "especial",
     "lema": "La Nit",
     "anyo": 2026,
     "lat": 39.47135704324243,
@@ -4300,7 +4300,7 @@ export const JCF_FALLAS_2026: FallaData[] =
     "nombre": "Cuba-Literat Azorín",
     "barrio": "E",
     "artista": "Carlos Carsi García",
-    "categoria": "tercera",
+    "categoria": "especial",
     "lema": "Passant a millor vida",
     "anyo": 2026,
     "lat": 39.4598465668497,
@@ -4960,7 +4960,7 @@ export const JCF_FALLAS_2026: FallaData[] =
     "nombre": "Almirall Cadarso-Comte d'Altea",
     "barrio": "E",
     "artista": "Francisco Giner Nuñez",
-    "categoria": "tercera",
+    "categoria": "especial",
     "lema": "Res en excés",
     "anyo": 2026,
     "lat": 39.46583740509804,
@@ -6412,7 +6412,7 @@ export const JCF_FALLAS_2026: FallaData[] =
     "nombre": "Monestir de Poblet-Aparicio Albiñana",
     "barrio": "E",
     "artista": "Josué Beitia Cardós",
-    "categoria": "tercera",
+    "categoria": "especial",
     "lema": "Sent i Ment",
     "anyo": 2026,
     "lat": 39.483874436007554,
@@ -7314,7 +7314,7 @@ export const JCF_FALLAS_2026: FallaData[] =
     "nombre": "Convent de Jerusalem-Matemàtic Marzal",
     "barrio": "E",
     "artista": "David Sánchez Llongo",
-    "categoria": "tercera",
+    "categoria": "especial",
     "lema": "Redimonis",
     "anyo": 2026,
     "lat": 39.46643844060057,
@@ -7666,7 +7666,7 @@ export const JCF_FALLAS_2026: FallaData[] =
     "nombre": "Na Jordana",
     "barrio": "E",
     "artista": "Mario Gual del Olmo",
-    "categoria": "tercera",
+    "categoria": "especial",
     "lema": "Passions a la deriva",
     "anyo": 2026,
     "lat": 39.48100415750942,
@@ -15471,10 +15471,6 @@ export const JCF_FALLAS_2026: FallaData[] =
     "created_at": "2026-01-01T00:00:00Z",
     "updated_at": "2026-01-01T00:00:00Z"
   }
-];
+]
 
-export const TOTAL_FALLAS = 702;
-export const FALLAS_GRANDES = 351;
-export const FALLAS_INFANTILES = 351;
-// Alias para compatibilidad
-export const SEED_FALLAS = JCF_FALLAS_2026;
+export const SEED_FALLAS = JCF_FALLAS_2026
