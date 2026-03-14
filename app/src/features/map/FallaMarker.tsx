@@ -1,4 +1,4 @@
-import { Marker, Popup } from 'react-leaflet'
+import { Marker } from 'react-leaflet'
 import L from 'leaflet'
 import type { Falla } from '../../lib/db'
 
@@ -41,26 +41,7 @@ export default function FallaMarker({ falla, onClick }: FallaMarkerProps) {
       eventHandlers={{
         click: () => onClick?.(falla),
       }}
-    >
-      <Popup>
-        <div style={{ fontFamily: 'Inter, -apple-system, sans-serif', minWidth: '160px' }}>
-          <div style={{ fontWeight: 600, fontSize: '14px', marginBottom: '4px', color: '#fff' }}>
-            {falla.nombre}
-          </div>
-          <div style={{ fontSize: '12px', color: '#8e8e93' }}>{falla.artista}</div>
-          <div style={{ fontSize: '11px', color: '#8e8e93', marginTop: '2px' }}>{falla.barrio}</div>
-          <div
-            style={{
-              marginTop: '6px',
-              fontSize: '11px',
-              color: color,
-              fontWeight: 600,
-            }}
-          >
-            {falla.completitud_pct}% completitud
-          </div>
-        </div>
-      </Popup>
-    </Marker>
+    />
+  
   )
 }

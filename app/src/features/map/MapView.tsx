@@ -120,7 +120,12 @@ function distanciaMetros(lat1: number, lng1: number, lat2: number, lng2: number)
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
 }
 
-export default function MapView() {
+interface MapViewProps {
+  onOpenCamera?: (fallaId: string) => void
+  onGoToFicha?: (fallaId: string) => void
+}
+
+export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
   const [fallas, setFallas] = useState<Falla[]>([])
   const [selectedFalla, setSelectedFalla] = useState<Falla | null>(null)
   const [userPos, setUserPos] = useState<[number, number] | null>(null)
@@ -295,10 +300,72 @@ export default function MapView() {
                 fontSize: '13px',
                 color: '#8e8e93',
                 fontStyle: 'italic',
+                marginBottom: '16px',
               }}>
                 "{selectedFalla.lema}"
               </div>
             )}
+
+            {/* Botones de accion */}
+            <div style={{ display: 'flex', gap: '10px', paddingBottom: '8px' }}>
+              <button
+                onClick={() => {
+                  setSelectedFalla(null)
+                  onOpenCamera?.(selectedFalla.id)
+                }}
+                style={{
+                  flex: 1,
+                  padding: '13px 0',
+                  background: 'linear-gradient(135deg, #FF6B35, #ff9500)',
+                  border: 'none',
+                  borderRadius: '12px',
+                  color: '#fff',
+                  fontSize: '15px',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  fontFamily: 'Inter, -apple-system, sans-serif',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  boxShadow: '0 4px 16px rgba(255,107,53,0.35)',
+                }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <circle cx="12" cy="13" r="4" stroke="#fff" strokeWidth="2"/>
+                </svg>
+                Escanear
+              </button>
+              <button
+                onClick={() => {
+                  setSelectedFalla(null)
+                  onGoToFicha?.(selectedFalla.id)
+                }}
+                style={{
+                  flex: 1,
+                  padding: '13px 0',
+                  background: '#2c2c2e',
+                  border: '0.5px solid #3a3a3c',
+                  borderRadius: '12px',
+                  color: '#fff',
+                  fontSize: '15px',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  fontFamily: 'Inter, -apple-system, sans-serif',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path d="M9 12h6M9 16h4M7 4H4a2 2 0 00-2 2v14a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2h-3" stroke="#8e8e93" strokeWidth="2" strokeLinecap="round"/>
+                  <path d="M9 4h6a1 1 0 010 2H9a1 1 0 010-2z" stroke="#8e8e93" strokeWidth="2"/>
+                </svg>
+                <span style={{ color: '#8e8e93' }}>Ver ficha</span>
+              </button>
+            </div>
           </div>
         )}
       </BottomSheet>

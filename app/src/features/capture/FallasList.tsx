@@ -19,7 +19,13 @@ const ORDEN_CATEGORIA: Record<Falla['categoria'], number> = {
   tercera: 3,
 }
 
-export default function FallasList({ onOpenCamera }: { onOpenCamera?: (fallaId: string) => void }) {
+interface FallasListProps {
+  onOpenCamera?: (fallaId: string) => void
+  autoOpenFallaId?: string
+  onAutoOpenDone?: () => void
+}
+
+export default function FallasList({ onOpenCamera, autoOpenFallaId, onAutoOpenDone }: FallasListProps) {
   const [fallas, setFallas] = useState<Falla[]>([])
   const [search, setSearch] = useState('')
   const [categoriaFilter, setCategoriaFilter] = useState<Falla['categoria'] | 'todas'>('todas')
@@ -28,6 +34,16 @@ export default function FallasList({ onOpenCamera }: { onOpenCamera?: (fallaId: 
   useEffect(() => {
     loadFallas()
   }, [])
+
+  useEffect(() => {
+    if (autoOpenFallaId && fallas.length > 0) {
+      const falla = fallas.find(f => f.id === autoOpenFallaId)
+      if (falla) {
+        setSelectedFalla(falla)
+        onAutoOpenDone?.()
+      }
+    }
+  }, [autoOpenFallaId, fallas])
 
   async function loadFallas() {
     let dbFallas = await db.fallas.toArray()

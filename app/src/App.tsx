@@ -22,10 +22,16 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>('mapa')
   const [subView, setSubView] = useState<SubView>(null)
   const [cameraFallaId, setCameraFallaId] = useState<string | undefined>()
+  const [autoOpenFallaId, setAutoOpenFallaId] = useState<string | undefined>()
 
   function openCamera(fallaId?: string) {
     setCameraFallaId(fallaId)
     setSubView('camera')
+  }
+
+  function goToFicha(fallaId: string) {
+    setAutoOpenFallaId(fallaId)
+    setActiveTab('captura')
   }
 
   function closeSubView() {
@@ -166,9 +172,13 @@ export default function App() {
             overflow: 'hidden',
           }}
         >
-          {activeTab === 'mapa' && <MapView />}
+          {activeTab === 'mapa' && <MapView onOpenCamera={openCamera} onGoToFicha={goToFicha} />}
           {activeTab === 'captura' && (
-            <FallasList onOpenCamera={openCamera} />
+            <FallasList
+              onOpenCamera={openCamera}
+              autoOpenFallaId={autoOpenFallaId}
+              onAutoOpenDone={() => setAutoOpenFallaId(undefined)}
+            />
           )}
           {activeTab === 'galeria' && <GalleryView />}
           {activeTab === 'sync' && <SyncView />}
