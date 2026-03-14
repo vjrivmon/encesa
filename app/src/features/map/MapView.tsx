@@ -294,19 +294,19 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-      {/* Progress bar overlay */}
-      <div
+      {/* Progress bar — bottom, solo si no hay ruta activa */}
+      {!activeRoute && <div
         style={{
           position: 'absolute',
-          top: 0,
+          bottom: 0,
           left: 0,
           right: 0,
           zIndex: 1001,
           padding: '10px 16px',
-          background: 'rgba(28,28,30,0.9)',
-          backdropFilter: 'blur(10px)',
-          WebkitBackdropFilter: 'blur(10px)',
-          borderBottom: '0.5px solid #3a3a3c',
+          background: 'rgba(28,28,30,0.92)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          borderTop: '0.5px solid #3a3a3c',
         }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
@@ -328,12 +328,12 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
             }}
           />
         </div>
-      </div>
+      </div>}
 
       <MapContainer
         center={VALENCIA_CENTER}
         zoom={14}
-        style={{ position: 'absolute', top: '49px', left: 0, right: 0, bottom: 0 }}
+        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: activeRoute ? 0 : '49px' }}
         zoomControl={false}
       >
         <TileLayer
@@ -418,7 +418,7 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
         onClick={() => setShowRouteBuilder(true)}
         style={{
           position: 'absolute',
-          bottom: '12px',
+          bottom: activeRoute ? '108px' : '61px',
           left: '12px',
           zIndex: 500,
           width: '44px',
@@ -452,7 +452,7 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
         <div
           style={{
             position: 'absolute',
-            bottom: '12px',
+            bottom: '61px',
             left: '68px',
             right: '68px',
             zIndex: 500,
