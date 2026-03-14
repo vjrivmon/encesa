@@ -152,7 +152,7 @@ export default function App() {
   }
 
   return (
-    <div style={{ width: '100%', height: '100%', background: '#1c1c1e', overflow: 'hidden' }}>
+    <div style={{ width: '100%', height: '100dvh', background: '#1c1c1e', overflow: 'hidden' }}>
       {/* Subviews */}
       {renderContent()}
 
