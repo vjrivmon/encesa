@@ -80,8 +80,8 @@ export default function SyncView() {
     setSyncResult(null)
 
     try {
-      const fallas = await db.fallas.where('synced').equals(0).toArray()
-      const allFotos = await db.fotos.where('synced').equals(0).toArray()
+      const fallas = (await db.fallas.toArray()).filter(f => !f.synced)
+      const allFotos = (await db.fotos.toArray()).filter(f => !f.synced)
       const fotos = allFotos.filter(f => selectedIds.has(f.id))
 
       let uploaded = 0
