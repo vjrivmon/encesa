@@ -53,12 +53,15 @@ interface RouteBuilderProps {
   isOpen: boolean
   onClose: () => void
   userPos: [number, number] | null
+  customStart: [number, number] | null
+  onPickStart: () => void
+  onClearCustomStart: () => void
   onRouteReady: (result: RouteResult) => void
 }
 
 // ─── Componente ───────────────────────────────────────────────────────────────
 
-export default function RouteBuilder({ isOpen, onClose, userPos, onRouteReady }: RouteBuilderProps) {
+export default function RouteBuilder({ isOpen, onClose, userPos, customStart, onPickStart, onClearCustomStart, onRouteReady }: RouteBuilderProps) {
   const [selectedBarrios, setSelectedBarrios] = useState<string[]>([])
   const [selectedCats, setSelectedCats] = useState<string[]>([])
   const [timeOption, setTimeOption] = useState<TimeOption>('2h')
@@ -92,15 +95,16 @@ export default function RouteBuilder({ isOpen, onClose, userPos, onRouteReady }:
   }
 
   async function handleGenerar() {
-    if (!userPos) {
-      setError('Activa la ubicacion para generar una ruta')
+    const startPos = customStart ?? userPos
+    if (!startPos) {
+      setError('Activa el GPS o elige un punto de inicio en el mapa')
       return
     }
     setError(null)
     setLoading(true)
     try {
       const params: RouteParams = {
-        userPos,
+        userPos: startPos,
         barrios: selectedBarrios,
         categorias: selectedCats,
         maxFallas: timeToMaxFallas(timeOption),
@@ -138,13 +142,50 @@ export default function RouteBuilder({ isOpen, onClose, userPos, onRouteReady }:
     <BottomSheet isOpen={isOpen} onClose={onClose} title="Crear ruta">
       <div style={{ padding: '16px 20px 4px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
 
-        {/* Indicador GPS — solo si no hay ubicación */}
-        {!userPos && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(255,59,48,0.1)', border: '0.5px solid rgba(255,59,48,0.3)', borderRadius: '10px', padding: '10px 14px' }}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3.5" stroke="#ff3b30" strokeWidth="2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="#ff3b30" strokeWidth="2" strokeLinecap="round"/></svg>
-            <span style={{ fontSize: '13px', color: '#ff3b30', fontFamily: 'Inter, -apple-system, sans-serif' }}>Activa el GPS para generar la ruta</span>
+        {/* Punto de inicio */}
+        <div>
+          <div style={sectionTitle}>Punto de inicio</div>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            {/* Opción: Mi ubicación */}
+            <div
+              onClick={() => { if (userPos) onClearCustomStart() }}
+              style={{
+                flex: 1, padding: '10px 12px', borderRadius: '10px', cursor: userPos ? 'pointer' : 'default',
+                background: !customStart ? (userPos ? 'rgba(255,107,53,0.15)' : 'rgba(255,59,48,0.1)') : '#2c2c2e',
+                border: !customStart ? (userPos ? '1px solid #FF6B35' : '0.5px solid rgba(255,59,48,0.4)') : '0.5px solid #3a3a3c',
+                display: 'flex', alignItems: 'center', gap: '8px',
+              }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="3.5" stroke={!customStart && userPos ? '#FF6B35' : '#8e8e93'} strokeWidth="2"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke={!customStart && userPos ? '#FF6B35' : '#8e8e93'} strokeWidth="2" strokeLinecap="round"/>
+              </svg>
+              <div>
+                <div style={{ fontSize: '12px', fontWeight: 600, color: !customStart && userPos ? '#fff' : '#8e8e93', fontFamily: 'Inter, -apple-system, sans-serif' }}>Mi ubicación</div>
+                {!userPos && <div style={{ fontSize: '10px', color: '#ff3b30', fontFamily: 'Inter, -apple-system, sans-serif' }}>GPS no disponible</div>}
+              </div>
+            </div>
+            {/* Opción: Elegir en mapa */}
+            <div
+              onClick={onPickStart}
+              style={{
+                flex: 1, padding: '10px 12px', borderRadius: '10px', cursor: 'pointer',
+                background: customStart ? 'rgba(255,107,53,0.15)' : '#2c2c2e',
+                border: customStart ? '1px solid #FF6B35' : '0.5px solid #3a3a3c',
+                display: 'flex', alignItems: 'center', gap: '8px',
+              }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" stroke={customStart ? '#FF6B35' : '#8e8e93'} strokeWidth="2" fill="none"/>
+                <circle cx="12" cy="9" r="2" stroke={customStart ? '#FF6B35' : '#8e8e93'} strokeWidth="1.5"/>
+              </svg>
+              <div>
+                <div style={{ fontSize: '12px', fontWeight: 600, color: customStart ? '#fff' : '#8e8e93', fontFamily: 'Inter, -apple-system, sans-serif' }}>Elegir en mapa</div>
+                {customStart && <div style={{ fontSize: '10px', color: '#FF6B35', fontFamily: 'Inter, -apple-system, sans-serif' }}>Punto seleccionado</div>}
+              </div>
+            </div>
           </div>
-        )}
+        </div>
 
         {/* Barrios */}
         <div>
@@ -327,25 +368,25 @@ export default function RouteBuilder({ isOpen, onClose, userPos, onRouteReady }:
         {/* Boton generar */}
         <button
           onClick={handleGenerar}
-          disabled={loading || !userPos}
+          disabled={loading || !(customStart ?? userPos)}
           style={{
             width: '100%',
             padding: '14px 0',
-            background: loading || !userPos
+            background: loading || !(customStart ?? userPos)
               ? '#3a3a3c'
               : 'linear-gradient(135deg, #FF6B35, #ff9500)',
             border: 'none',
             borderRadius: '14px',
-            color: loading || !userPos ? '#636366' : '#fff',
+            color: loading || !(customStart ?? userPos) ? '#636366' : '#fff',
             fontSize: '15px',
             fontWeight: 700,
-            cursor: loading || !userPos ? 'not-allowed' : 'pointer',
+            cursor: loading || !(customStart ?? userPos) ? 'not-allowed' : 'pointer',
             fontFamily: 'Inter, -apple-system, sans-serif',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             gap: '8px',
-            boxShadow: loading || !userPos ? 'none' : '0 4px 16px rgba(255,107,53,0.35)',
+            boxShadow: loading || !(customStart ?? userPos) ? 'none' : '0 4px 16px rgba(255,107,53,0.35)',
             transition: 'all 0.2s',
             marginBottom: '8px',
           }}

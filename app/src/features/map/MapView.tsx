@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
-import { MapContainer, TileLayer, CircleMarker, Circle, Polyline, Marker, useMap } from 'react-leaflet'
+import { MapContainer, TileLayer, CircleMarker, Circle, Polyline, Marker, useMap, useMapEvents } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { db, type Falla } from '../../lib/db'
@@ -158,6 +158,15 @@ function MapFlyer({ target }: { target: [number, number] | null }) {
 }
 
 // ─── Fly al paso activo de la ruta ────────────────────────────────────────────
+function MapStartPicker({ active, onPick }: { active: boolean; onPick: (pos: [number, number]) => void }) {
+  useMapEvents({
+    click(e) {
+      if (active) onPick([e.latlng.lat, e.latlng.lng])
+    },
+  })
+  return null
+}
+
 function MapRouteStep({ falla }: { falla: Falla | null }) {
   const map = useMap()
   const prevId = useRef<string | null>(null)
@@ -214,6 +223,8 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
   const [showRouteBuilder, setShowRouteBuilder] = useState(false)
   const [activeRoute, setActiveRoute] = useState<RouteResult | null>(null)
   const [routeStep, setRouteStep] = useState(0)
+  const [customStart, setCustomStart] = useState<[number, number] | null>(null)
+  const [pickingStart, setPickingStart] = useState(false)
 
   const handleUserLocation = useCallback((pos: [number, number]) => {
     setUserPos(pos)
@@ -360,6 +371,7 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
         <UserLocationControl onLocation={handleUserLocation} />
         <MapFlyer target={flyTarget} />
         <MapRouteStep falla={activeStepFalla} />
+        <MapStartPicker active={pickingStart} onPick={(pos) => { setCustomStart(pos); setPickingStart(false); setShowRouteBuilder(true) }} />
       </MapContainer>
 
       {/* Botón "+" — abrir RouteBuilder */}
@@ -367,7 +379,7 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
         onClick={() => setShowRouteBuilder(true)}
         style={{
           position: 'absolute',
-          bottom: activeRoute ? '108px' : '12px',
+          bottom: '12px',
           left: '12px',
           zIndex: 500,
           width: '44px',
@@ -384,7 +396,6 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
           justifyContent: 'center',
           cursor: 'pointer',
           boxShadow: '0 2px 12px rgba(0,0,0,0.3)',
-          transition: 'bottom 0.3s ease',
         }}
       >
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
@@ -462,14 +473,14 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
         </div>
       )}
 
-      {/* Chip de navegación de ruta */}
+      {/* Chip de navegación de ruta — arriba del mapa */}
       {activeRoute && activeRoute.fallas.length > 0 && (
         <div
           style={{
             position: 'absolute',
-            bottom: '12px',
-            left: '68px',
-            right: '68px',
+            top: '8px',
+            left: '8px',
+            right: '8px',
             zIndex: 500,
           }}
         >
@@ -599,6 +610,27 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
         </div>
       )}
 
+      {/* Marcador de inicio personalizado */}
+      {customStart && (
+        <div style={{ position: 'absolute', zIndex: 510, pointerEvents: 'none',
+          top: '50%', left: '50%' }} />
+      )}
+
+      {/* Overlay modo selección de punto de inicio */}
+      {pickingStart && (
+        <div style={{ position: 'absolute', inset: 0, zIndex: 600, pointerEvents: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', paddingTop: '16px' }}>
+          <div style={{ background: 'rgba(28,28,30,0.95)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', border: '1px solid #FF6B35', borderRadius: '14px', padding: '12px 20px', display: 'flex', alignItems: 'center', gap: '10px', boxShadow: '0 4px 20px rgba(0,0,0,0.4)' }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#FF6B35"/><circle cx="12" cy="9" r="2.5" fill="#fff"/></svg>
+            <span style={{ fontSize: '14px', fontWeight: 600, color: '#fff', fontFamily: 'Inter, -apple-system, sans-serif' }}>Toca el mapa para elegir el inicio</span>
+          </div>
+          <div style={{ marginTop: '8px', pointerEvents: 'auto' }}>
+            <div onClick={() => setPickingStart(false)} style={{ background: 'rgba(28,28,30,0.9)', border: '0.5px solid #3a3a3c', borderRadius: '10px', padding: '8px 16px', cursor: 'pointer' }}>
+              <span style={{ fontSize: '13px', color: '#8e8e93', fontFamily: 'Inter, -apple-system, sans-serif' }}>Cancelar</span>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Overlay bloqueador del mapa cuando sheet abierto */}
       {selectedFalla && (
         <div
@@ -675,6 +707,9 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
         isOpen={showRouteBuilder}
         onClose={() => setShowRouteBuilder(false)}
         userPos={userPos}
+        customStart={customStart}
+        onPickStart={() => { setShowRouteBuilder(false); setPickingStart(true) }}
+        onClearCustomStart={() => setCustomStart(null)}
         onRouteReady={(result) => {
           setActiveRoute(result)
           setRouteStep(0)
