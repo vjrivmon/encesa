@@ -166,7 +166,7 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
       <div
         style={{
           position: 'absolute',
-          top: 'calc(44px + env(safe-area-inset-top, 0px))',
+          top: 0,
           left: 0,
           right: 0,
           zIndex: 50,
