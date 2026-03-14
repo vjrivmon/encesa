@@ -72,7 +72,7 @@ export default function SyncView() {
   async function eliminarFoto(id: string) {
     await db.fotos.delete(id)
     setSelectedIds(prev => { const n = new Set(prev); n.delete(id); return n })
-    await loadData()
+    await loadStats()
   }
 
   async function syncAll() {

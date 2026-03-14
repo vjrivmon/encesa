@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import BottomSheet from '../../components/BottomSheet'
-import { db } from '../../lib/db'
+import { db, type Falla } from '../../lib/db'
 import { calcularRuta, type RouteParams, type RouteResult } from '../../lib/routing'
 import { SEED_FALLAS } from '../../lib/jcf-seed'
 
@@ -69,6 +69,14 @@ export default function RouteBuilder({ isOpen, onClose, userPos, customStart, on
   const [tipo, setTipo] = useState<'grande' | 'infantil' | 'ambas'>('ambas')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [imprescindibles, setImprescindibles] = useState<Falla[]>([])
+
+  // Cargar fallas imprescindibles cuando se abre el builder
+  useEffect(() => {
+    if (isOpen) {
+      db.fallas.where('imprescindible').equals(1).toArray().then(setImprescindibles)
+    }
+  }, [isOpen])
 
   // Top-15 barrios por número de fallas — siempre del seed (nombres reales)
   const topBarrios = useMemo(() => {
@@ -81,6 +89,11 @@ export default function RouteBuilder({ isOpen, onClose, userPos, customStart, on
       .slice(0, 15)
       .map(([barrio]) => barrio)
   }, [])
+
+  async function removeImprescindible(id: string) {
+    await db.fallas.update(id, { imprescindible: false })
+    setImprescindibles(prev => prev.filter(f => f.id !== id))
+  }
 
   function toggleBarrio(b: string) {
     setSelectedBarrios(prev =>
@@ -110,6 +123,7 @@ export default function RouteBuilder({ isOpen, onClose, userPos, customStart, on
         maxFallas: timeToMaxFallas(timeOption),
         soloPendientes,
         tipo,
+        imprescindibles: imprescindibles.map(f => f.id),
       }
       const fallasDDB = await db.fallas.toArray()
       const result = await calcularRuta(params, fallasDDB)
@@ -186,6 +200,50 @@ export default function RouteBuilder({ isOpen, onClose, userPos, customStart, on
             </div>
           </div>
         </div>
+
+        {/* Imprescindibles */}
+        {imprescindibles.length > 0 && (
+          <div>
+            <div style={sectionTitle}>
+              Imprescindibles ({imprescindibles.length})
+            </div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '6px' }}>
+              {imprescindibles.map(f => (
+                <div
+                  key={f.id}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    padding: '5px 10px',
+                    borderRadius: '20px',
+                    background: 'rgba(255,107,53,0.12)',
+                    border: '1px solid #FF6B35',
+                    fontSize: '12px',
+                    color: '#FF6B35',
+                    fontFamily: 'Inter, -apple-system, sans-serif',
+                    fontWeight: 500,
+                  }}
+                >
+                  <span style={{ maxWidth: '120px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                    {f.nombre}
+                  </span>
+                  <span
+                    onClick={() => removeImprescindible(f.id)}
+                    style={{ cursor: 'pointer', lineHeight: 1, flexShrink: 0 }}
+                  >
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                      <path d="M1 1l10 10M11 1L1 11" stroke="#FF6B35" strokeWidth="1.5" strokeLinecap="round"/>
+                    </svg>
+                  </span>
+                </div>
+              ))}
+            </div>
+            <div style={{ fontSize: '11px', color: '#636366', fontFamily: 'Inter, -apple-system, sans-serif' }}>
+              Siempre incluidas en la ruta
+            </div>
+          </div>
+        )}
 
         {/* Barrios */}
         <div>
