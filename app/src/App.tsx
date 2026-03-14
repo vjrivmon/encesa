@@ -150,26 +150,7 @@ export default function App() {
       {!subView && (
         <NavBar
           title={TAB_TITLES[activeTab]}
-          rightButton={
-            activeTab === 'captura' ? (
-              <button
-                onClick={() => openCamera()}
-                style={{
-                  background: '#FF6B35',
-                  border: 'none',
-                  borderRadius: '8px',
-                  padding: '6px 12px',
-                  color: '#fff',
-                  fontSize: '13px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                }}
-              >
-                Camara
-              </button>
-            ) : undefined
-          }
+          rightButton={undefined}
         />
       )}
 
@@ -187,7 +168,7 @@ export default function App() {
         >
           {activeTab === 'mapa' && <MapView />}
           {activeTab === 'captura' && (
-            <FallasList />
+            <FallasList onOpenCamera={openCamera} />
           )}
           {activeTab === 'galeria' && <GalleryView />}
           {activeTab === 'sync' && <SyncView />}

@@ -19,7 +19,7 @@ const ORDEN_CATEGORIA: Record<Falla['categoria'], number> = {
   tercera: 3,
 }
 
-export default function FallasList() {
+export default function FallasList({ onOpenCamera }: { onOpenCamera?: (fallaId: string) => void }) {
   const [fallas, setFallas] = useState<Falla[]>([])
   const [search, setSearch] = useState('')
   const [categoriaFilter, setCategoriaFilter] = useState<Falla['categoria'] | 'todas'>('todas')
@@ -164,6 +164,7 @@ export default function FallasList() {
           setSelectedFalla(null)
           loadFallas()
         }}
+        onOpenCamera={onOpenCamera}
       />
     </div>
   )

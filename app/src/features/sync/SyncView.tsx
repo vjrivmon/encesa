@@ -11,6 +11,10 @@ interface SyncStats {
   lastSync: string | null
 }
 
+interface FotoWithFalla extends Foto {
+  fallaNombre?: string
+}
+
 export default function SyncView() {
   const [stats, setStats] = useState<SyncStats>({
     totalFallas: 0,
@@ -22,6 +26,9 @@ export default function SyncView() {
   })
   const [syncing, setSyncing] = useState(false)
   const [syncResult, setSyncResult] = useState<{ ok: boolean; message: string } | null>(null)
+  const [fotasPendientes, setFotasPendientes] = useState<FotoWithFalla[]>([])
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
+  const [showPreview, setShowPreview] = useState(false)
 
   useEffect(() => {
     loadStats()
@@ -32,16 +39,33 @@ export default function SyncView() {
       db.fallas.toArray(),
       db.fotos.toArray(),
     ])
-    const fotasPendientes = fotos.filter(f => !f.synced)
-    const totalBytes = fotasPendientes.reduce((sum, f) => sum + (f.data_url?.length ?? 0) * 0.75, 0)
+    const pendientes = fotos.filter(f => !f.synced)
+    const totalBytes = pendientes.reduce((sum, f) => sum + (f.data_url?.length ?? 0) * 0.75, 0)
+    const fallasMap = Object.fromEntries(fallas.map(f => [f.id, f.nombre]))
+
+    const enriched: FotoWithFalla[] = pendientes.map(f => ({
+      ...f,
+      fallaNombre: fallasMap[f.falla_id] ?? f.falla_id,
+    }))
+    setFotasPendientes(enriched)
+    setSelectedIds(new Set(enriched.map(f => f.id)))
 
     setStats({
       totalFallas: fallas.length,
       enProgreso: fallas.filter(f => f.estado === 'en_progreso').length,
       completas: fallas.filter(f => f.estado === 'completa').length,
-      fotasPendientes: fotasPendientes.length,
+      fotasPendientes: pendientes.length,
       tamanoEstimadoMB: Math.round(totalBytes / (1024 * 1024) * 10) / 10,
       lastSync: localStorage.getItem('encesa_last_sync'),
+    })
+  }
+
+  function toggleFoto(id: string) {
+    setSelectedIds(prev => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
     })
   }
 
@@ -51,7 +75,8 @@ export default function SyncView() {
 
     try {
       const fallas = await db.fallas.where('synced').equals(0).toArray()
-      const fotos = await db.fotos.where('synced').equals(0).toArray()
+      const allFotos = await db.fotos.where('synced').equals(0).toArray()
+      const fotos = allFotos.filter(f => selectedIds.has(f.id))
 
       let uploaded = 0
       let errors = 0
@@ -207,7 +232,7 @@ export default function SyncView() {
         borderRadius: '13px',
         border: '0.5px solid #3a3a3c',
         padding: '14px 16px',
-        marginBottom: '24px',
+        marginBottom: fotasPendientes.length > 0 ? '12px' : '24px',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -219,6 +244,102 @@ export default function SyncView() {
           {stats.tamanoEstimadoMB} MB
         </span>
       </div>
+
+      {/* Preview fotos pendientes */}
+      {fotasPendientes.length > 0 && (
+        <div style={{ marginBottom: '24px' }}>
+          <button
+            onClick={() => setShowPreview(v => !v)}
+            style={{
+              width: '100%',
+              background: '#2c2c2e',
+              border: '0.5px solid #3a3a3c',
+              borderRadius: '13px',
+              padding: '12px 16px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              cursor: 'pointer',
+            }}
+          >
+            <span style={{ fontSize: '14px', color: '#0a84ff', fontWeight: 600, fontFamily: 'Inter, -apple-system, sans-serif' }}>
+              Revisar fotos ({selectedIds.size}/{fotasPendientes.length} seleccionadas)
+            </span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ transform: showPreview ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s', flexShrink: 0 }}>
+              <path d="M6 9l6 6 6-6" stroke="#8e8e93" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+
+          {showPreview && (
+            <div style={{
+              background: '#2c2c2e',
+              border: '0.5px solid #3a3a3c',
+              borderTop: 'none',
+              borderRadius: '0 0 13px 13px',
+              padding: '12px',
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '8px',
+            }}>
+              {fotasPendientes.map(foto => {
+                const selected = selectedIds.has(foto.id)
+                return (
+                  <div
+                    key={foto.id}
+                    onClick={() => toggleFoto(foto.id)}
+                    style={{
+                      position: 'relative',
+                      borderRadius: '10px',
+                      overflow: 'hidden',
+                      aspectRatio: '1',
+                      cursor: 'pointer',
+                      border: `2px solid ${selected ? '#0a84ff' : 'transparent'}`,
+                      transition: 'border-color 0.15s',
+                    }}
+                  >
+                    <img
+                      src={foto.data_url}
+                      alt={foto.fallaNombre}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                    />
+                    {/* Checkbox overlay */}
+                    <div style={{
+                      position: 'absolute',
+                      top: '6px',
+                      right: '6px',
+                      width: '22px',
+                      height: '22px',
+                      borderRadius: '50%',
+                      background: selected ? '#0a84ff' : 'rgba(0,0,0,0.45)',
+                      border: `2px solid ${selected ? '#0a84ff' : 'rgba(255,255,255,0.6)'}`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                      {selected && (
+                        <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                          <path d="M2 6l3 3 5-5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      )}
+                    </div>
+                    {/* Falla name */}
+                    <div style={{
+                      position: 'absolute',
+                      bottom: 0, left: 0, right: 0,
+                      background: 'linear-gradient(transparent, rgba(0,0,0,0.7))',
+                      padding: '14px 5px 5px',
+                    }}>
+                      <div style={{ fontSize: '9px', color: '#fff', fontFamily: 'Inter, -apple-system, sans-serif', lineHeight: 1.2 }}>
+                        {(foto.fallaNombre ?? '').slice(0, 28)}
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Sync result */}
       {syncResult && (
@@ -258,7 +379,7 @@ export default function SyncView() {
           marginBottom: '10px',
         }}
       >
-        {syncing ? 'Sincronizando...' : 'Sincronizar ahora'}
+        {syncing ? 'Sincronizando...' : selectedIds.size > 0 ? `Sincronizar ${selectedIds.size} foto${selectedIds.size > 1 ? 's' : ''}` : 'Sincronizar ahora'}
       </button>
 
       <p style={{
