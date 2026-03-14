@@ -69,6 +69,12 @@ export default function SyncView() {
     })
   }
 
+  async function eliminarFoto(id: string) {
+    await db.fotos.delete(id)
+    setSelectedIds(prev => { const n = new Set(prev); n.delete(id); return n })
+    await loadData()
+  }
+
   async function syncAll() {
     setSyncing(true)
     setSyncResult(null)
@@ -278,7 +284,7 @@ export default function SyncView() {
               borderRadius: '0 0 13px 13px',
               padding: '12px',
               display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
+              gridTemplateColumns: 'repeat(2, 1fr)',
               gap: '8px',
             }}>
               {fotasPendientes.map(foto => {
@@ -322,15 +328,35 @@ export default function SyncView() {
                         </svg>
                       )}
                     </div>
-                    {/* Falla name */}
+                    {/* Falla name + delete */}
                     <div style={{
                       position: 'absolute',
                       bottom: 0, left: 0, right: 0,
-                      background: 'linear-gradient(transparent, rgba(0,0,0,0.7))',
-                      padding: '14px 5px 5px',
+                      background: 'linear-gradient(transparent, rgba(0,0,0,0.82))',
+                      padding: '20px 8px 7px',
+                      display: 'flex',
+                      alignItems: 'flex-end',
+                      justifyContent: 'space-between',
+                      gap: '4px',
                     }}>
-                      <div style={{ fontSize: '9px', color: '#fff', fontFamily: 'Inter, -apple-system, sans-serif', lineHeight: 1.2 }}>
-                        {(foto.fallaNombre ?? '').slice(0, 28)}
+                      <div style={{ fontSize: '11px', color: '#fff', fontFamily: 'Inter, -apple-system, sans-serif', lineHeight: 1.3, flex: 1, minWidth: 0 }}>
+                        <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontWeight: 600 }}>
+                          {(foto.fallaNombre ?? 'Sin falla').slice(0, 32)}
+                        </div>
+                      </div>
+                      <div
+                        onClick={e => { e.stopPropagation(); eliminarFoto(foto.id) }}
+                        style={{
+                          width: '28px', height: '28px',
+                          borderRadius: '8px',
+                          background: 'rgba(255,59,48,0.85)',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          flexShrink: 0, cursor: 'pointer',
+                        }}
+                      >
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                          <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
                       </div>
                     </div>
                   </div>

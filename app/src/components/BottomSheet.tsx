@@ -5,9 +5,10 @@ interface BottomSheetProps {
   onClose: () => void
   children: ReactNode
   title?: string
+  headerAction?: ReactNode
 }
 
-export default function BottomSheet({ isOpen, onClose, children, title }: BottomSheetProps) {
+export default function BottomSheet({ isOpen, onClose, children, title, headerAction }: BottomSheetProps) {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
@@ -98,10 +99,16 @@ export default function BottomSheet({ isOpen, onClose, children, title }: Bottom
                 fontWeight: 600,
                 color: '#ffffff',
                 fontFamily: 'Inter, -apple-system, sans-serif',
+                flex: 1,
+                overflow: 'hidden',
+                whiteSpace: 'nowrap',
+                textOverflow: 'ellipsis',
+                marginRight: '8px',
               }}
             >
               {title}
             </span>
+            {headerAction}
             <button
               onClick={onClose}
               style={{

@@ -43,10 +43,12 @@ export default function FallaSheet({ falla, isOpen, onClose, onOpenCamera }: Fal
   const [valoracion, setValoracion] = useState<Valoracion | null>(null)
   const [notas, setNotas] = useState('')
   const [saving, setSaving] = useState(false)
+  const [imprescindible, setImprescindible] = useState(false)
 
   useEffect(() => {
     if (!falla) return
     setNotas(falla.notas ?? '')
+    setImprescindible(falla.imprescindible ?? false)
 
     Promise.all([
       db.fotos.where('falla_id').equals(falla.id).toArray(),
@@ -63,6 +65,45 @@ export default function FallaSheet({ falla, isOpen, onClose, onOpenCamera }: Fal
   }, [falla])
 
   if (!falla) return null
+
+  async function toggleImprescindible() {
+    if (!falla) return
+    const newVal = !imprescindible
+    await db.fallas.update(falla.id, { imprescindible: newVal })
+    setImprescindible(newVal)
+  }
+
+  const pinButton = (
+    <button
+      onClick={toggleImprescindible}
+      title={imprescindible ? 'Quitar de imprescindibles' : 'Fijar en ruta'}
+      style={{
+        width: '32px',
+        height: '32px',
+        background: imprescindible ? 'rgba(255,107,53,0.15)' : '#2c2c2e',
+        border: imprescindible ? '1px solid #FF6B35' : '0.5px solid #3a3a3c',
+        borderRadius: '8px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        cursor: 'pointer',
+        marginRight: '4px',
+        flexShrink: 0,
+      }}
+    >
+      {imprescindible ? (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2C8.69 2 6 4.69 6 8c0 2.97 2.08 5.44 4.85 6.08L12 22l1.15-7.92C15.92 13.44 18 10.97 18 8c0-3.31-2.69-6-6-6z" fill="#FF6B35" stroke="#FF6B35" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
+          <circle cx="12" cy="8" r="2" fill="#fff"/>
+        </svg>
+      ) : (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2C8.69 2 6 4.69 6 8c0 2.97 2.08 5.44 4.85 6.08L12 22l1.15-7.92C15.92 13.44 18 10.97 18 8c0-3.31-2.69-6-6-6z" stroke="#8e8e93" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <circle cx="12" cy="8" r="2" stroke="#8e8e93" strokeWidth="1.5"/>
+        </svg>
+      )}
+    </button>
+  )
 
   const pct = calcularCompletitud(falla, fotos, valoracion ?? undefined, undefined)
   const tieneValoracion = !!(valoracion && valoracion.originalidad > 0)
@@ -135,7 +176,7 @@ export default function FallaSheet({ falla, isOpen, onClose, onOpenCamera }: Fal
   }
 
   return (
-    <BottomSheet isOpen={isOpen} onClose={onClose} title={falla.nombre}>
+    <BottomSheet isOpen={isOpen} onClose={onClose} title={falla.nombre} headerAction={pinButton}>
       <div style={{ padding: '20px' }}>
 
         {/* Header info */}

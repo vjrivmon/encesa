@@ -228,10 +228,28 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
   const [routeStep, setRouteStep] = useState(0)
   const [customStart, setCustomStart] = useState<[number, number] | null>(null)
   const [pickingStart, setPickingStart] = useState(false)
+  const [nearNextStop, setNearNextStop] = useState(false)
 
   const handleUserLocation = useCallback((pos: [number, number]) => {
     setUserPos(pos)
   }, [])
+
+  // ─── Detección de proximidad (<40m) al siguiente punto de la ruta ───────────
+  useEffect(() => {
+    if (!activeRoute || !userPos) return
+    const nextFalla = activeRoute.fallas[routeStep]
+    if (!nextFalla) return
+    const dist = distanciaMetros(userPos[0], userPos[1], nextFalla.lat, nextFalla.lng)
+    setNearNextStop(dist < 40)
+  }, [userPos, activeRoute, routeStep])
+
+  // ─── Toggle imprescindible ───────────────────────────────────────────────────
+  const toggleImprescindible = async (falla: Falla) => {
+    const newVal = !falla.imprescindible
+    await db.fallas.update(falla.id, { imprescindible: newVal })
+    setFallas(prev => prev.map(f => f.id === falla.id ? { ...f, imprescindible: newVal } : f))
+    setSelectedFalla(prev => prev?.id === falla.id ? { ...prev, imprescindible: newVal } : prev)
+  }
 
   // Conjunto de IDs en ruta para lookup rápido
   const routeFallaIds = activeRoute
@@ -352,7 +370,7 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
             }
           }
           const color = ESTADO_COLOR[falla.estado]
-          const icon = createColoredIcon(color)
+          const icon = createColoredIcon(color, 1, falla.imprescindible === true)
           return (
             <Marker
               key={falla.id}
@@ -363,13 +381,31 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
           )
         })}
 
-        {/* Polyline de la ruta */}
-        {activeRoute && activeRoute.waypoints.length > 1 && (
-          <Polyline
-            positions={activeRoute.waypoints}
-            pathOptions={{ color: '#FF6B35', weight: 4, opacity: 0.85 }}
-          />
-        )}
+        {/* Polylines de la ruta: tramo completado (verde) + pendiente (naranja) */}
+        {activeRoute && activeRoute.waypoints.length > 1 && (() => {
+          const fraccionCompletada = activeRoute.fallas.length > 0
+            ? routeStep / activeRoute.fallas.length
+            : 0
+          const splitIdx = Math.floor(fraccionCompletada * activeRoute.waypoints.length)
+          const waypointsCompletados = activeRoute.waypoints.slice(0, splitIdx + 1)
+          const waypointsPendientes = activeRoute.waypoints.slice(splitIdx)
+          return (
+            <>
+              {waypointsCompletados.length > 1 && (
+                <Polyline
+                  positions={waypointsCompletados}
+                  pathOptions={{ color: '#30d158', weight: 4, opacity: 0.9 }}
+                />
+              )}
+              {waypointsPendientes.length > 1 && (
+                <Polyline
+                  positions={waypointsPendientes}
+                  pathOptions={{ color: '#FF6B35', weight: 4, opacity: 0.85 }}
+                />
+              )}
+            </>
+          )
+        })()}
 
         <UserLocationControl onLocation={handleUserLocation} />
         <MapFlyer target={flyTarget} />
@@ -609,6 +645,52 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
                 ~{activeRoute.duracionMinutos} min · {activeRoute.fallas.length} fallas
               </span>
             </div>
+
+            {/* Banner de proximidad */}
+            {nearNextStop && (
+              <div style={{
+                marginTop: '10px',
+                background: 'rgba(48,209,88,0.15)',
+                border: '1px solid rgba(48,209,88,0.4)',
+                borderRadius: '12px',
+                padding: '10px 12px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '8px',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="#30d158" strokeWidth="2" />
+                    <path d="M7 12l3.5 3.5L17 8.5" stroke="#30d158" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  <span style={{ fontSize: '12px', fontWeight: 600, color: '#30d158', fontFamily: 'Inter, -apple-system, sans-serif' }}>
+                    Cerca de parada {routeStep + 1}
+                  </span>
+                </div>
+                <button
+                  onClick={() => {
+                    setRouteStep(prev => Math.min(prev + 1, activeRoute.fallas.length - 1))
+                    setNearNextStop(false)
+                  }}
+                  style={{
+                    background: 'rgba(48,209,88,0.2)',
+                    border: '1px solid rgba(48,209,88,0.5)',
+                    borderRadius: '8px',
+                    padding: '5px 10px',
+                    color: '#30d158',
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    fontFamily: 'Inter, -apple-system, sans-serif',
+                    whiteSpace: 'nowrap',
+                    flexShrink: 0,
+                  }}
+                >
+                  Marcar visitada
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -699,6 +781,37 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
                   <path d="M9 4h6a1 1 0 010 2H9a1 1 0 010-2z" stroke="#8e8e93" strokeWidth="2" />
                 </svg>
                 Ver ficha
+              </button>
+              {/* Botón pin — fijar en ruta */}
+              <button
+                onClick={() => toggleImprescindible(selectedFalla)}
+                title={selectedFalla.imprescindible ? 'Quitar de imprescindibles' : 'Fijar en ruta'}
+                style={{
+                  width: '44px',
+                  height: '44px',
+                  flexShrink: 0,
+                  background: '#2c2c2e',
+                  border: selectedFalla.imprescindible ? '1px solid #FF6B35' : '0.5px solid #3a3a3c',
+                  borderRadius: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                }}
+              >
+                {selectedFalla.imprescindible ? (
+                  // Pin filled
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2C8.69 2 6 4.69 6 8c0 2.97 2.08 5.44 4.85 6.08L12 22l1.15-7.92C15.92 13.44 18 10.97 18 8c0-3.31-2.69-6-6-6z" fill="#FF6B35" stroke="#FF6B35" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
+                    <circle cx="12" cy="8" r="2" fill="#fff"/>
+                  </svg>
+                ) : (
+                  // Pin outline
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2C8.69 2 6 4.69 6 8c0 2.97 2.08 5.44 4.85 6.08L12 22l1.15-7.92C15.92 13.44 18 10.97 18 8c0-3.31-2.69-6-6-6z" stroke="#8e8e93" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <circle cx="12" cy="8" r="2" stroke="#8e8e93" strokeWidth="1.5"/>
+                  </svg>
+                )}
               </button>
             </div>
           </div>
