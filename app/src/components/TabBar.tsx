@@ -1,6 +1,7 @@
 interface TabBarProps {
   activeTab: 'mapa' | 'captura' | 'galeria' | 'sync'
   onTabChange: (tab: 'mapa' | 'captura' | 'galeria' | 'sync') => void
+  routeActive?: boolean
 }
 
 const MapIcon = ({ active }: { active: boolean }) => (
@@ -53,7 +54,7 @@ const TABS = [
   { id: 'sync' as const, label: 'Sync', Icon: SyncIcon },
 ]
 
-export default function TabBar({ activeTab, onTabChange }: TabBarProps) {
+export default function TabBar({ activeTab, onTabChange, routeActive }: TabBarProps) {
   return (
     <nav
       style={{
@@ -95,7 +96,17 @@ export default function TabBar({ activeTab, onTabChange }: TabBarProps) {
               transition: 'color 0.2s',
             }}
           >
-            <Icon active={isActive} />
+            <div style={{ position: 'relative' }}>
+              <Icon active={isActive} />
+              {routeActive && id === 'mapa' && (
+                <div style={{
+                  position: 'absolute', top: -2, right: -4,
+                  width: 8, height: 8, borderRadius: '50%',
+                  background: '#FF6B35',
+                  border: '1.5px solid rgba(28,28,30,0.96)',
+                }} />
+              )}
+            </div>
             <span>{label}</span>
           </button>
         )

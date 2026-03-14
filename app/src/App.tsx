@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
+import type { RouteResult } from './lib/routing'
 import TabBar from './components/TabBar'
 import NavBar from './components/NavBar'
 import MapView from './features/map/MapView'
@@ -23,6 +24,9 @@ export default function App() {
   const [subView, setSubView] = useState<SubView>(null)
   const [cameraFallaId, setCameraFallaId] = useState<string | undefined>()
   const [autoOpenFallaId, setAutoOpenFallaId] = useState<string | undefined>()
+  const [activeRoute, setActiveRoute] = useState<RouteResult | null>(null)
+  const [routeStep, setRouteStep] = useState(0)
+  const clearRoute = useCallback(() => { setActiveRoute(null); setRouteStep(0) }, [])
 
   function openCamera(fallaId?: string) {
     setCameraFallaId(fallaId)
@@ -172,7 +176,17 @@ export default function App() {
             overflow: 'hidden',
           }}
         >
-          {activeTab === 'mapa' && <MapView onOpenCamera={openCamera} onGoToFicha={goToFicha} />}
+          {activeTab === 'mapa' && (
+            <MapView
+              onOpenCamera={openCamera}
+              onGoToFicha={goToFicha}
+              activeRoute={activeRoute}
+              setActiveRoute={setActiveRoute}
+              routeStep={routeStep}
+              setRouteStep={setRouteStep}
+              onClearRoute={clearRoute}
+            />
+          )}
           {activeTab === 'captura' && (
             <FallasList
               onOpenCamera={openCamera}
@@ -186,7 +200,7 @@ export default function App() {
       )}
 
       {/* Tab bar */}
-      {!subView && <TabBar activeTab={activeTab} onTabChange={setActiveTab} />}
+      {!subView && <TabBar activeTab={activeTab} onTabChange={setActiveTab} routeActive={!!activeRoute} />}
     </div>
   )
 }

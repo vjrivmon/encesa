@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { MapContainer, TileLayer, CircleMarker, Circle, Polyline, Marker, useMap, useMapEvents } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -212,10 +212,15 @@ function distanciaMetros(lat1: number, lng1: number, lat2: number, lng2: number)
 interface MapViewProps {
   onOpenCamera?: (fallaId: string) => void
   onGoToFicha?: (fallaId: string) => void
+  activeRoute: RouteResult | null
+  setActiveRoute: (r: RouteResult | null) => void
+  routeStep: number
+  setRouteStep: React.Dispatch<React.SetStateAction<number>>
+  onClearRoute: () => void
 }
 
 // ─── Componente principal ─────────────────────────────────────────────────────
-export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
+export default function MapView({ onOpenCamera, onGoToFicha, activeRoute, setActiveRoute, routeStep, setRouteStep, onClearRoute }: MapViewProps) {
   const [fallas, setFallas] = useState<Falla[]>([])
   const [flyTarget, setFlyTarget] = useState<[number, number] | null>(null)
   const [userPos, setUserPos] = useState<[number, number] | null>(null)
@@ -224,8 +229,7 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
 
   // ─── Estado de ruta ─────────────────────────────────────────────────────────
   const [showRouteBuilder, setShowRouteBuilder] = useState(false)
-  const [activeRoute, setActiveRoute] = useState<RouteResult | null>(null)
-  const [routeStep, setRouteStep] = useState(0)
+  // activeRoute y routeStep vienen de App.tsx (persisten entre tabs)
   const [customStart, setCustomStart] = useState<[number, number] | null>(null)
   const [pickingStart, setPickingStart] = useState(false)
   const [nearNextStop, setNearNextStop] = useState(false)
@@ -537,7 +541,7 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
           >
             {/* Botón X para limpiar ruta */}
             <div
-              onClick={() => { setActiveRoute(null); setRouteStep(0) }}
+              onClick={onClearRoute}
               style={{
                 position: 'absolute',
                 top: '-10px',
