@@ -126,21 +126,21 @@ export default function SyncView() {
         const path = `fotos/${foto.falla_id}/${foto.id}.jpg`
 
         const { error: uploadError } = await supabase.storage
-          .from('encesa-fotos')
+          .from('fotos')
           .upload(path, blob, { upsert: true })
 
         if (!uploadError) {
           const { data: { publicUrl } } = supabase.storage
-            .from('encesa-fotos')
+            .from('fotos')
             .getPublicUrl(path)
 
           await supabase.from('fotos').upsert({
             id: foto.id,
             falla_id: foto.falla_id,
-            angulo: foto.angulo,
+            angulo: foto.angulo ?? 'frontal',
             url_storage: publicUrl,
             synced: true,
-            capturada_at: foto.capturada_at,
+            capturada_at: foto.capturada_at ?? foto.created_at ?? new Date().toISOString(),
           })
           await db.fotos.update(foto.id, { synced: true, url_storage: publicUrl })
           uploaded++
