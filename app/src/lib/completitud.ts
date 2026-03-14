@@ -8,30 +8,19 @@ export function calcularCompletitud(
 ): number {
   let total = 0
 
-  // OCR realizado: 15%
+  // OCR realizado: 30%
   if (falla.ocr_realizado || ocr) {
-    total += 15
+    total += 30
   }
 
-  // Foto frontal: 25%
-  const tieneFrontal = fotos.some(f => f.angulo === 'frontal')
-  if (tieneFrontal) {
-    total += 25
+  // Tiene al menos 1 foto: 30% (+ bonus hasta 10% por más fotos)
+  if (fotos.length >= 1) {
+    total += 30
+    if (fotos.length >= 3) total += 5
+    if (fotos.length >= 6) total += 5
   }
 
-  // Foto lateral (izq o der): 20%
-  const tieneLateral = fotos.some(f => f.angulo === 'lateral_izq' || f.angulo === 'lateral_der')
-  if (tieneLateral) {
-    total += 20
-  }
-
-  // Foto trasera: 15%
-  const tieneTrasera = fotos.some(f => f.angulo === 'trasera')
-  if (tieneTrasera) {
-    total += 15
-  }
-
-  // Valoracion completada (los 4 criterios > 0): 15%
+  // Valoracion completada (los 4 criterios > 0): 25%
   if (
     valoracion &&
     valoracion.originalidad > 0 &&
@@ -39,7 +28,7 @@ export function calcularCompletitud(
     valoracion.tematica > 0 &&
     valoracion.humor > 0
   ) {
-    total += 15
+    total += 25
   }
 
   // Notas escritas: 10%

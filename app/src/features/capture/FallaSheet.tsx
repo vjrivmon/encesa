@@ -60,9 +60,6 @@ export default function FallaSheet({ falla, isOpen, onClose, onOpenCamera }: Fal
 
   const pct = calcularCompletitud(falla, fotos, valoracion ?? undefined, undefined)
 
-  const tieneFrontal = fotos.some(f => f.angulo === 'frontal')
-  const tieneLateral = fotos.some(f => f.angulo === 'lateral_izq' || f.angulo === 'lateral_der')
-  const tieneTrasera = fotos.some(f => f.angulo === 'trasera')
   const tieneValoracion = !!(valoracion && valoracion.originalidad > 0)
 
   async function updateValoracion(campo: keyof Omit<Valoracion, 'id' | 'falla_id' | 'updated_at' | 'synced'>, valor: number) {
@@ -167,9 +164,10 @@ export default function FallaSheet({ falla, isOpen, onClose, onOpenCamera }: Fal
             Checklist
           </div>
           <CheckItem done={falla.ocr_realizado} label="OCR del cartel" />
-          <CheckItem done={tieneFrontal} label="Foto frontal" />
-          <CheckItem done={tieneLateral} label="Foto lateral" />
-          <CheckItem done={tieneTrasera} label="Foto trasera" />
+          <CheckItem
+            done={fotos.length > 0}
+            label={fotos.length === 0 ? 'Sin fotos' : `${fotos.length} foto${fotos.length > 1 ? 's' : ''} tomada${fotos.length > 1 ? 's' : ''}`}
+          />
           <CheckItem done={tieneValoracion} label="Valoracion completada" />
           <CheckItem done={!!(falla.notas && falla.notas.length > 0)} label="Notas escritas" />
         </div>
