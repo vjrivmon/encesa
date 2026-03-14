@@ -138,31 +138,13 @@ export default function RouteBuilder({ isOpen, onClose, userPos, onRouteReady }:
     <BottomSheet isOpen={isOpen} onClose={onClose} title="Crear ruta">
       <div style={{ padding: '16px 20px 4px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
 
-        {/* Punto de inicio */}
-        <div>
-          <div style={sectionTitle}>Punto de inicio</div>
-          <div
-            style={{
-              background: '#2c2c2e',
-              borderRadius: '10px',
-              padding: '10px 14px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              border: '0.5px solid #3a3a3c',
-            }}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}>
-              <circle cx="12" cy="12" r="3.5" stroke={userPos ? '#0a84ff' : '#8e8e93'} strokeWidth="2" />
-              <path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke={userPos ? '#0a84ff' : '#8e8e93'} strokeWidth="2" strokeLinecap="round" />
-            </svg>
-            <span style={{ fontSize: '13px', color: userPos ? '#fff' : '#8e8e93', fontFamily: 'Inter, -apple-system, sans-serif' }}>
-              {userPos
-                ? `${userPos[0].toFixed(5)}, ${userPos[1].toFixed(5)}`
-                : 'Ubicacion no disponible'}
-            </span>
+        {/* Indicador GPS — solo si no hay ubicación */}
+        {!userPos && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(255,59,48,0.1)', border: '0.5px solid rgba(255,59,48,0.3)', borderRadius: '10px', padding: '10px 14px' }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3.5" stroke="#ff3b30" strokeWidth="2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="#ff3b30" strokeWidth="2" strokeLinecap="round"/></svg>
+            <span style={{ fontSize: '13px', color: '#ff3b30', fontFamily: 'Inter, -apple-system, sans-serif' }}>Activa el GPS para generar la ruta</span>
           </div>
-        </div>
+        )}
 
         {/* Barrios */}
         <div>
