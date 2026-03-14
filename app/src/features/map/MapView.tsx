@@ -13,30 +13,35 @@ import type { RouteResult } from '../../lib/routing'
 const VALENCIA_CENTER: [number, number] = [39.4699, -0.3763]
 
 // ─── Icono con número para fallas de la ruta ──────────────────────────────────
-function createNumberedIcon(num: number, active: boolean): L.DivIcon {
-  const bg = active ? '#FF6B35' : '#2c2c2e'
-  const border = active ? '#fff' : '#FF6B35'
-  const color = '#fff'
+function createNumberedIcon(num: number, active: boolean, visited = false): L.DivIcon {
+  const size = active ? 38 : 26
+  const bg = active ? '#FF6B35' : visited ? '#3a3a3c' : '#2c2c2e'
+  const border = active ? '#fff' : visited ? '#636366' : '#FF6B35'
+  const textColor = visited ? '#636366' : '#fff'
+  const fontSize = active ? 15 : 11
+  const shadow = active
+    ? '0 0 0 6px rgba(255,107,53,0.25), 0 3px 12px rgba(0,0,0,0.6)'
+    : '0 2px 8px rgba(0,0,0,0.5)'
   return L.divIcon({
     className: '',
     html: `<div style="
-      width: 26px;
-      height: 26px;
+      width: ${size}px;
+      height: ${size}px;
       border-radius: 50%;
       background: ${bg};
-      border: 2.5px solid ${border};
-      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      border: ${active ? 3 : 2}px solid ${border};
+      box-shadow: ${shadow};
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: Inter, -apple-system, sans-serif;
-      font-size: 11px;
+      font-size: ${fontSize}px;
       font-weight: 700;
-      color: ${color};
+      color: ${textColor};
       line-height: 1;
     ">${num}</div>`,
-    iconSize: [26, 26],
-    iconAnchor: [13, 13],
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
   })
 }
 
@@ -301,8 +306,8 @@ export default function MapView({ onOpenCamera, onGoToFicha, activeRoute, setAct
       {/* Progress bar — bottom, solo si no hay ruta activa ni RouteBuilder abierto */}
       {!activeRoute && !showRouteBuilder && <div
         style={{
-          position: 'absolute',
-          bottom: 0,
+          position: 'fixed',
+          bottom: '86px',
           left: 0,
           right: 0,
           zIndex: 1001,
@@ -337,7 +342,7 @@ export default function MapView({ onOpenCamera, onGoToFicha, activeRoute, setAct
       <MapContainer
         center={VALENCIA_CENTER}
         zoom={14}
-        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: activeRoute ? 0 : '49px' }}
+        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
         zoomControl={false}
       >
         <TileLayer
@@ -351,7 +356,7 @@ export default function MapView({ onOpenCamera, onGoToFicha, activeRoute, setAct
             const routeIdx = activeRoute.fallas.findIndex(rf => rf.id === falla.id)
             if (routeIdx >= 0) {
               const isActive = routeIdx === routeStep
-              const icon = createNumberedIcon(routeIdx + 1, isActive)
+              const icon = createNumberedIcon(routeIdx + 1, isActive, routeIdx < routeStep)
               return (
                 <Marker
                   key={falla.id}
@@ -421,8 +426,10 @@ export default function MapView({ onOpenCamera, onGoToFicha, activeRoute, setAct
       <div
         onClick={() => setShowRouteBuilder(true)}
         style={{
-          position: 'absolute',
-          bottom: activeRoute ? '150px' : '61px',
+          position: 'fixed',
+          bottom: activeRoute
+            ? 'calc(86px + env(safe-area-inset-bottom, 0px) + 145px)'
+            : 'calc(86px + env(safe-area-inset-bottom, 0px) + 61px)',
           left: '12px',
           zIndex: 500,
           width: '44px',
@@ -455,8 +462,8 @@ export default function MapView({ onOpenCamera, onGoToFicha, activeRoute, setAct
       {!activeRoute && fallasCercanas.length > 0 && (
         <div
           style={{
-            position: 'absolute',
-            bottom: '61px',
+            position: 'fixed',
+            bottom: 'calc(86px + env(safe-area-inset-bottom, 0px) + 61px)',
             left: '68px',
             right: '68px',
             zIndex: 500,
@@ -516,15 +523,15 @@ export default function MapView({ onOpenCamera, onGoToFicha, activeRoute, setAct
         </div>
       )}
 
-      {/* Chip de navegación de ruta — abajo del mapa */}
+      {/* Chip de navegación de ruta — fixed al viewport */}
       {activeRoute && activeRoute.fallas.length > 0 && (
         <div
           style={{
-            position: 'absolute',
-            bottom: '12px',
+            position: 'fixed',
+            bottom: 'calc(86px + env(safe-area-inset-bottom, 0px) + 12px)',
             left: '8px',
             right: '8px',
-            zIndex: 500,
+            zIndex: 1002,
           }}
         >
           <div
