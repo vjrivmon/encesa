@@ -2,16 +2,6 @@ import { useRef, useEffect, useState, useCallback } from 'react'
 import { db, type Foto, type Falla } from '../../lib/db'
 import { calcularCompletitud, getEstadoFromCompletitud } from '../../lib/completitud'
 
-type Angulo = Foto['angulo']
-
-const ANGULOS: { value: Angulo; label: string }[] = [
-  { value: 'frontal', label: 'F' },
-  { value: 'lateral_izq', label: 'L.I.' },
-  { value: 'lateral_der', label: 'L.D.' },
-  { value: 'trasera', label: 'T' },
-  { value: 'detalle', label: 'Det.' },
-]
-
 interface CameraViewProps {
   fallaId?: string
 }
@@ -20,10 +10,9 @@ export default function CameraView({ fallaId }: CameraViewProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const streamRef = useRef<MediaStream | null>(null)
-  const [angulo, setAngulo] = useState<Angulo>('frontal')
   const [lastPhoto, setLastPhoto] = useState<string | null>(null)
   const [falla, setFalla] = useState<Falla | null>(null)
-  const [capturedAngulos, setCapturedAngulos] = useState<Set<Angulo>>(new Set())
+  const [photoCount, setPhotoCount] = useState(0)
   const [error, setError] = useState<string | null>(null)
   const [capturing, setCapturing] = useState(false)
 
@@ -31,7 +20,7 @@ export default function CameraView({ fallaId }: CameraViewProps) {
     if (fallaId) {
       db.fallas.get(fallaId).then(f => setFalla(f ?? null))
       db.fotos.where('falla_id').equals(fallaId).toArray().then(fotos => {
-        setCapturedAngulos(new Set(fotos.map(f => f.angulo)))
+        setPhotoCount(fotos.length)
         const lastFoto = fotos[fotos.length - 1]
         if (lastFoto) setLastPhoto(lastFoto.data_url)
       })
@@ -82,7 +71,7 @@ export default function CameraView({ fallaId }: CameraViewProps) {
     const foto: Foto = {
       id: `foto-${Date.now()}-${Math.random().toString(36).slice(2)}`,
       falla_id: fallaId ?? 'libre',
-      angulo,
+      angulo: 'libre',
       data_url: dataUrl,
       synced: false,
       capturada_at: new Date().toISOString(),
@@ -90,7 +79,7 @@ export default function CameraView({ fallaId }: CameraViewProps) {
 
     await db.fotos.add(foto)
     setLastPhoto(dataUrl)
-    setCapturedAngulos(prev => new Set([...prev, angulo]))
+    setPhotoCount(prev => prev + 1)
 
     // Update falla completitud
     if (fallaId && falla) {
@@ -163,42 +152,23 @@ export default function CameraView({ fallaId }: CameraViewProps) {
         </div>
       )}
 
-      {/* Angle selector */}
-      <div style={{
-        position: 'absolute',
-        bottom: 'calc(160px + env(safe-area-inset-bottom, 0px))',
-        left: 0,
-        right: 0,
-        display: 'flex',
-        justifyContent: 'center',
-        gap: '10px',
-        padding: '0 16px',
-      }}>
-        {ANGULOS.map(({ value, label }) => {
-          const isActive = angulo === value
-          const isDone = capturedAngulos.has(value)
-          return (
-            <button
-              key={value}
-              onClick={() => setAngulo(value)}
-              style={{
-                padding: '6px 12px',
-                borderRadius: '20px',
-                border: isActive ? 'none' : `1.5px solid ${isDone ? '#34c759' : 'rgba(255,255,255,0.3)'}`,
-                background: isActive ? '#FF6B35' : isDone ? 'rgba(52,199,89,0.2)' : 'rgba(28,28,30,0.7)',
-                color: isActive ? '#fff' : isDone ? '#34c759' : '#fff',
-                fontSize: '13px',
-                fontWeight: 600,
-                cursor: 'pointer',
-                fontFamily: 'Inter, -apple-system, sans-serif',
-                backdropFilter: 'blur(10px)',
-              }}
-            >
-              {label}
-            </button>
-          )
-        })}
-      </div>
+      {/* Contador de fotos */}
+      {photoCount > 0 && (
+        <div style={{
+          position: 'absolute',
+          top: 'calc(64px + env(safe-area-inset-top, 0px))',
+          right: '16px',
+          background: 'rgba(0,0,0,0.55)',
+          borderRadius: '20px',
+          padding: '4px 12px',
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)',
+        }}>
+          <span style={{ fontSize: '13px', fontWeight: 600, color: '#fff', fontFamily: 'Inter, -apple-system, sans-serif' }}>
+            {photoCount} {photoCount === 1 ? 'foto' : 'fotos'}
+          </span>
+        </div>
+      )}
 
       {/* Shutter + last photo */}
       <div style={{
