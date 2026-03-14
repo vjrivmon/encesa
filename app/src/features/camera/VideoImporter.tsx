@@ -143,7 +143,6 @@ export default function VideoImporter({ fallaId, onDone }: VideoImporterProps) {
         background: '#1c1c1e',
         zIndex: 10001,
         display: 'flex', flexDirection: 'column',
-        overflow: 'hidden',
       }}>
         {/* Header */}
         <div style={{
@@ -178,6 +177,7 @@ export default function VideoImporter({ fallaId, onDone }: VideoImporterProps) {
         <div style={{
           flex: 1, overflowY: 'auto',
           padding: '8px',
+          paddingBottom: 'calc(80px + env(safe-area-inset-bottom, 0px))',
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
           gap: '4px',
@@ -218,16 +218,17 @@ export default function VideoImporter({ fallaId, onDone }: VideoImporterProps) {
           ))}
         </div>
 
-        {/* Footer */}
+        {/* Footer — fixed para garantizar visibilidad */}
         <div style={{
-          position: 'sticky',
+          position: 'fixed',
           bottom: 0,
+          left: 0,
+          right: 0,
           padding: '12px 20px',
           paddingBottom: 'calc(12px + env(safe-area-inset-bottom, 0px))',
           background: '#1c1c1e',
           borderTop: '0.5px solid #3a3a3c',
-          flexShrink: 0,
-          zIndex: 2,
+          zIndex: 10002,
         }}>
           <button
             onClick={saveSelected}
