@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { MapContainer, TileLayer } from 'react-leaflet'
+import { useEffect, useState, useRef } from 'react'
+import { MapContainer, TileLayer, CircleMarker, Circle, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import { db, type Falla } from '../../lib/db'
 import { SEED_FALLAS } from '../../lib/jcf-seed'
@@ -9,6 +9,86 @@ import Badge from '../../components/Badge'
 import ProgressRing from '../../components/ProgressRing'
 
 const VALENCIA_CENTER: [number, number] = [39.4699, -0.3763]
+
+// ─── Componente interno: geolocalización + botón centrar ───────────────────
+function UserLocationControl({ onLocation }: { onLocation: (pos: [number, number]) => void }) {
+  const map = useMap()
+  const [position, setPosition] = useState<[number, number] | null>(null)
+  const [accuracy, setAccuracy] = useState<number>(0)
+  const watchRef = useRef<number | null>(null)
+
+  useEffect(() => {
+    if (!navigator.geolocation) return
+
+    watchRef.current = navigator.geolocation.watchPosition(
+      (pos) => {
+        const coords: [number, number] = [pos.coords.latitude, pos.coords.longitude]
+        setPosition(coords)
+        setAccuracy(pos.coords.accuracy)
+        onLocation(coords)
+      },
+      () => {},
+      { enableHighAccuracy: true, maximumAge: 5000, timeout: 10000 }
+    )
+
+    return () => {
+      if (watchRef.current !== null) navigator.geolocation.clearWatch(watchRef.current)
+    }
+  }, [onLocation])
+
+  const centerOnMe = () => {
+    if (position) map.flyTo(position, 16, { animate: true, duration: 1 })
+  }
+
+  return (
+    <>
+      {/* Marcador de posicion del usuario */}
+      {position && (
+        <>
+          <Circle
+            center={position}
+            radius={accuracy}
+            pathOptions={{ color: '#0a84ff', fillColor: '#0a84ff', fillOpacity: 0.08, weight: 1 }}
+          />
+          <CircleMarker
+            center={position}
+            radius={10}
+            pathOptions={{ color: '#fff', fillColor: '#0a84ff', fillOpacity: 1, weight: 3 }}
+          />
+        </>
+      )}
+
+      {/* Boton centrar en mi ubicacion */}
+      <div
+        onClick={centerOnMe}
+        style={{
+          position: 'absolute',
+          bottom: '100px',
+          right: '12px',
+          zIndex: 500,
+          width: '44px',
+          height: '44px',
+          borderRadius: '12px',
+          background: 'rgba(28,28,30,0.92)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          border: '0.5px solid #3a3a3c',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          boxShadow: '0 2px 12px rgba(0,0,0,0.3)',
+        }}
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="3.5" stroke={position ? '#0a84ff' : '#8e8e93'} strokeWidth="2"/>
+          <path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke={position ? '#0a84ff' : '#8e8e93'} strokeWidth="2" strokeLinecap="round"/>
+          <circle cx="12" cy="12" r="9" stroke={position ? '#0a84ff' : '#8e8e93'} strokeWidth="1.5" strokeDasharray="3 2"/>
+        </svg>
+      </div>
+    </>
+  )
+}
 
 async function ensureSeedData(fallas: Falla[]): Promise<Falla[]> {
   if (fallas.length === 0) {
@@ -26,9 +106,29 @@ async function ensureSeedData(fallas: Falla[]): Promise<Falla[]> {
   return fallas
 }
 
+function distanciaMetros(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const R = 6371000
+  const dLat = (lat2 - lat1) * Math.PI / 180
+  const dLng = (lng2 - lng1) * Math.PI / 180
+  const a = Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng / 2) ** 2
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+}
+
 export default function MapView() {
   const [fallas, setFallas] = useState<Falla[]>([])
   const [selectedFalla, setSelectedFalla] = useState<Falla | null>(null)
+  const [userPos, setUserPos] = useState<[number, number] | null>(null)
+  const [showNearby, setShowNearby] = useState(false)
+
+  const fallasCercanas = userPos
+    ? fallas
+        .filter(f => f.estado !== 'completa')
+        .map(f => ({ falla: f, dist: distanciaMetros(userPos[0], userPos[1], f.lat, f.lng) }))
+        .filter(({ dist }) => dist < 300)
+        .sort((a, b) => a.dist - b.dist)
+        .slice(0, 5)
+    : []
 
   useEffect(() => {
     db.fallas.toArray().then(async dbFallas => {
@@ -98,7 +198,69 @@ export default function MapView() {
             onClick={setSelectedFalla}
           />
         ))}
+        <UserLocationControl onLocation={setUserPos} />
       </MapContainer>
+
+      {/* Panel fallas cercanas */}
+      {fallasCercanas.length > 0 && (
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '100px',
+            left: '12px',
+            right: '68px',
+            zIndex: 500,
+          }}
+        >
+          <div
+            onClick={() => setShowNearby(v => !v)}
+            style={{
+              background: 'rgba(28,28,30,0.94)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+              border: '0.5px solid #3a3a3c',
+              borderRadius: '12px',
+              padding: '10px 14px',
+              cursor: 'pointer',
+              boxShadow: '0 2px 12px rgba(0,0,0,0.3)',
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: '13px', fontWeight: 600, color: '#0a84ff', fontFamily: 'Inter, -apple-system, sans-serif' }}>
+                {fallasCercanas.length} falla{fallasCercanas.length > 1 ? 's' : ''} a menos de 300m
+              </span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ transform: showNearby ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>
+                <path d="M6 9l6 6 6-6" stroke="#8e8e93" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+            {showNearby && (
+              <div style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                {fallasCercanas.map(({ falla, dist }) => (
+                  <div
+                    key={falla.id}
+                    onClick={(e) => { e.stopPropagation(); setSelectedFalla(falla) }}
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      padding: '6px 0',
+                      borderTop: '0.5px solid #3a3a3c',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <span style={{ fontSize: '12px', color: '#fff', fontFamily: 'Inter, -apple-system, sans-serif', flex: 1, marginRight: '8px' }}>
+                      {falla.nombre}
+                    </span>
+                    <span style={{ fontSize: '11px', color: '#8e8e93', whiteSpace: 'nowrap' }}>
+                      {Math.round(dist)}m
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Falla detail sheet */}
       <BottomSheet
