@@ -18,6 +18,7 @@ export interface Falla {
   created_at: string
   updated_at: string
   synced: boolean
+  imprescindible?: boolean
 }
 
 export interface Foto {
@@ -60,6 +61,13 @@ export class EncesaDB extends Dexie {
     super('EncesaDB')
     this.version(1).stores({
       fallas: 'id, categoria, barrio, estado, synced, updated_at',
+      fotos: 'id, falla_id, angulo, synced, capturada_at',
+      valoraciones: 'id, falla_id, synced',
+      ocr_results: 'id, falla_id, synced',
+    })
+    // v2: añade índice para imprescindible (permite .where('imprescindible').equals(1))
+    this.version(2).stores({
+      fallas: 'id, categoria, barrio, estado, synced, updated_at, imprescindible',
       fotos: 'id, falla_id, angulo, synced, capturada_at',
       valoraciones: 'id, falla_id, synced',
       ocr_results: 'id, falla_id, synced',

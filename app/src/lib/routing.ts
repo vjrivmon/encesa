@@ -13,6 +13,7 @@ export interface RouteParams {
   maxFallas: number        // 999 = sin límite
   soloPendientes: boolean
   tipo: 'grande' | 'infantil' | 'ambas'
+  imprescindibles?: string[]  // IDs de fallas que siempre se incluyen
 }
 
 export interface RouteResult {
@@ -133,6 +134,18 @@ export async function calcularRuta(
     return true
   })
 
+  // 1b. Asegurar que las imprescindibles están en la lista
+  if (params.imprescindibles && params.imprescindibles.length > 0) {
+    const idsImprescindibles = new Set(params.imprescindibles)
+    const imprescindiblesEncontradas = todasFallas.filter(
+      f => idsImprescindibles.has(f.id) && f.lat && f.lng
+    )
+    const candidatasIds = new Set(candidatas.map(f => f.id))
+    for (const f of imprescindiblesEncontradas) {
+      if (!candidatasIds.has(f.id)) candidatas.push(f)
+    }
+  }
+
   // 2. Ordenar por cercanía inicial para mejor selección cuando hay maxFallas
   candidatas = nearestNeighborOrder(params.userPos, candidatas)
 
@@ -156,35 +169,44 @@ export async function calcularRuta(
         duracionMinutos: result.duracionMinutos,
       }
     } else {
-      // Nearest-neighbor greedy + OSRM para polyline (hasta 100 puntos)
+      // Para >12 fallas: ordenar con greedy y obtener geometría real con OSRM /route
+      // /route respeta el orden dado (no reordena como /trip)
       const ordered = nearestNeighborOrder(params.userPos, seleccionadas)
+      const allPoints: [number, number][] = [
+        params.userPos,
+        ...ordered.map(f => [f.lat, f.lng] as [number, number]),
+      ]
 
       try {
-        // Intentar OSRM para la geometría (máx 100 waypoints para velocidad)
-        const forOsrm = ordered.slice(0, 99)
-        const result = await osrmTrip(params.userPos, forOsrm)
-        // Si OSRM reordenó, usar el orden greedy (más fiable con muchos puntos)
-        // pero tomar los waypoints reales para dibujar la ruta
-        return {
-          fallas: ordered,
-          waypoints: result.waypoints,
-          distanciaMetros: result.distanciaMetros,
-          duracionMinutos: result.duracionMinutos,
-        }
-      } catch {
-        // OSRM falló con muchas paradas → fallback euclidiano
-        const waypoints: [number, number][] = [
-          params.userPos,
-          ...ordered.map(f => [f.lat, f.lng] as [number, number]),
-        ]
-        const distanciaMetros = ordered.reduce((sum, f, i) => {
-          const prev = i === 0 ? params.userPos : [ordered[i - 1].lat, ordered[i - 1].lng] as [number, number]
-          return sum + distEuclid(prev[0], prev[1], f.lat, f.lng)
-        }, 0)
+        // OSRM /route con todos los puntos en orden greedy — NO reordena
+        const coords = allPoints.map(([lat, lng]) => `${lng},${lat}`).join(';')
+        const url = `https://router.project-osrm.org/route/v1/foot/${coords}?geometries=geojson&overview=full`
+        const res = await fetch(url, { signal: AbortSignal.timeout(10000) })
+        if (!res.ok) throw new Error('OSRM route failed')
+        const data = await res.json()
+        if (data.code !== 'Ok') throw new Error('OSRM route code: ' + data.code)
+
+        const route = data.routes[0]
+        const waypoints = extractWaypoints(route.geometry)
         return {
           fallas: ordered,
           waypoints,
-          distanciaMetros: Math.round(distanciaMetros),
+          distanciaMetros: Math.round(route.distance),
+          duracionMinutos: Math.round(route.duration / 60),
+        }
+      } catch {
+        // Fallback: línea directa entre puntos consecutivos en orden greedy
+        return {
+          fallas: ordered,
+          waypoints: allPoints,
+          distanciaMetros: Math.round(
+            ordered.reduce((sum, f, i) => {
+              const prev = i === 0
+                ? params.userPos
+                : [ordered[i - 1].lat, ordered[i - 1].lng] as [number, number]
+              return sum + distEuclid(prev[0], prev[1], f.lat, f.lng)
+            }, 0)
+          ),
           duracionMinutos: Math.round(ordered.length * 10),
         }
       }

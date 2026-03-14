@@ -40,7 +40,10 @@ function createNumberedIcon(num: number, active: boolean): L.DivIcon {
   })
 }
 
-function createColoredIcon(color: string, opacity = 1): L.DivIcon {
+function createColoredIcon(color: string, opacity = 1, imprescindible = false): L.DivIcon {
+  const border = imprescindible
+    ? '3px solid #FF6B35'
+    : '2px solid rgba(255,255,255,0.8)'
   return L.divIcon({
     className: '',
     html: `<div style="
@@ -48,7 +51,7 @@ function createColoredIcon(color: string, opacity = 1): L.DivIcon {
       height: 18px;
       border-radius: 50%;
       background-color: ${color};
-      border: 2px solid rgba(255,255,255,0.8);
+      border: ${border};
       box-shadow: 0 2px 6px rgba(0,0,0,0.5);
       opacity: ${opacity};
     "></div>`,

@@ -43,7 +43,10 @@ export default function GalleryView() {
       .map(f => ({
         ...f,
         coverUrl: fotosByFalla[f.id]?.[0]?.data_url
-          ?? (f.boceto ? f.boceto.replace('http://', 'https://') : undefined),
+          ?? (() => {
+            const seedF = SEED_FALLAS.find(s => s.id === f.id)
+            return seedF?.boceto ? seedF.boceto.replace('http://', 'https://') : undefined
+          })(),
       }))
 
     setFallas(withCovers)
