@@ -26,3 +26,13 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+
+# FallAI — archivos generados (grandes, no versionar)
+dataset/bocetos/
+dataset/train/
+dataset/photos/
+models/*.safetensors
+models/checkpoints/
+output/
+logs/
+.venv-fallai/

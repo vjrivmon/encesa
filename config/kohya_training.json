@@ -1,0 +1,138 @@
+{
+  "_comment": "FallAI — Configuración kohya_ss optimizada para RTX 4070 12GB + SDXL LoRA",
+  "_version": "1.0.0",
+  "_hardware": "Slimbook RTX 4070 12GB VRAM, Ryzen 7 8845HS, 64GB RAM",
+  "_generated": "2026-03-14",
+
+  "model": {
+    "pretrained_model_name_or_path": "~/models/sdxl-base-1.0",
+    "sdxl": true,
+    "v_parameterization": false,
+    "no_half_vae": true,
+    "_comment_no_half_vae": "Evita NaN loss con VAE fp16 en SDXL"
+  },
+
+  "network": {
+    "network_module": "networks.lora",
+    "network_dim": 32,
+    "network_alpha": 16,
+    "_comment_rank": "rank 32 = buen balance calidad/tamaño para RTX 4070. rank 64 si hay VRAM suficiente.",
+    "_comment_alpha": "alpha = rank/2 es convención estándar",
+    "network_args": []
+  },
+
+  "dataset": {
+    "train_data_dir": "dataset/train",
+    "resolution": "1024,1024",
+    "enable_bucket": true,
+    "min_bucket_reso": 768,
+    "max_bucket_reso": 1024,
+    "bucket_reso_steps": 64,
+    "_comment_bucket": "Bucketing permite imágenes de distintos ratios sin distorsión",
+    "caption_extension": ".txt",
+    "shuffle_caption": true,
+    "keep_tokens": 2,
+    "_comment_keep_tokens": "Los primeros 2 tokens ('valencian falla sculpture, falla valenciana') siempre al inicio"
+  },
+
+  "training": {
+    "max_train_steps": 2000,
+    "train_batch_size": 2,
+    "gradient_accumulation_steps": 2,
+    "_comment_effective_batch": "effective_batch = train_batch_size × gradient_accumulation_steps = 4",
+    "gradient_checkpointing": true,
+    "_comment_gradient_checkpointing": "Intercambia VRAM por tiempo de cómputo — necesario en 12GB con SDXL",
+    "seed": 42
+  },
+
+  "optimizer": {
+    "optimizer_type": "AdamW8Bit",
+    "_comment_optimizer": "AdamW8Bit de bitsandbytes — ahorra ~3GB VRAM vs AdamW estándar",
+    "learning_rate": 1e-4,
+    "unet_lr": 1e-4,
+    "text_encoder_lr": 5e-5,
+    "_comment_lr": "text_encoder_lr = unet_lr/2 es práctica habitual para LoRA",
+    "lr_scheduler": "cosine_with_restarts",
+    "lr_warmup_steps": 100,
+    "lr_scheduler_num_cycles": 3,
+    "_comment_scheduler": "cosine_with_restarts evita mínimos locales en run largo"
+  },
+
+  "precision": {
+    "mixed_precision": "fp16",
+    "save_precision": "fp16",
+    "_comment_bf16": "RTX 4070 soporta bf16 nativamente — prueba 'bf16' si hay NaN con fp16"
+  },
+
+  "output": {
+    "output_dir": "models",
+    "output_name": "falla_lora_v1",
+    "save_model_as": "safetensors",
+    "save_every_n_steps": 500,
+    "save_state": true,
+    "_comment_checkpoints": "Checkpoints cada 500 steps para poder retomar/comparar"
+  },
+
+  "memory_optimization": {
+    "xformers": true,
+    "_comment_xformers": "xFormers reduce VRAM en atención — instalar con: pip install xformers",
+    "max_data_loader_n_workers": 4,
+    "persistent_data_loader_workers": true,
+    "cache_latents": true,
+    "_comment_cache_latents": "Pre-encoda las imágenes en latente — ahorra tiempo de entrenamiento",
+    "cache_latents_to_disk": false,
+    "_comment_cache_to_disk": "Si 64GB RAM es suficiente, mejor en RAM. Pon true si hay OOM."
+  },
+
+  "logging": {
+    "logging_dir": "logs",
+    "log_with": "tensorboard",
+    "_comment_tensorboard": "tensorboard --logdir=logs → http://localhost:6006"
+  },
+
+  "advanced": {
+    "max_token_length": 225,
+    "_comment_token_length": "SDXL usa CLIP-G (max 77) + OpenCLIP-G (max 225)",
+    "clip_skip": 1,
+    "_comment_clip_skip": "1 = sin skip (recomendado para SDXL)",
+    "multires_noise_iterations": 6,
+    "multires_noise_discount": 0.3,
+    "_comment_multires_noise": "Mejora generalización del LoRA — opcional pero recomendado",
+    "noise_offset": 0.0,
+    "adaptive_noise_scale": 0.0
+  },
+
+  "validation": {
+    "_comment": "Configuración de validación durante entrenamiento (opcional)",
+    "sample_every_n_steps": 500,
+    "sample_prompts": [
+      "valencian falla sculpture, falla valenciana, Special category (top tier), full-size falla, intricate polychrome wood and papier-mache sculpture, monumental street installation, Las Fallas festival 2026, Valencia Spain",
+      "valencian falla sculpture, falla valenciana, children falla (infantil), vivid colors, festive street art, Las Fallas 2026",
+      "falla valenciana, elaborate figurative sculpture, Valencia street festival, papier-mache, polychrome"
+    ],
+    "sample_negative_prompt": "blurry, low quality, deformed, ugly, bad anatomy, modern building, interior, person, crowd, night time",
+    "sample_sampler": "euler_a",
+    "sample_steps": 20
+  },
+
+  "accelerate": {
+    "_comment": "Configuración para accelerate launcher (recomendado)",
+    "num_processes": 1,
+    "num_machines": 1,
+    "num_cpu_threads_per_process": 4,
+    "mixed_precision": "fp16"
+  },
+
+  "estimated_performance": {
+    "_comment": "Estimaciones para RTX 4070 12GB con esta configuración",
+    "vram_usage_gb": "~9-11 GB",
+    "training_speed": "~0.4 it/s con batch=2, gradient_checkpointing",
+    "total_time_2000_steps": "~85 minutos",
+    "model_size_safetensors": "~160 MB (rank 32)",
+    "notes": [
+      "Si hay OOM: reducir train_batch_size a 1 o activar cache_latents_to_disk",
+      "Para más calidad: aumentar rank a 64 (necesita ~11GB VRAM)",
+      "Para más velocidad: desactivar multires_noise (ahorra ~15% tiempo)"
+    ]
+  }
+}
