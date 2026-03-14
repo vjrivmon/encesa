@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { db, type Foto } from '../../lib/db'
 
 interface VideoImporterProps {
@@ -137,7 +138,7 @@ export default function VideoImporter({ fallaId, onDone }: VideoImporterProps) {
 
   // Grid de selección de frames
   if (frames.length > 0) {
-    return (
+    return createPortal(
       <div style={{
         position: 'fixed', inset: 0,
         background: '#1c1c1e',
@@ -252,12 +253,13 @@ export default function VideoImporter({ fallaId, onDone }: VideoImporterProps) {
               : `Guardar ${selectedCount} seleccionada${selectedCount !== 1 ? 's' : ''}`}
           </button>
         </div>
-      </div>
+      </div>,
+      document.body
     )
   }
 
   // Procesando o esperando selección
-  return (
+  return createPortal(
     <>
       <input
         ref={inputRef}
@@ -290,6 +292,7 @@ export default function VideoImporter({ fallaId, onDone }: VideoImporterProps) {
           <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
         </div>
       )}
-    </>
+    </>,
+    document.body
   )
 }
