@@ -42,7 +42,8 @@ export default function GalleryView() {
       .sort((a, b) => b.updated_at.localeCompare(a.updated_at))
       .map(f => ({
         ...f,
-        coverUrl: fotosByFalla[f.id]?.[0]?.data_url,
+        coverUrl: fotosByFalla[f.id]?.[0]?.data_url
+          ?? (f.boceto ? f.boceto.replace('http://', 'https://') : undefined),
       }))
 
     setFallas(withCovers)
