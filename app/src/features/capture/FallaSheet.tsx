@@ -5,6 +5,7 @@ import Badge from '../../components/Badge'
 import ProgressRing from '../../components/ProgressRing'
 import StarRating from '../../components/StarRating'
 import { calcularCompletitud, getEstadoFromCompletitud } from '../../lib/completitud'
+import { SEED_FALLAS } from '../../lib/jcf-seed'
 
 interface FallaSheetProps {
   falla: Falla | null
@@ -59,8 +60,13 @@ export default function FallaSheet({ falla, isOpen, onClose, onOpenCamera }: Fal
   if (!falla) return null
 
   const pct = calcularCompletitud(falla, fotos, valoracion ?? undefined, undefined)
-
   const tieneValoracion = !!(valoracion && valoracion.originalidad > 0)
+  const boceto = SEED_FALLAS.find(f => f.id === falla.id)?.boceto ?? ''
+
+  const botonCaptura =
+    falla.estado === 'pendiente' ? 'Iniciar captura' :
+    falla.estado === 'completa'  ? 'Editar fotos' :
+                                   'Continuar captura'
 
   async function updateValoracion(campo: keyof Omit<Valoracion, 'id' | 'falla_id' | 'updated_at' | 'synced'>, valor: number) {
     const now = new Date().toISOString()
@@ -152,6 +158,18 @@ export default function FallaSheet({ falla, isOpen, onClose, onOpenCamera }: Fal
           </div>
         )}
 
+        {/* Boceto oficial */}
+        {boceto && (
+          <div style={{ marginBottom: '20px', borderRadius: '12px', overflow: 'hidden', border: '0.5px solid #3a3a3c' }}>
+            <img
+              src={boceto}
+              alt={`Boceto oficial de ${falla.nombre}`}
+              style={{ width: '100%', display: 'block', objectFit: 'cover' }}
+              onError={e => { (e.target as HTMLImageElement).style.display = 'none' }}
+            />
+          </div>
+        )}
+
         {/* Checklist */}
         <div style={{
           background: '#2c2c2e',
@@ -189,7 +207,7 @@ export default function FallaSheet({ falla, isOpen, onClose, onOpenCamera }: Fal
               fontFamily: 'Inter, -apple-system, sans-serif',
             }}
           >
-            Continuar captura
+            {botonCaptura}
           </button>
           <button
             style={{
