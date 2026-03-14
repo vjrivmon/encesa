@@ -47,6 +47,8 @@ export default function BottomSheet({ isOpen, onClose, children, title }: Bottom
       {/* Sheet */}
       <div
         className="animate-slide-up"
+        onTouchMove={e => e.stopPropagation()}
+        onWheel={e => e.stopPropagation()}
         style={{
           position: 'relative',
           background: '#1c1c1e',
@@ -54,6 +56,7 @@ export default function BottomSheet({ isOpen, onClose, children, title }: Bottom
           borderTop: '0.5px solid #3a3a3c',
           maxHeight: '90vh',
           overflowY: 'auto',
+          overscrollBehavior: 'contain',
           paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 86px)',
         }}
       >

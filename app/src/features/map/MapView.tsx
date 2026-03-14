@@ -279,28 +279,31 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
         title={selectedFalla?.nombre ?? ''}
       >
         {selectedFalla && (
-          <div style={{ padding: '16px 20px' }}>
-            <div style={{ display: 'flex', gap: '16px', alignItems: 'center', marginBottom: '16px' }}>
-              <ProgressRing percentage={selectedFalla.completitud_pct} size={64} />
-              <div>
-                <div style={{ fontSize: '15px', fontWeight: 500, color: '#fff', marginBottom: '4px' }}>
+          <div style={{ padding: '12px 20px 0' }}>
+            {/* Info row compacta */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '10px' }}>
+              <ProgressRing percentage={selectedFalla.completitud_pct} size={48} strokeWidth={4} />
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: '14px', fontWeight: 600, color: '#fff', marginBottom: '2px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
                   {selectedFalla.artista}
                 </div>
-                <div style={{ fontSize: '13px', color: '#8e8e93', marginBottom: '6px' }}>
-                  {selectedFalla.barrio}
+                <div style={{ fontSize: '12px', color: '#8e8e93' }}>
+                  {selectedFalla.barrio} · <Badge categoria={selectedFalla.categoria} size="sm" />
                 </div>
-                <Badge categoria={selectedFalla.categoria} size="md" />
+              </div>
+              <div style={{ fontSize: '15px', fontWeight: 700, color: selectedFalla.completitud_pct > 0 ? '#FF6B35' : '#636366', flexShrink: 0 }}>
+                {selectedFalla.completitud_pct}%
               </div>
             </div>
             {selectedFalla.lema && (
               <div style={{
-                background: '#2c2c2e',
-                borderRadius: '10px',
-                padding: '10px 14px',
-                fontSize: '13px',
-                color: '#8e8e93',
+                fontSize: '12px',
+                color: '#636366',
                 fontStyle: 'italic',
-                marginBottom: '16px',
+                marginBottom: '12px',
+                overflow: 'hidden',
+                whiteSpace: 'nowrap',
+                textOverflow: 'ellipsis',
               }}>
                 "{selectedFalla.lema}"
               </div>
@@ -315,7 +318,7 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
                 }}
                 style={{
                   flex: 1,
-                  padding: '13px 0',
+                  padding: '11px 0',
                   background: 'linear-gradient(135deg, #FF6B35, #ff9500)',
                   border: 'none',
                   borderRadius: '12px',
@@ -344,7 +347,7 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
                 }}
                 style={{
                   flex: 1,
-                  padding: '13px 0',
+                  padding: '11px 0',
                   background: '#2c2c2e',
                   border: '0.5px solid #3a3a3c',
                   borderRadius: '12px',
