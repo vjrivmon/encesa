@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Encesa — Design Document</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #f5f5f7;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #1d1d1f;
+  }
+
+  /* ─── PAGE LAYOUT ─── */
+  .page { max-width: 1440px; margin: 0 auto; padding: 60px 48px; }
+
+  /* ─── HEADER ─── */
+  .doc-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 64px; padding-bottom: 32px;
+    border-bottom: 1px solid #d2d2d7;
+  }
+  .doc-header-left h1 {
+    font-size: 48px; font-weight: 800; color: #1d1d1f;
+    letter-spacing: -1.5px; line-height: 1;
+  }
+  .doc-header-left .tagline {
+    font-size: 16px; color: #6e6e73; font-weight: 400; margin-top: 8px;
+  }
+  .doc-header-right { text-align: right; }
+  .doc-header-right .version { font-size: 13px; color: #6e6e73; }
+  .doc-header-right .date { font-size: 13px; color: #6e6e73; margin-top: 4px; }
+  .accent-bar {
+    width: 48px; height: 5px; background: #FF6B35;
+    border-radius: 3px; margin-bottom: 16px;
+  }
+
+  /* ─── SECTION HEADERS ─── */
+  h2 {
+    font-size: 28px; font-weight: 700; color: #1d1d1f;
+    margin: 72px 0 32px; letter-spacing: -0.5px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  h2::after {
+    content: ''; flex: 1; height: 1px; background: #d2d2d7;
+  }
+  h3 {
+    font-size: 16px; font-weight: 600; color: #1d1d1f;
+    margin-bottom: 12px;
+  }
+
+  /* ─── SPEC SUMMARY ─── */
+  .spec-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    margin-bottom: 48px;
+  }
+  .spec-card {
+    background: #fff; border-radius: 16px; padding: 24px;
+    border: 1px solid #e5e5ea;
+  }
+  .spec-card-label {
+    font-size: 11px; font-weight: 600; color: #6e6e73;
+    text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;
+  }
+  .spec-card-value {
+    font-size: 15px; font-weight: 600; color: #1d1d1f; line-height: 1.5;
+  }
+
+  /* ─── SCREENS GRID ─── */
+  .screens {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px 32px;
+    margin-bottom: 32px;
+    justify-items: center;
+  }
+
+  /* ─── IPHONE FRAME ─── */
+  .screen-wrap { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+  .iphone {
+    width: 320px; height: 693px;
+    background: #1c1c1e;
+    border-radius: 52px;
+    border: 9px solid #3a3a3c;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+      0 0 0 1px #555,
+      0 24px 80px rgba(0,0,0,0.25),
+      inset 0 0 0 1px rgba(255,255,255,0.05);
+    flex-shrink: 0;
+  }
+  .iphone-inner {
+    width: 100%; height: 100%;
+    overflow: hidden; position: relative;
+    border-radius: 44px; background: #000;
+  }
+  .dynamic-island {
+    position: absolute; top: 11px; left: 50%; transform: translateX(-50%);
+    width: 118px; height: 34px; background: #000;
+    border-radius: 22px; z-index: 100;
+  }
+
+  /* ─── STATUS BAR ─── */
+  .status-bar {
+    height: 54px; display: flex; align-items: flex-end;
+    justify-content: space-between;
+    padding: 0 22px 7px;
+    font-size: 12px; font-weight: 600; color: #fff;
+    position: relative; z-index: 10;
+  }
+  .status-time { font-size: 15px; font-weight: 700; }
+  .status-icons { display: flex; gap: 5px; align-items: center; font-size: 11px; }
+
+  /* ─── NAV BAR ─── */
+  .nav-top {
+    height: 46px; display: flex; align-items: center;
+    justify-content: space-between; padding: 0 18px;
+    background: rgba(28,28,30,0.96);
+    backdrop-filter: blur(20px);
+    border-bottom: 0.5px solid #3a3a3c;
+  }
+  .nav-title { font-size: 17px; font-weight: 600; color: #fff; }
+  .nav-btn { font-size: 15px; color: #FF6B35; font-weight: 400; }
+
+  /* ─── TAB BAR ─── */
+  .tab-bar {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 86px;
+    background: rgba(28,28,30,0.96);
+    backdrop-filter: blur(20px);
+    border-top: 0.5px solid #3a3a3c;
+    display: flex; align-items: flex-start;
+    justify-content: space-around; padding-top: 12px;
+  }
+  .tab-item { display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; }
+  .tab-icon { width: 24px; height: 24px; }
+  .tab-icon svg { width: 100%; height: 100%; }
+  .tab-label { font-size: 10px; color: #8e8e93; font-weight: 500; }
+  .tab-item.active .tab-label { color: #FF6B35; }
+  .tab-item.active .tab-icon svg path,
+  .tab-item.active .tab-icon svg rect,
+  .tab-item.active .tab-icon svg circle { fill: #FF6B35; }
+
+  /* ─── CONTENT AREA ─── */
+  .content-area { height: calc(693px - 54px - 46px - 86px); overflow: hidden; }
+
+  /* ─── MAP SCREEN ─── */
+  .map-bg {
+    height: 100%;
+    background: linear-gradient(160deg, #0d1f33 0%, #162d4a 50%, #0d1f33 100%);
+    position: relative; overflow: hidden;
+  }
+  .map-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .map-road-h { position: absolute; height: 7px; background: rgba(255,255,255,0.07); border-radius: 4px; }
+  .map-road-v { position: absolute; width: 6px; background: rgba(255,255,255,0.07); border-radius: 4px; }
+  .map-pin {
+    position: absolute; width: 26px; height: 26px; border-radius: 50%;
+    border: 2px solid #fff; display: flex; align-items: center;
+    justify-content: center; font-size: 11px; cursor: pointer;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.5);
+  }
+  .pin-done { background: #34c759; }
+  .pin-partial { background: #ff9500; }
+  .pin-new { background: #48484a; }
+  .pin-check { color: #fff; font-weight: 700; font-size: 10px; }
+
+  .map-overlay-top {
+    position: absolute; top: 0; left: 0; right: 0;
+    background: linear-gradient(180deg, rgba(13,31,51,0.98) 0%, transparent 100%);
+    padding: 12px 16px 20px;
+  }
+  .progress-header {
+    display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;
+  }
+  .progress-title { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.7); }
+  .progress-pct { font-size: 13px; font-weight: 700; color: #FF6B35; }
+  .progress-bar { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, #FF6B35, #ff9500); border-radius: 2px; }
+
+  .map-legend {
+    position: absolute; bottom: 94px; right: 14px;
+    background: rgba(13,31,51,0.88);
+    backdrop-filter: blur(12px);
+    border-radius: 12px; padding: 10px 12px;
+    border: 0.5px solid rgba(255,255,255,0.1);
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 10px; color: rgba(255,255,255,0.8);
+    font-weight: 500; margin-bottom: 5px;
+  }
+  .legend-item:last-child { margin-bottom: 0; }
+  .legend-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ─── LIST SCREEN ─── */
+  .list-content { padding: 10px 14px; height: 100%; overflow: hidden; }
+  .falla-card {
+    background: #1c1c1e; border-radius: 13px; padding: 14px;
+    margin-bottom: 9px; border: 0.5px solid #3a3a3c;
+  }
+  .falla-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 3px; }
+  .falla-card-name { font-size: 14px; font-weight: 600; color: #fff; line-height: 1.3; }
+  .falla-card-sub { font-size: 11px; color: #8e8e93; margin-bottom: 8px; }
+  .badge {
+    display: inline-block; font-size: 10px; font-weight: 600;
+    padding: 3px 8px; border-radius: 20px; flex-shrink: 0; margin-left: 6px;
+  }
+  .badge-esp { background: rgba(255,107,53,0.18); color: #FF6B35; }
+  .badge-1a { background: rgba(52,199,89,0.18); color: #34c759; }
+  .badge-2a { background: rgba(10,132,255,0.18); color: #0a84ff; }
+  .badge-3a { background: rgba(142,142,147,0.18); color: #8e8e93; }
+  .card-progress-bar { height: 3px; background: #3a3a3c; border-radius: 2px; overflow: hidden; }
+  .card-progress-fill { height: 100%; border-radius: 2px; }
+  .card-progress-label { font-size: 10px; margin-top: 4px; font-weight: 500; }
+
+  /* ─── DETAIL SCREEN ─── */
+  .detail-content { padding: 14px; height: 100%; overflow: hidden; }
+  .falla-name-lg { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 3px; line-height: 1.2; }
+  .falla-meta { font-size: 12px; color: #8e8e93; margin-bottom: 14px; }
+
+  .completion-card {
+    background: #1c1c1e; border-radius: 13px; padding: 14px;
+    display: flex; align-items: center; gap: 14px; margin-bottom: 14px;
+    border: 0.5px solid #3a3a3c;
+  }
+  .ring-wrap { position: relative; width: 58px; height: 58px; flex-shrink: 0; }
+  .ring-wrap svg { transform: rotate(-90deg); }
+  .ring-pct {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px; font-weight: 700; color: #fff;
+  }
+  .checklist { flex: 1; }
+  .check-item {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 11px; color: #8e8e93; margin-bottom: 5px; font-weight: 500;
+  }
+  .check-item:last-child { margin-bottom: 0; }
+  .check-item.done { color: #34c759; }
+  .check-item.warn { color: #ff9500; }
+  .check-dot {
+    width: 14px; height: 14px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-size: 8px; font-weight: 700;
+  }
+  .check-dot.done { background: #34c759; color: #fff; }
+  .check-dot.warn { background: #ff9500; color: #fff; }
+  .check-dot.empty { background: #3a3a3c; }
+
+  .section-header {
+    font-size: 11px; font-weight: 600; color: #8e8e93;
+    text-transform: uppercase; letter-spacing: 0.6px;
+    margin-bottom: 8px; margin-top: 12px;
+  }
+  .rating-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 0; border-bottom: 0.5px solid #3a3a3c;
+  }
+  .rating-row:last-of-type { border-bottom: none; }
+  .rating-label { font-size: 13px; color: #fff; font-weight: 400; }
+  .stars { display: flex; gap: 3px; }
+  .star-filled { color: #ff9500; font-size: 14px; }
+  .star-empty { color: #3a3a3c; font-size: 14px; }
+
+  .primary-btn {
+    display: flex; align-items: center; justify-content: center;
+    background: #FF6B35; border-radius: 12px; padding: 12px;
+    font-size: 14px; font-weight: 600; color: #fff; margin-top: 10px;
+    gap: 8px;
+  }
+
+  /* ─── CAMERA SCREEN ─── */
+  .camera-wrap { height: 100%; background: #000; display: flex; flex-direction: column; }
+  .viewfinder {
+    flex: 1; background: #0a0a0a; position: relative;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+  }
+  .grid-overlay {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+    background-size: 33.33% 33.33%;
+  }
+  .falla-silhouette {
+    width: 130px; height: 200px;
+    background: linear-gradient(180deg, #1a3a1a 0%, #0a2a0a 100%);
+    border-radius: 8px; opacity: 0.65;
+    box-shadow: 0 0 40px rgba(255,107,53,0.15);
+  }
+  .angle-label-badge {
+    position: absolute; top: 14px; right: 14px;
+    background: rgba(255,107,53,0.9); border-radius: 8px;
+    padding: 4px 10px; font-size: 11px; font-weight: 700; color: #fff;
+    letter-spacing: 0.5px;
+  }
+  .angle-strip {
+    position: absolute; bottom: 14px; left: 0; right: 0;
+    display: flex; justify-content: center; gap: 8px;
+  }
+  .angle-chip {
+    width: 34px; height: 34px; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; color: #fff; font-weight: 700; letter-spacing: 0.3px;
+  }
+  .chip-done { background: rgba(52,199,89,0.35); border: 1px solid #34c759; }
+  .chip-active { background: rgba(255,107,53,0.5); border: 1.5px solid #FF6B35; }
+  .chip-todo { background: rgba(60,60,67,0.5); border: 1px solid #48484a; }
+
+  .camera-controls {
+    height: 116px; background: #000;
+    display: flex; align-items: center; justify-content: space-around; padding: 0 24px;
+  }
+  .gallery-thumb {
+    width: 56px; height: 56px; background: #1c1c1e; border-radius: 10px;
+    border: 1px solid #3a3a3c; display: flex; align-items: center;
+    justify-content: center; font-size: 11px; color: #8e8e93; font-weight: 500;
+  }
+  .shutter-btn {
+    width: 74px; height: 74px; border-radius: 50%; background: #fff;
+    border: 4px solid #555; padding: 4px;
+  }
+  .shutter-inner { width: 100%; height: 100%; border-radius: 50%; background: #fff; }
+  .flash-btn {
+    width: 46px; height: 46px; background: #1c1c1e;
+    border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; border: 1px solid #3a3a3c;
+  }
+  .flash-btn svg { width: 20px; height: 20px; }
+
+  /* ─── OCR SCREEN ─── */
+  .ocr-wrap { height: 100%; background: #000; display: flex; flex-direction: column; }
+  .ocr-viewfinder {
+    flex: 1; background: #060606; position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ocr-target {
+    width: 200px; height: 96px; position: relative;
+    display: flex; flex-direction: column; align-items: flex-start;
+    justify-content: center; padding: 10px 14px; gap: 7px;
+    background: rgba(255,255,255,0.04); border-radius: 6px;
+  }
+  .ocr-line { height: 9px; border-radius: 5px; background: rgba(255,255,255,0.12); }
+  .ocr-border {
+    position: absolute; inset: 0; border: 2px solid #FF6B35;
+    border-radius: 6px;
+  }
+  .scan-anim {
+    position: absolute; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent 0%, #FF6B35 50%, transparent 100%);
+    top: 30%;
+  }
+  .corner { position: absolute; width: 22px; height: 22px; border-color: #FF6B35; border-style: solid; }
+  .corner-tl { top: -11px; left: -11px; border-width: 3px 0 0 3px; }
+  .corner-tr { top: -11px; right: -11px; border-width: 3px 3px 0 0; }
+  .corner-bl { bottom: -11px; left: -11px; border-width: 0 0 3px 3px; }
+  .corner-br { bottom: -11px; right: -11px; border-width: 0 3px 3px 0; }
+  .ocr-hint {
+    position: absolute; bottom: 16px; left: 0; right: 0;
+    text-align: center; font-size: 12px; color: rgba(255,255,255,0.45);
+    font-weight: 400;
+  }
+  .ocr-results {
+    background: rgba(18,18,20,0.98); border-top: 0.5px solid #3a3a3c;
+    padding: 14px; backdrop-filter: blur(20px);
+  }
+  .ocr-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 5px 0; border-bottom: 0.5px solid rgba(58,58,60,0.5);
+  }
+  .ocr-row:last-of-type { border-bottom: none; margin-bottom: 8px; }
+  .ocr-key { font-size: 11px; color: #8e8e93; font-weight: 400; }
+  .ocr-val { font-size: 12px; font-weight: 600; color: #fff; }
+  .conf { font-size: 10px; color: #34c759; margin-left: 5px; font-weight: 500; }
+
+  /* ─── SYNC SCREEN ─── */
+  .sync-content { padding: 14px; height: 100%; overflow: hidden; }
+  .sync-status-row { display: flex; align-items: center; gap: 7px; font-size: 12px; color: #8e8e93; margin-bottom: 18px; }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #34c759; flex-shrink: 0; }
+
+  .info-card { background: #1c1c1e; border-radius: 13px; padding: 14px; margin-bottom: 10px; border: 0.5px solid #3a3a3c; }
+  .info-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 0.5px solid rgba(58,58,60,0.5); }
+  .info-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .info-key { font-size: 12px; color: #8e8e93; }
+  .info-val { font-size: 12px; font-weight: 600; color: #fff; }
+  .info-val.accent { color: #FF6B35; }
+  .info-val.blue { color: #0a84ff; font-size: 11px; }
+
+  .sync-cta {
+    background: linear-gradient(135deg, #FF6B35 0%, #ff8c42 100%);
+    border-radius: 14px; padding: 16px; text-align: center;
+    font-size: 15px; font-weight: 700; color: #fff; margin-top: 14px;
+    box-shadow: 0 6px 24px rgba(255,107,53,0.35); cursor: pointer;
+  }
+  .sync-caption {
+    font-size: 11px; color: #636366; text-align: center; margin-top: 8px;
+    font-weight: 400;
+  }
+  .code-block {
+    background: #0d1117; border-radius: 10px; padding: 10px 12px;
+    font-family: 'SF Mono', 'Fira Code', monospace; font-size: 10px;
+    color: #34c759; border: 0.5px solid #3a3a3c; margin-top: 8px;
+    line-height: 1.6;
+  }
+  .code-comment { color: #636366; }
+
+  /* ─── SCREEN CAPTION ─── */
+  .screen-caption {
+    font-size: 13px; color: #6e6e73; font-weight: 500;
+    text-align: center; line-height: 1.4;
+  }
+  .screen-caption strong { color: #1d1d1f; font-weight: 700; display: block; font-size: 15px; margin-bottom: 2px; }
+
+  /* ─── DIAGRAMS ─── */
+  .diagrams { display: flex; flex-direction: column; gap: 32px; }
+  .diagram-card {
+    background: #fff; border-radius: 20px; padding: 40px;
+    border: 1px solid #e5e5ea;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .diagram-label {
+    font-size: 11px; font-weight: 600; color: #FF6B35;
+    text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px;
+  }
+  .diagram-title { font-size: 22px; font-weight: 700; color: #1d1d1f; margin-bottom: 32px; letter-spacing: -0.3px; }
+  .mermaid-wrap { background: #f9f9fb; border-radius: 12px; padding: 32px; border: 1px solid #e5e5ea; overflow-x: auto; }
+  .mermaid { min-width: 600px; }
+
+  /* ─── FOOTER ─── */
+  .doc-footer {
+    margin-top: 80px; padding-top: 24px;
+    border-top: 1px solid #d2d2d7;
+    display: flex; justify-content: space-between;
+    font-size: 12px; color: #6e6e73;
+  }
+
+  /* Print */
+  @media print {
+    body { background: #fff; }
+    .page { padding: 40px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="doc-header">
+    <div class="doc-header-left">
+      <div class="accent-bar"></div>
+      <h1>Encesa</h1>
+      <p class="tagline">Registro inteligente de fallas · Design Document v1.1</p>
+    </div>
+    <div class="doc-header-right">
+      <div class="version">Spec v1.1 — Aprobado</div>
+      <div class="date">14 de marzo de 2026</div>
+    </div>
+  </div>
+
+  <!-- SPEC SUMMARY -->
+  <div class="spec-grid">
+    <div class="spec-card">
+      <div class="spec-card-label">Objetivo</div>
+      <div class="spec-card-value">PWA iOS instalable para capturar el registro exhaustivo de fallas de Valencia</div>
+    </div>
+    <div class="spec-card">
+      <div class="spec-card-label">Stack</div>
+      <div class="spec-card-value">Vite + React + TypeScript · Tailwind · Dexie.js · Supabase · Tesseract.js</div>
+    </div>
+    <div class="spec-card">
+      <div class="spec-card-label">Arquitectura</div>
+      <div class="spec-card-value">Feature-based · Offline-first · Sync manual · Script Python para dataset</div>
+    </div>
+    <div class="spec-card">
+      <div class="spec-card-label">Features core</div>
+      <div class="spec-card-value">Mapa JCF · Captura por ángulo · OCR cartel · Valoraciones · Progreso por falla</div>
+    </div>
+    <div class="spec-card">
+      <div class="spec-card-label">Sincronización</div>
+      <div class="spec-card-value">Manual — el usuario decide cuándo. Offline-first con IndexedDB en campo</div>
+    </div>
+    <div class="spec-card">
+      <div class="spec-card-label">Deadline</div>
+      <div class="spec-card-value" style="color:#FF6B35">Hoy · Fallas 2026 comienzan mañana 15 marzo</div>
+    </div>
+  </div>
+
+  <!-- PANTALLAS -->
+  <h2>Pantallas</h2>
+  <div class="screens">
+
+    <!-- 1. MAPA PRINCIPAL -->
+    <div class="screen-wrap">
+      <div class="iphone">
+        <div class="iphone-inner">
+          <div class="dynamic-island"></div>
+          <div class="status-bar">
+            <span class="status-time">18:17</span>
+            <div class="status-icons"><span>4G</span><span>55%</span></div>
+          </div>
+          <div class="nav-top">
+            <span class="nav-title">Encesa</span>
+            <span class="nav-btn">2026</span>
+          </div>
+
+          <div class="content-area" style="position:relative;">
+            <div class="map-bg">
+              <div class="map-grid"></div>
+              <div class="map-road-h" style="top:34%;left:0;right:0;"></div>
+              <div class="map-road-h" style="top:53%;left:0;right:0;"></div>
+              <div class="map-road-h" style="top:70%;left:0;right:0;"></div>
+              <div class="map-road-v" style="left:24%;top:0;bottom:0;"></div>
+              <div class="map-road-v" style="left:54%;top:0;bottom:0;"></div>
+              <div class="map-road-v" style="left:76%;top:0;bottom:0;"></div>
+              <div class="map-pin pin-done" style="top:37%;left:20%;"><span class="pin-check">✓</span></div>
+              <div class="map-pin pin-done" style="top:50%;left:51%;"><span class="pin-check">✓</span></div>
+              <div class="map-pin pin-partial" style="top:29%;left:60%;">◑</div>
+              <div class="map-pin pin-partial" style="top:65%;left:28%;">◑</div>
+              <div class="map-pin pin-new" style="top:44%;left:73%;"></div>
+              <div class="map-pin pin-new" style="top:71%;left:64%;"></div>
+              <div class="map-pin pin-new" style="top:59%;left:43%;"></div>
+
+              <div class="map-overlay-top">
+                <div class="progress-header">
+                  <span class="progress-title">Progreso 2026</span>
+                  <span class="progress-pct">23%</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width:23%"></div>
+                </div>
+              </div>
+
+              <div class="map-legend">
+                <div class="legend-item"><div class="legend-dot" style="background:#34c759;"></div>Completa</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#ff9500;"></div>En progreso</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#48484a;"></div>Pendiente</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-bar">
+            <div class="tab-item active">
+              <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#FF6B35"/></svg></div>
+              <div class="tab-label" style="color:#FF6B35">Mapa</div>
+            </div>
+            <div class="tab-item">
+              <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3.2" stroke="#8e8e93" stroke-width="2"/><path d="M9 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2h-4l-1-2H10L9 3z" stroke="#8e8e93" stroke-width="1.8" fill="none"/></svg></div>
+              <div class="tab-label">Captura</div>
+            </div>
+            <div class="tab-item">
+              <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="#8e8e93" stroke-width="1.8"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="#8e8e93" stroke-width="1.8"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="#8e8e93" stroke-width="1.8"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="#8e8e93" stroke-width="1.8"/></svg></div>
+              <div class="tab-label">Galería</div>
+            </div>
+            <div class="tab-item">
+              <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3C7.03 3 3 7.03 3 12s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm3 8h-2v5h-2v-5H9l3-4 3 4z" fill="none" stroke="#8e8e93" stroke-width="1.8"/><path d="M8 17v1a4 4 0 008 0v-1" stroke="#8e8e93" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+              <div class="tab-label">Sync</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-caption"><strong>01 — Mapa principal</strong>Progreso global · Marcadores por estado</div>
+    </div>
+
+    <!-- 2. LISTA DE FALLAS -->
+    <div class="screen-wrap">
+      <div class="iphone">
+        <div class="iphone-inner">
+          <div class="dynamic-island"></div>
+          <div class="status-bar">
+            <span class="status-time">18:17</span>
+            <div class="status-icons"><span>4G</span><span>55%</span></div>
+          </div>
+          <div class="nav-top">
+            <span class="nav-btn">Filtrar</span>
+            <span class="nav-title">Fallas</span>
+            <span class="nav-btn">Buscar</span>
+          </div>
+          <div class="content-area">
+            <div class="list-content">
+
+              <div class="falla-card">
+                <div class="falla-card-header">
+                  <div class="falla-card-name">Na Jordana</div>
+                  <span class="badge badge-esp">Especial</span>
+                </div>
+                <div class="falla-card-sub">Joaquín Ballester · Campanar</div>
+                <div class="card-progress-bar"><div class="card-progress-fill" style="width:80%;background:#FF6B35;"></div></div>
+                <div class="card-progress-label" style="color:#FF6B35;">80% completada</div>
+              </div>
+
+              <div class="falla-card">
+                <div class="falla-card-header">
+                  <div class="falla-card-name">Convento Jerusalén</div>
+                  <span class="badge badge-esp">Especial</span>
+                </div>
+                <div class="falla-card-sub">Pedro Santaeularia · Eixample</div>
+                <div class="card-progress-bar"><div class="card-progress-fill" style="width:100%;background:#34c759;"></div></div>
+                <div class="card-progress-label" style="color:#34c759;">Completa</div>
+              </div>
+
+              <div class="falla-card">
+                <div class="falla-card-header">
+                  <div class="falla-card-name">Ruzafa — Literat Azorín</div>
+                  <span class="badge badge-1a">1a</span>
+                </div>
+                <div class="falla-card-sub">Manolo García · Ruzafa</div>
+                <div class="card-progress-bar"><div class="card-progress-fill" style="width:40%;background:#FF6B35;"></div></div>
+                <div class="card-progress-label" style="color:#FF6B35;">40% completada</div>
+              </div>
+
+              <div class="falla-card" style="opacity:0.45;">
+                <div class="falla-card-header">
+                  <div class="falla-card-name">Benimaclet — Emili Baró</div>
+                  <span class="badge badge-2a">2a</span>
+                </div>
+                <div class="falla-card-sub">Sin artista asignado · Benimaclet</div>
+                <div class="card-progress-bar"><div class="card-progress-fill" style="width:0%;background:#48484a;"></div></div>
+                <div class="card-progress-label" style="color:#636366;">Sin escanear</div>
+              </div>
+
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab-item">
+              <div class="tab-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#8e8e93"/></svg></div>
+              <div class="tab-label">Mapa</div>
+            </div>
+            <div class="tab-item active">
+              <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3.2" stroke="#FF6B35" stroke-width="2"/><path d="M9 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2h-4l-1-2H10L9 3z" stroke="#FF6B35" stroke-width="1.8"/></svg></div>
+              <div class="tab-label" style="color:#FF6B35">Captura</div>
+            </div>
+            <div class="tab-item">
+              <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="#8e8e93" stroke-width="1.8"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="#8e8e93" stroke-width="1.8"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="#8e8e93" stroke-width="1.8"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="#8e8e93" stroke-width="1.8"/></svg></div>
+              <div class="tab-label">Galería</div>
+            </div>
+            <div class="tab-item">
+              <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 17v1a4 4 0 008 0v-1" stroke="#8e8e93" stroke-width="1.8" stroke-linecap="round"/><path d="M12 3v10m0 0l-3-3m3 3l3-3" stroke="#8e8e93" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="tab-label">Sync</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-caption"><strong>02 — Lista de fallas</strong>Ordenadas por categoría y progreso</div>
+    </div>
+
+    <!-- 3. DETALLE -->
+    <div class="screen-wrap">
+      <div class="iphone">
+        <div class="iphone-inner">
+          <div class="dynamic-island"></div>
+          <div class="status-bar">
+            <span class="status-time">18:17</span>
+            <div class="status-icons"><span>4G</span><span>55%</span></div>
+          </div>
+          <div class="nav-top">
+            <span class="nav-btn">Volver</span>
+            <span class="nav-title">Detalle</span>
+            <span class="nav-btn">Editar</span>
+          </div>
+          <div class="content-area">
+            <div class="detail-content">
+              <div class="falla-name-lg">Na Jordana</div>
+              <div class="falla-meta">Joaquín Ballester · Especial · Campanar</div>
+
+              <div class="completion-card">
+                <div class="ring-wrap">
+                  <svg viewBox="0 0 58 58" width="58" height="58">
+                    <circle cx="29" cy="29" r="24" fill="none" stroke="#3a3a3c" stroke-width="5"/>
+                    <circle cx="29" cy="29" r="24" fill="none" stroke="#FF6B35" stroke-width="5"
+                      stroke-dasharray="150.8" stroke-dashoffset="30.2" stroke-linecap="round"/>
+                  </svg>
+                  <div class="ring-pct">80%</div>
+                </div>
+                <div class="checklist">
+                  <div class="check-item done"><div class="check-dot done">✓</div> OCR del cartel</div>
+                  <div class="check-item done"><div class="check-dot done">✓</div> Foto frontal</div>
+                  <div class="check-item done"><div class="check-dot done">✓</div> Fotos laterales</div>
+                  <div class="check-item warn"><div class="check-dot warn">!</div> Foto trasera</div>
+                  <div class="check-item done"><div class="check-dot done">✓</div> Valoración</div>
+                </div>
+              </div>
+
+              <div class="section-header">Valoración personal</div>
+              <div class="rating-row">
+                <span class="rating-label">Originalidad</span>
+                <div class="stars"><span class="star-filled">★</span><span class="star-filled">★</span><span class="star-filled">★</span><span class="star-filled">★</span><span class="star-empty">★</span></div>
+              </div>
+              <div class="rating-row">
+                <span class="rating-label">Ejecución</span>
+                <div class="stars"><span class="star-filled">★</span><span class="star-filled">★</span><span class="star-filled">★</span><span class="star-filled">★</span><span class="star-filled">★</span></div>
+              </div>
+              <div class="rating-row">
+                <span class="rating-label">Temática</span>
+                <div class="stars"><span class="star-filled">★</span><span class="star-filled">★</span><span class="star-filled">★</span><span class="star-empty">★</span><span class="star-empty">★</span></div>
+              </div>
+              <div class="rating-row">
+                <span class="rating-label">Humor</span>
+                <div class="stars"><span class="star-filled">★</span><span class="star-filled">★</span><span class="star-filled">★</span><span class="star-filled">★</span><span class="star-empty">★</span></div>
+              </div>
+
+              <div class="primary-btn">Continuar captura</div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab-item">
+              <div class="tab-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#8e8e93"/></svg></div>
+              <div class="tab-label">Mapa</div>
+            </div>
+            <div class="tab-item active">
+              <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3.2" stroke="#FF6B35" stroke-width="2"/><path d="M9 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2h-4l-1-2H10L9 3z" stroke="#FF6B35" stroke-width="1.8"/></svg></div>
+              <div class="tab-label" style="color:#FF6B35">Captura</div>
+            </div>
+            <div class="tab-item">
+              <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="#8e8e93" stroke-width="1.8"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="#8e8e93" stroke-width="1.8"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="#8e8e93" stroke-width="1.8"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="#8e8e93" stroke-width="1.8"/></svg></div>
+              <div class="tab-label">Galería</div>
+            </div>
+            <div class="tab-item">
+              <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 17v1a4 4 0 008 0v-1" stroke="#8e8e93" stroke-width="1.8" stroke-linecap="round"/><path d="M12 3v10m0 0l-3-3m3 3l3-3" stroke="#8e8e93" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="tab-label">Sync</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-caption"><strong>03 — Ficha de falla</strong>Progreso circular · Valoraciones · Checklist</div>
+    </div>
+
+    <!-- 4. CAMARA -->
+    <div class="screen-wrap">
+      <div class="iphone">
+        <div class="iphone-inner">
+          <div class="dynamic-island"></div>
+          <div class="status-bar" style="background:transparent;position:relative;z-index:20;">
+            <span class="status-time">18:17</span>
+            <div class="status-icons"><span>4G</span><span>55%</span></div>
+          </div>
+          <div style="height: calc(100% - 54px - 86px); position:relative; background:#000;">
+            <div class="viewfinder">
+              <div class="grid-overlay"></div>
+              <div class="falla-silhouette"></div>
+              <div class="angle-label-badge">LATERAL IZQ.</div>
+              <div class="angle-strip">
+                <div class="angle-chip chip-done">F</div>
+                <div class="angle-chip chip-active">L.I.</div>
+                <div class="angle-chip chip-todo">L.D.</div>
+                <div class="angle-chip chip-todo">T</div>
+                <div class="angle-chip chip-todo">Det.</div>
+              </div>
+            </div>
+            <div class="camera-controls">
+              <div class="flash-btn">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M13 2L4.5 13.5H11L10 22L19.5 10.5H13L13 2Z" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="shutter-btn"><div class="shutter-inner"></div></div>
+              <div class="gallery-thumb">3</div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab-item">
+              <div class="tab-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#8e8e93"/></svg></div>
+              <div class="tab-label">Mapa</div>
+            </div>
+            <div class="tab-item active">
+              <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3.2" stroke="#FF6B35" stroke-width="2"/><path d="M9 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2h-4l-1-2H10L9 3z" stroke="#FF6B35" stroke-width="1.8"/></svg></div>
+              <div class="tab-label" style="color:#FF6B35">Captura</div>
+            </div>
+            <div class="tab-item">
+              <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="#8e8e93" stroke-width="1.8"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="#8e8e93" stroke-width="1.8"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="#8e8e93" stroke-width="1.8"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="#8e8e93" stroke-width="1.8"/></svg></div>
+              <div class="tab-label">Galería</div>
+            </div>
+            <div class="tab-item">
+              <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 17v1a4 4 0 008 0v-1" stroke="#8e8e93" stroke-width="1.8" stroke-linecap="round"/><path d="M12 3v10m0 0l-3-3m3 3l3-3" stroke="#8e8e93" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="tab-label">Sync</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-caption"><strong>04 — Cámara</strong>Captura por ángulo con indicador de progreso</div>
+    </div>
+
+    <!-- 5. OCR -->
+    <div class="screen-wrap">
+      <div class="iphone">
+        <div class="iphone-inner">
+          <div class="dynamic-island"></div>
+          <div class="status-bar" style="background:transparent;z-index:20;position:relative;">
+            <span class="status-time">18:17</span>
+            <div class="status-icons"><span>4G</span><span>55%</span></div>
+          </div>
+          <div style="height: calc(100% - 54px - 86px); display:flex; flex-direction:column; background:#000;">
+            <div class="nav-top" style="background:rgba(0,0,0,0.75);">
+              <span class="nav-btn">Cancelar</span>
+              <span class="nav-title" style="font-size:14px;">Escanear cartel</span>
+              <span></span>
+            </div>
+            <div class="ocr-viewfinder">
+              <div class="grid-overlay" style="opacity:0.3;"></div>
+              <div class="ocr-target">
+                <div class="ocr-line" style="width:85%;"></div>
+                <div class="ocr-line" style="width:60%;"></div>
+                <div class="ocr-line" style="width:75%;"></div>
+                <div class="ocr-border">
+                  <div class="scan-anim"></div>
+                  <div class="corner corner-tl"></div>
+                  <div class="corner corner-tr"></div>
+                  <div class="corner corner-bl"></div>
+                  <div class="corner corner-br"></div>
+                </div>
+              </div>
+              <div class="ocr-hint">Alinea el cartel dentro del marco</div>
+            </div>
+            <div class="ocr-results">
+              <div class="ocr-row">
+                <span class="ocr-key">Nombre</span>
+                <span class="ocr-val">Na Jordana<span class="conf">97%</span></span>
+              </div>
+              <div class="ocr-row">
+                <span class="ocr-key">Artista</span>
+                <span class="ocr-val">Joaquín Ballester<span class="conf">94%</span></span>
+              </div>
+              <div class="ocr-row">
+                <span class="ocr-key">Categoría</span>
+                <span class="ocr-val">Especial<span class="conf">99%</span></span>
+              </div>
+              <div class="ocr-row">
+                <span class="ocr-key">Lema</span>
+                <span class="ocr-val" style="font-size:11px;max-width:155px;text-align:right;">"L'art que perdura..."<span class="conf">89%</span></span>
+              </div>
+              <div class="primary-btn" style="padding:10px;font-size:13px;">Confirmar y guardar</div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab-item"><div class="tab-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#8e8e93"/></svg></div><div class="tab-label">Mapa</div></div>
+            <div class="tab-item active"><div class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3.2" stroke="#FF6B35" stroke-width="2"/><path d="M9 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2h-4l-1-2H10L9 3z" stroke="#FF6B35" stroke-width="1.8"/></svg></div><div class="tab-label" style="color:#FF6B35">Captura</div></div>
+            <div class="tab-item"><div class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="#8e8e93" stroke-width="1.8"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="#8e8e93" stroke-width="1.8"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="#8e8e93" stroke-width="1.8"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="#8e8e93" stroke-width="1.8"/></svg></div><div class="tab-label">Galería</div></div>
+            <div class="tab-item"><div class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 17v1a4 4 0 008 0v-1" stroke="#8e8e93" stroke-width="1.8" stroke-linecap="round"/><path d="M12 3v10m0 0l-3-3m3 3l3-3" stroke="#8e8e93" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="tab-label">Sync</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-caption"><strong>05 — OCR · Escaneo de cartel</strong>Tesseract.js · Resultados con nivel de confianza</div>
+    </div>
+
+    <!-- 6. SYNC -->
+    <div class="screen-wrap">
+      <div class="iphone">
+        <div class="iphone-inner">
+          <div class="dynamic-island"></div>
+          <div class="status-bar">
+            <span class="status-time">18:17</span>
+            <div class="status-icons"><span>WiFi</span><span>55%</span></div>
+          </div>
+          <div class="nav-top">
+            <span></span>
+            <span class="nav-title">Sincronizar</span>
+            <span></span>
+          </div>
+          <div class="content-area">
+            <div class="sync-content">
+              <div class="sync-status-row">
+                <div class="status-dot"></div>
+                Ultimo sync: Hoy a las 14:32
+              </div>
+
+              <div class="info-card">
+                <div class="info-row"><span class="info-key">Fallas registradas</span><span class="info-val">14 / 60</span></div>
+                <div class="info-row"><span class="info-key">Fotos pendientes</span><span class="info-val accent">127</span></div>
+                <div class="info-row"><span class="info-key">Tamano estimado</span><span class="info-val">842 MB</span></div>
+              </div>
+
+              <div class="info-card">
+                <div class="info-row"><span class="info-key">Destino</span><span class="info-val blue">Supabase Storage</span></div>
+              </div>
+
+              <div class="sync-cta">Sincronizar ahora</div>
+              <div class="sync-caption">Solo se sincroniza cuando tu lo decides</div>
+
+              <div style="margin-top:14px;">
+                <div class="section-header">Script para Slimbook</div>
+                <div class="code-block">
+                  <span style="color:#58a6ff;">python</span> encesa_sync.py<br>
+                  <span class="code-comment">-- 127 fotos · 14 fallas</span><br>
+                  <span class="code-comment">-- dataset/2026/especial/...</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab-item"><div class="tab-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#8e8e93"/></svg></div><div class="tab-label">Mapa</div></div>
+            <div class="tab-item"><div class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3.2" stroke="#8e8e93" stroke-width="2"/><path d="M9 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2h-4l-1-2H10L9 3z" stroke="#8e8e93" stroke-width="1.8"/></svg></div><div class="tab-label">Captura</div></div>
+            <div class="tab-item"><div class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="#8e8e93" stroke-width="1.8"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="#8e8e93" stroke-width="1.8"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="#8e8e93" stroke-width="1.8"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="#8e8e93" stroke-width="1.8"/></svg></div><div class="tab-label">Galería</div></div>
+            <div class="tab-item active"><div class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 17v1a4 4 0 008 0v-1" stroke="#FF6B35" stroke-width="1.8" stroke-linecap="round"/><path d="M12 3v10m0 0l-3-3m3 3l3-3" stroke="#FF6B35" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="tab-label" style="color:#FF6B35">Sync</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-caption"><strong>06 — Sincronizacion</strong>Control total · Sync manual a Supabase</div>
+    </div>
+
+  </div><!-- /screens -->
+
+  <!-- DIAGRAMAS -->
+  <h2>Diagramas</h2>
+  <div class="diagrams">
+
+    <div class="diagram-card">
+      <div class="diagram-label">User Flow</div>
+      <div class="diagram-title">Flujo de captura de una falla</div>
+      <div class="mermaid-wrap">
+        <div class="mermaid">
+flowchart TD
+    A([Abrir Encesa]) --> B[Mapa con fallas JCF 2026]
+    B --> C{Seleccionar falla}
+    C --> D[Ficha de falla — metadata precargada]
+    D --> E{Cartel visible?}
+    E -->|Si| F[OCR — Apuntar camara al cartel]
+    F --> G[Tesseract.js extrae texto]
+    G --> H[Revisar y confirmar campos]
+    E -->|No| H
+    H --> I[Captura de fotos por angulo\nFrontal — Laterales — Trasera — Detalles]
+    I --> J[Valoraciones personales\nOriginalidad — Ejecucion — Tematica — Humor]
+    J --> K[Notas de texto libre]
+    K --> L{Checklist completo?}
+    L -->|Pendiente| I
+    L -->|Completo| M([Falla 100% registrada])
+    style A fill:#FF6B35,color:#fff,stroke:none
+    style M fill:#34c759,color:#fff,stroke:none
+    style F fill:#0a84ff,color:#fff,stroke:none
+        </div>
+      </div>
+    </div>
+
+    <div class="diagram-card">
+      <div class="diagram-label">Sync Flow</div>
+      <div class="diagram-title">Pipeline de datos — movil a dataset</div>
+      <div class="mermaid-wrap">
+        <div class="mermaid">
+flowchart LR
+    subgraph iPhone["iPhone — En campo"]
+        A1[Captura fotos] --> A2[(IndexedDB\nDexie.js)]
+        A3[OCR cartel] --> A2
+        A4[Metadata + valoraciones] --> A2
+    end
+    subgraph Manual["Sync manual"]
+        B1([Pulsar — Sincronizar ahora])
+    end
+    subgraph Supabase["Supabase Cloud"]
+        C1[(PostgreSQL\nMetadata)]
+        C2[(Storage\nFotos)]
+    end
+    subgraph Slimbook["Slimbook — En casa"]
+        D1[python encesa_sync.py]
+        D2[LM Studio\nAnalisis visual]
+        D3[(Dataset LoRA\ndataset/2026/...)]
+    end
+    A2 --> B1
+    B1 --> C1
+    B1 --> C2
+    C1 --> D1
+    C2 --> D1
+    D1 --> D2
+    D2 --> D3
+    style B1 fill:#FF6B35,color:#fff,stroke:none
+    style D3 fill:#34c759,color:#fff,stroke:none
+        </div>
+      </div>
+    </div>
+
+    <div class="diagram-card">
+      <div class="diagram-label">Arquitectura C4</div>
+      <div class="diagram-title">Diagrama de contenedores</div>
+      <div class="mermaid-wrap">
+        <div class="mermaid">
+graph TB
+    User["Vicente\niPhone"]
+    subgraph PWA["Encesa — PWA"]
+        UI["UI Layer\nReact + Tailwind iOS"]
+        Features["Features\ncapture · map · ocr · sync · gallery"]
+        OfflineDB["IndexedDB — Dexie.js\nOffline-first"]
+        SW["Service Worker\nPWA instalable iOS"]
+    end
+    subgraph External["Servicios externos"]
+        JCF["API Junta Central Fallera\nFallas oficiales 2026"]
+        SupaDB["Supabase PostgreSQL\nMetadata estructurada"]
+        SupaST["Supabase Storage\nFotos y videos"]
+        Tess["Tesseract.js\nOCR client-side"]
+    end
+    subgraph Home["Slimbook — En casa"]
+        Script["Python sync script\nencesa_sync.py"]
+        LMS["LM Studio\nAnalisis visual IA"]
+        Dataset["Dataset LoRA\n/dataset/2026/..."]
+    end
+    User --> PWA
+    UI --> Features
+    Features --> OfflineDB
+    Features --> Tess
+    Features --> JCF
+    OfflineDB --> SupaDB
+    OfflineDB --> SupaST
+    Script --> SupaDB
+    Script --> SupaST
+    Script --> LMS
+    LMS --> Dataset
+    style PWA fill:#162d4a,stroke:#FF6B35,color:#fff
+    style External fill:#162a16,stroke:#34c759,color:#fff
+    style Home fill:#2a1a08,stroke:#ff9500,color:#fff
+        </div>
+      </div>
+    </div>
+
+    <div class="diagram-card">
+      <div class="diagram-label">Data Model</div>
+      <div class="diagram-title">Schema PostgreSQL</div>
+      <div class="mermaid-wrap">
+        <div class="mermaid">
+erDiagram
+    FALLA {
+        uuid id PK
+        string nombre
+        string barrio
+        string artista
+        string categoria
+        string lema
+        int anyo
+        float lat
+        float lng
+        string estado
+        float completitud_pct
+        timestamp created_at
+    }
+    FOTO {
+        uuid id PK
+        uuid falla_id FK
+        string angulo
+        string url_storage
+        string descripcion_ia
+        json metadata_exif
+        timestamp capturada_at
+    }
+    VALORACION {
+        uuid id PK
+        uuid falla_id FK
+        int originalidad
+        int ejecucion
+        int tematica
+        int humor
+        text notas
+        timestamp updated_at
+    }
+    OCR_RESULT {
+        uuid id PK
+        uuid falla_id FK
+        json campos_extraidos
+        float confianza
+        string url_foto_cartel
+        timestamp procesado_at
+    }
+    FALLA ||--o{ FOTO : "tiene"
+    FALLA ||--o| VALORACION : "tiene"
+    FALLA ||--o| OCR_RESULT : "tiene"
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="doc-footer">
+    <span>Encesa · Design Document v1.1</span>
+    <span>VisiClaw · 14 marzo 2026</span>
+    <span>Pendiente de aprobacion para implementacion</span>
+  </div>
+
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'default',
+    themeVariables: {
+      primaryColor: '#FF6B35',
+      primaryTextColor: '#1d1d1f',
+      primaryBorderColor: '#FF6B35',
+      lineColor: '#6e6e73',
+      secondaryColor: '#f5f5f7',
+      tertiaryColor: '#e5e5ea',
+      background: '#f9f9fb',
+      fontFamily: 'Inter, -apple-system, sans-serif',
+      fontSize: '14px'
+    }
+  });
+</script>
+</body>
+</html>

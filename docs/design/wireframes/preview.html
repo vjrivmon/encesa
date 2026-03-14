@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Encesa — Design Preview</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #1a1a2e; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif; color: #fff; }
+
+  /* Layout */
+  .page { max-width: 1400px; margin: 0 auto; padding: 40px 24px; }
+  h1 { font-size: 36px; font-weight: 700; color: #FF6B35; margin-bottom: 8px; letter-spacing: -0.5px; }
+  .subtitle { font-size: 16px; color: #888; margin-bottom: 48px; }
+  h2 { font-size: 22px; font-weight: 600; color: #fff; margin: 48px 0 24px; padding-bottom: 12px; border-bottom: 1px solid #333; }
+
+  /* Screens grid */
+  .screens { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 40px; margin-bottom: 32px; }
+
+  /* iPhone frame */
+  .iphone {
+    width: 280px; height: 607px;
+    background: #1c1c1e;
+    border-radius: 47px;
+    border: 8px solid #3a3a3c;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), inset 0 0 0 2px #555;
+    flex-shrink: 0;
+  }
+  .iphone-inner { width: 100%; height: 100%; overflow: hidden; position: relative; border-radius: 40px; background: #000; }
+
+  /* Dynamic island */
+  .dynamic-island {
+    position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+    width: 110px; height: 30px; background: #000;
+    border-radius: 20px; z-index: 100;
+  }
+
+  /* Status bar */
+  .status-bar {
+    height: 50px; display: flex; align-items: flex-end; justify-content: space-between;
+    padding: 0 20px 6px; font-size: 12px; font-weight: 600; color: #fff; position: relative; z-index: 10;
+  }
+  .status-time { font-size: 14px; font-weight: 700; }
+  .status-icons { display: flex; gap: 5px; align-items: center; }
+  .signal { width: 16px; height: 11px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 11'%3E%3Crect x='0' y='6' width='3' height='5' fill='white'/%3E%3Crect x='4.5' y='4' width='3' height='7' fill='white'/%3E%3Crect x='9' y='2' width='3' height='9' fill='white'/%3E%3Crect x='13.5' y='0' width='2.5' height='11' fill='white'/%3E%3C/svg%3E") no-repeat center; }
+  .battery { font-size: 11px; }
+
+  /* Navigation bar top */
+  .nav-top {
+    height: 44px; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 16px; background: rgba(28,28,30,0.94);
+    backdrop-filter: blur(20px); border-bottom: 0.5px solid #3a3a3c;
+  }
+  .nav-title { font-size: 17px; font-weight: 600; color: #fff; }
+  .nav-btn { font-size: 15px; color: #FF6B35; font-weight: 400; }
+
+  /* Bottom tab bar */
+  .tab-bar {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 83px;
+    background: rgba(28,28,30,0.94); backdrop-filter: blur(20px);
+    border-top: 0.5px solid #3a3a3c;
+    display: flex; align-items: flex-start; justify-content: space-around; padding-top: 10px;
+  }
+  .tab-item { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
+  .tab-icon { font-size: 22px; }
+  .tab-label { font-size: 10px; color: #8e8e93; font-weight: 500; }
+  .tab-item.active .tab-label { color: #FF6B35; }
+  .tab-item.active .tab-icon { filter: none; }
+
+  /* Content area */
+  .content { padding: 0 0 83px; overflow: hidden; height: calc(607px - 50px - 44px - 83px); }
+  .content-scroll { padding: 16px; }
+
+  /* Screen label */
+  .screen-label { text-align: center; margin-top: 16px; font-size: 13px; color: #888; font-weight: 500; }
+
+  /* Map screen */
+  .map-bg {
+    height: 100%; background: linear-gradient(135deg, #0d2137 0%, #1a3a5c 40%, #0d2137 100%);
+    position: relative; overflow: hidden;
+  }
+  .map-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+  .map-road-h { position: absolute; height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; }
+  .map-road-v { position: absolute; width: 5px; background: rgba(255,255,255,0.08); border-radius: 3px; }
+  .map-pin { position: absolute; width: 22px; height: 22px; border-radius: 50%; border: 2px solid #fff; display: flex; align-items: center; justify-content: center; font-size: 10px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+  .pin-done { background: #34c759; }
+  .pin-pending { background: #ff9500; }
+  .pin-new { background: #636366; }
+
+  .map-overlay-top {
+    position: absolute; top: 0; left: 0; right: 0;
+    background: linear-gradient(180deg, rgba(28,28,30,0.95) 0%, transparent 100%);
+    padding: 12px 16px; height: 80px;
+  }
+  .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .progress-title { font-size: 13px; font-weight: 600; color: #fff; }
+  .progress-pct { font-size: 13px; font-weight: 700; color: #FF6B35; }
+  .progress-bar { height: 4px; background: #3a3a3c; border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, #FF6B35, #ff9500); border-radius: 2px; }
+
+  .map-legend {
+    position: absolute; bottom: 90px; right: 12px;
+    background: rgba(28,28,30,0.85); backdrop-filter: blur(10px);
+    border-radius: 12px; padding: 8px 10px; border: 0.5px solid #3a3a3c;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 10px; color: #fff; margin-bottom: 4px; }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* Cards */
+  .card {
+    background: #2c2c2e; border-radius: 12px; padding: 14px;
+    margin-bottom: 10px; border: 0.5px solid #3a3a3c;
+  }
+  .card-title { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+  .card-sub { font-size: 12px; color: #8e8e93; margin-bottom: 8px; }
+  .card-badge {
+    display: inline-block; font-size: 10px; font-weight: 600;
+    padding: 2px 8px; border-radius: 20px; margin-right: 4px;
+  }
+  .badge-especial { background: rgba(255,107,53,0.2); color: #FF6B35; }
+  .badge-primera { background: rgba(52,199,89,0.2); color: #34c759; }
+  .badge-segunda { background: rgba(10,132,255,0.2); color: #0a84ff; }
+  .badge-tercera { background: rgba(142,142,147,0.2); color: #8e8e93; }
+
+  .progress-mini { height: 3px; background: #3a3a3c; border-radius: 2px; overflow: hidden; margin-top: 8px; }
+  .progress-mini-fill { height: 100%; background: #FF6B35; border-radius: 2px; }
+
+  /* Camera screen */
+  .camera-bg { height: 100%; background: #000; display: flex; flex-direction: column; }
+  .camera-viewfinder {
+    flex: 1; background: #111; position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .camera-grid-overlay {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+    background-size: 33.33% 33.33%;
+  }
+  .camera-subject {
+    width: 120px; height: 180px; background: #1a3a1a;
+    border-radius: 8px; opacity: 0.6;
+    box-shadow: 0 0 30px rgba(255,107,53,0.2);
+  }
+  .angle-indicator {
+    position: absolute; bottom: 12px; left: 0; right: 0;
+    display: flex; justify-content: center; gap: 8px;
+  }
+  .angle-dot { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 9px; color: #fff; font-weight: 600; }
+  .angle-done { background: rgba(52,199,89,0.4); border: 1px solid #34c759; }
+  .angle-active { background: rgba(255,107,53,0.6); border: 1px solid #FF6B35; }
+  .angle-todo { background: rgba(60,60,67,0.6); border: 1px solid #636366; }
+  .camera-controls {
+    height: 110px; background: #000; display: flex; align-items: center; justify-content: space-around; padding: 0 20px;
+  }
+  .thumb-strip { width: 52px; height: 52px; background: #2c2c2e; border-radius: 8px; border: 1px solid #3a3a3c; display: flex; align-items: center; justify-content: center; color: #8e8e93; font-size: 20px; }
+  .shutter { width: 70px; height: 70px; border-radius: 50%; background: #fff; border: 3px solid #555; display: flex; align-items: center; justify-content: center; }
+  .shutter-inner { width: 58px; height: 58px; border-radius: 50%; background: #fff; }
+  .flash-btn { width: 44px; height: 44px; background: #2c2c2e; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  .angle-label { position: absolute; top: 12px; right: 12px; background: rgba(255,107,53,0.85); border-radius: 8px; padding: 4px 8px; font-size: 11px; font-weight: 600; color: #fff; }
+
+  /* Detail / Falla sheet */
+  .detail-header { padding: 16px; }
+  .falla-name { font-size: 19px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .falla-meta { font-size: 12px; color: #8e8e93; margin-bottom: 12px; }
+  .completion-ring-wrap { display: flex; align-items: center; gap: 12px; background: #2c2c2e; border-radius: 12px; padding: 12px; margin-bottom: 12px; }
+  .ring { width: 52px; height: 52px; position: relative; flex-shrink: 0; }
+  .ring svg { transform: rotate(-90deg); }
+  .ring-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 11px; font-weight: 700; color: #fff; }
+  .checklist { flex: 1; }
+  .check-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #8e8e93; margin-bottom: 4px; }
+  .check-item.done { color: #34c759; }
+  .check-icon { font-size: 12px; }
+
+  .section-title { font-size: 13px; font-weight: 600; color: #8e8e93; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; padding: 0 2px; }
+  .rating-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 0.5px solid #3a3a3c; }
+  .rating-label { font-size: 13px; color: #fff; }
+  .stars { display: flex; gap: 2px; }
+  .star { font-size: 14px; }
+  .star.filled { color: #FF9500; }
+  .star.empty { color: #3a3a3c; }
+
+  .action-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    background: #FF6B35; border-radius: 12px; padding: 13px;
+    font-size: 15px; font-weight: 600; color: #fff; margin-top: 12px;
+    cursor: pointer;
+  }
+  .action-btn.secondary { background: #2c2c2e; color: #FF6B35; }
+
+  /* OCR screen */
+  .ocr-viewfinder {
+    flex: 1; background: #0a0a0a; position: relative;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+  }
+  .ocr-subject {
+    width: 190px; height: 90px; background: #1a1a2e;
+    border-radius: 4px; position: relative; display: flex;
+    flex-direction: column; align-items: center; justify-content: center;
+    padding: 8px; gap: 4px;
+  }
+  .ocr-text-line { height: 8px; border-radius: 4px; background: rgba(255,255,255,0.15); }
+  .ocr-scan-overlay {
+    position: absolute; inset: 0; border: 2px solid #FF6B35;
+    border-radius: 4px;
+  }
+  .scan-line {
+    position: absolute; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, #FF6B35, transparent);
+    top: 40%; animation: scan 1.5s ease-in-out infinite;
+  }
+  @keyframes scan { 0%,100% { top: 10%; opacity: 0.8; } 50% { top: 80%; opacity: 1; } }
+  .ocr-frame-corner {
+    position: absolute; width: 20px; height: 20px; border-color: #FF6B35; border-style: solid;
+  }
+  .ocr-frame-tl { top: -10px; left: -10px; border-width: 3px 0 0 3px; }
+  .ocr-frame-tr { top: -10px; right: -10px; border-width: 3px 3px 0 0; }
+  .ocr-frame-bl { bottom: -10px; left: -10px; border-width: 0 0 3px 3px; }
+  .ocr-frame-br { bottom: -10px; right: -10px; border-width: 0 3px 3px 0; }
+
+  .ocr-result {
+    background: rgba(28,28,30,0.95); border-top: 0.5px solid #3a3a3c;
+    padding: 14px; backdrop-filter: blur(20px);
+  }
+  .ocr-field { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .ocr-key { font-size: 12px; color: #8e8e93; }
+  .ocr-val { font-size: 12px; font-weight: 600; color: #fff; }
+  .ocr-confidence { font-size: 10px; color: #34c759; margin-left: 4px; }
+
+  /* Sync screen */
+  .sync-stat { background: #2c2c2e; border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+  .sync-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .sync-key { font-size: 13px; color: #8e8e93; }
+  .sync-val { font-size: 13px; font-weight: 600; color: #fff; }
+  .sync-btn {
+    background: linear-gradient(135deg, #FF6B35, #ff9500);
+    border-radius: 14px; padding: 16px; text-align: center;
+    font-size: 16px; font-weight: 700; color: #fff; margin-top: 16px;
+    box-shadow: 0 4px 20px rgba(255,107,53,0.4); cursor: pointer;
+  }
+  .sync-info { font-size: 12px; color: #8e8e93; text-align: center; margin-top: 8px; }
+
+  .last-sync { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #8e8e93; margin-bottom: 16px; }
+  .sync-dot { width: 8px; height: 8px; border-radius: 50%; background: #34c759; }
+
+  /* Diagrams */
+  .diagrams { display: flex; flex-direction: column; gap: 40px; }
+  .diagram-card {
+    background: #16213e; border-radius: 16px; padding: 32px;
+    border: 1px solid #2a2a4a;
+  }
+  .diagram-title { font-size: 18px; font-weight: 600; color: #FF6B35; margin-bottom: 24px; }
+  .mermaid { background: #0d1117; border-radius: 12px; padding: 24px; overflow-x: auto; }
+  pre { color: #fff; font-size: 13px; font-family: monospace; }
+
+  /* Gallery */
+  .gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 12px; }
+  .gallery-thumb { aspect-ratio: 1; border-radius: 8px; background: #2c2c2e; overflow: hidden; position: relative; }
+  .gallery-thumb-bg { width: 100%; height: 100%; background: linear-gradient(135deg, #1a3a1a, #0a2a0a); }
+  .gallery-pct { position: absolute; bottom: 4px; right: 4px; background: rgba(0,0,0,0.7); border-radius: 6px; padding: 2px 5px; font-size: 9px; color: #fff; font-weight: 600; }
+  .gallery-pct.complete { background: rgba(52,199,89,0.8); }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>Encesa</h1>
+  <p class="subtitle">Registro inteligente de fallas · Design Preview · Marzo 2026</p>
+
+  <!-- WIREFRAMES -->
+  <h2>Pantallas</h2>
+  <div class="screens">
+
+    <!-- 1. MAPA PRINCIPAL -->
+    <div>
+      <div class="iphone">
+        <div class="iphone-inner">
+          <div class="dynamic-island"></div>
+          <div class="status-bar">
+            <span class="status-time">18:17</span>
+            <div class="status-icons">
+              <span class="signal"></span>
+              <span>4G</span>
+              <span class="battery">55%</span>
+            </div>
+          </div>
+          <div class="nav-top">
+            <span class="nav-title">Encesa</span>
+            <span class="nav-btn">2026</span>
+          </div>
+
+          <div style="position:relative; height: calc(100% - 50px - 44px - 83px);">
+            <div class="map-bg">
+              <div class="map-grid"></div>
+              <!-- Roads -->
+              <div class="map-road-h" style="top:35%;left:0;right:0;"></div>
+              <div class="map-road-h" style="top:55%;left:0;right:0;"></div>
+              <div class="map-road-h" style="top:70%;left:0;right:0;"></div>
+              <div class="map-road-v" style="left:25%;top:0;bottom:0;"></div>
+              <div class="map-road-v" style="left:55%;top:0;bottom:0;"></div>
+              <div class="map-road-v" style="left:75%;top:0;bottom:0;"></div>
+              <!-- Pins -->
+              <div class="map-pin pin-done" style="top:38%;left:22%;">✓</div>
+              <div class="map-pin pin-done" style="top:52%;left:52%;">✓</div>
+              <div class="map-pin pin-pending" style="top:30%;left:60%;">◑</div>
+              <div class="map-pin pin-pending" style="top:65%;left:30%;">◑</div>
+              <div class="map-pin pin-new" style="top:45%;left:72%;">·</div>
+              <div class="map-pin pin-new" style="top:72%;left:65%;">·</div>
+              <div class="map-pin pin-new" style="top:60%;left:45%;">·</div>
+
+              <!-- Top overlay -->
+              <div class="map-overlay-top">
+                <div class="progress-header">
+                  <span class="progress-title">Progreso 2026</span>
+                  <span class="progress-pct">23%</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:23%"></div></div>
+              </div>
+
+              <!-- Legend -->
+              <div class="map-legend">
+                <div class="legend-item"><div class="legend-dot" style="background:#34c759"></div>Completa</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#ff9500"></div>En progreso</div>
+                <div class="legend-item" style="margin-bottom:0"><div class="legend-dot" style="background:#636366"></div>Pendiente</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-bar">
+            <div class="tab-item active"><div class="tab-icon">🗺️</div><div class="tab-label">Mapa</div></div>
+            <div class="tab-item"><div class="tab-icon">📷</div><div class="tab-label">Captura</div></div>
+            <div class="tab-item"><div class="tab-icon">🖼️</div><div class="tab-label">Galería</div></div>
+            <div class="tab-item"><div class="tab-icon">☁️</div><div class="tab-label">Sync</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">Mapa · Vista principal</div>
+    </div>
+
+    <!-- 2. LISTA DE FALLAS -->
+    <div>
+      <div class="iphone">
+        <div class="iphone-inner">
+          <div class="dynamic-island"></div>
+          <div class="status-bar">
+            <span class="status-time">18:17</span>
+            <div class="status-icons"><span>4G</span><span class="battery">55%</span></div>
+          </div>
+          <div class="nav-top">
+            <span class="nav-btn">Filtrar</span>
+            <span class="nav-title">Fallas</span>
+            <span class="nav-btn">Buscar</span>
+          </div>
+          <div style="height: calc(100% - 50px - 44px - 83px); overflow:hidden; padding: 10px 12px;">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div>
+                  <div class="card-title">Na Jordana</div>
+                  <div class="card-sub">Joaquín Ballester · Campanar</div>
+                </div>
+                <span class="card-badge badge-especial">Especial</span>
+              </div>
+              <div class="progress-mini"><div class="progress-mini-fill" style="width:80%"></div></div>
+              <div style="font-size:10px;color:#FF6B35;margin-top:4px;">80% completada</div>
+            </div>
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div>
+                  <div class="card-title">Convento Jerusalén</div>
+                  <div class="card-sub">Pedro Santaeularia · Eixample</div>
+                </div>
+                <span class="card-badge badge-especial">Especial</span>
+              </div>
+              <div class="progress-mini"><div class="progress-mini-fill" style="width:100%;background:#34c759"></div></div>
+              <div style="font-size:10px;color:#34c759;margin-top:4px;">Completa ✓</div>
+            </div>
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div>
+                  <div class="card-title">Ruzafa - Literat Azorín</div>
+                  <div class="card-sub">Manolo García · Ruzafa</div>
+                </div>
+                <span class="card-badge badge-primera">1a</span>
+              </div>
+              <div class="progress-mini"><div class="progress-mini-fill" style="width:40%"></div></div>
+              <div style="font-size:10px;color:#FF6B35;margin-top:4px;">40% completada</div>
+            </div>
+            <div class="card" style="opacity:0.5">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div>
+                  <div class="card-title">Benimaclet - Emili Baró</div>
+                  <div class="card-sub">Sin artista asignado · Benimaclet</div>
+                </div>
+                <span class="card-badge badge-segunda">2a</span>
+              </div>
+              <div class="progress-mini"><div class="progress-mini-fill" style="width:0%"></div></div>
+              <div style="font-size:10px;color:#636366;margin-top:4px;">Sin escanear</div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab-item"><div class="tab-icon">🗺️</div><div class="tab-label">Mapa</div></div>
+            <div class="tab-item active"><div class="tab-icon">📷</div><div class="tab-label">Captura</div></div>
+            <div class="tab-item"><div class="tab-icon">🖼️</div><div class="tab-label">Galería</div></div>
+            <div class="tab-item"><div class="tab-icon">☁️</div><div class="tab-label">Sync</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">Lista de fallas</div>
+    </div>
+
+    <!-- 3. DETALLE FALLA -->
+    <div>
+      <div class="iphone">
+        <div class="iphone-inner">
+          <div class="dynamic-island"></div>
+          <div class="status-bar">
+            <span class="status-time">18:17</span>
+            <div class="status-icons"><span>4G</span><span class="battery">55%</span></div>
+          </div>
+          <div class="nav-top">
+            <span class="nav-btn">← Volver</span>
+            <span class="nav-title">Detalle</span>
+            <span class="nav-btn">Editar</span>
+          </div>
+          <div style="height: calc(100% - 50px - 44px - 83px); overflow:hidden; padding: 12px;">
+            <div class="falla-name">Na Jordana</div>
+            <div class="falla-meta">Joaquín Ballester · Especial · Campanar</div>
+
+            <div class="completion-ring-wrap">
+              <div class="ring">
+                <svg viewBox="0 0 52 52" width="52" height="52">
+                  <circle cx="26" cy="26" r="22" fill="none" stroke="#3a3a3c" stroke-width="4"/>
+                  <circle cx="26" cy="26" r="22" fill="none" stroke="#FF6B35" stroke-width="4"
+                    stroke-dasharray="138.2" stroke-dashoffset="27.6" stroke-linecap="round"/>
+                </svg>
+                <div class="ring-label">80%</div>
+              </div>
+              <div class="checklist">
+                <div class="check-item done"><span class="check-icon">✓</span> OCR realizado</div>
+                <div class="check-item done"><span class="check-icon">✓</span> Foto frontal</div>
+                <div class="check-item done"><span class="check-icon">✓</span> Laterales</div>
+                <div class="check-item" style="color:#ff9500"><span class="check-icon">◯</span> Foto trasera</div>
+                <div class="check-item done"><span class="check-icon">✓</span> Valoración</div>
+              </div>
+            </div>
+
+            <div class="section-title">Valoración</div>
+            <div class="rating-row">
+              <span class="rating-label">Originalidad</span>
+              <div class="stars">
+                <span class="star filled">★</span><span class="star filled">★</span>
+                <span class="star filled">★</span><span class="star filled">★</span><span class="star empty">★</span>
+              </div>
+            </div>
+            <div class="rating-row">
+              <span class="rating-label">Ejecución</span>
+              <div class="stars">
+                <span class="star filled">★</span><span class="star filled">★</span>
+                <span class="star filled">★</span><span class="star filled">★</span><span class="star filled">★</span>
+              </div>
+            </div>
+            <div class="rating-row" style="border:none">
+              <span class="rating-label">Humor</span>
+              <div class="stars">
+                <span class="star filled">★</span><span class="star filled">★</span>
+                <span class="star filled">★</span><span class="star empty">★</span><span class="star empty">★</span>
+              </div>
+            </div>
+
+            <div class="action-btn">📷 Continuar captura</div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab-item"><div class="tab-icon">🗺️</div><div class="tab-label">Mapa</div></div>
+            <div class="tab-item active"><div class="tab-icon">📷</div><div class="tab-label">Captura</div></div>
+            <div class="tab-item"><div class="tab-icon">🖼️</div><div class="tab-label">Galería</div></div>
+            <div class="tab-item"><div class="tab-icon">☁️</div><div class="tab-label">Sync</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">Ficha de falla · Detalle y progreso</div>
+    </div>
+
+    <!-- 4. CÁMARA -->
+    <div>
+      <div class="iphone">
+        <div class="iphone-inner">
+          <div class="dynamic-island"></div>
+          <div class="status-bar" style="background:transparent;">
+            <span class="status-time">18:17</span>
+            <div class="status-icons"><span>4G</span><span class="battery">55%</span></div>
+          </div>
+          <div style="height: calc(100% - 50px - 83px); position:relative; background:#000">
+            <div class="camera-viewfinder">
+              <div class="camera-grid-overlay"></div>
+              <div class="camera-subject"></div>
+              <div class="angle-label">LATERAL IZQ</div>
+              <div class="angle-indicator">
+                <div class="angle-dot angle-done">F</div>
+                <div class="angle-dot angle-active">LI</div>
+                <div class="angle-dot angle-todo">LD</div>
+                <div class="angle-dot angle-todo">T</div>
+                <div class="angle-dot angle-todo">D</div>
+              </div>
+            </div>
+            <div class="camera-controls">
+              <div class="flash-btn">⚡</div>
+              <div class="shutter"><div class="shutter-inner"></div></div>
+              <div class="thumb-strip">🖼️</div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab-item"><div class="tab-icon">🗺️</div><div class="tab-label">Mapa</div></div>
+            <div class="tab-item active"><div class="tab-icon">📷</div><div class="tab-label">Captura</div></div>
+            <div class="tab-item"><div class="tab-icon">🖼️</div><div class="tab-label">Galería</div></div>
+            <div class="tab-item"><div class="tab-icon">☁️</div><div class="tab-label">Sync</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">Cámara · Captura por ángulo</div>
+    </div>
+
+    <!-- 5. OCR -->
+    <div>
+      <div class="iphone">
+        <div class="iphone-inner">
+          <div class="dynamic-island"></div>
+          <div class="status-bar" style="background:transparent;">
+            <span class="status-time">18:17</span>
+            <div class="status-icons"><span>4G</span><span class="battery">55%</span></div>
+          </div>
+          <div style="height: calc(100% - 50px - 83px); display:flex; flex-direction:column; background:#000">
+            <div class="nav-top" style="background:rgba(0,0,0,0.7)">
+              <span class="nav-btn">Cancelar</span>
+              <span class="nav-title" style="font-size:14px">Escanear cartel</span>
+              <span></span>
+            </div>
+            <div class="ocr-viewfinder">
+              <div class="camera-grid-overlay" style="opacity:0.4"></div>
+              <div class="ocr-subject" style="position:relative">
+                <div class="ocr-text-line" style="width:80%"></div>
+                <div class="ocr-text-line" style="width:60%"></div>
+                <div class="ocr-text-line" style="width:70%"></div>
+                <div class="ocr-scan-overlay">
+                  <div class="scan-line"></div>
+                  <div class="ocr-frame-corner ocr-frame-tl"></div>
+                  <div class="ocr-frame-corner ocr-frame-tr"></div>
+                  <div class="ocr-frame-corner ocr-frame-bl"></div>
+                  <div class="ocr-frame-corner ocr-frame-br"></div>
+                </div>
+              </div>
+              <div style="position:absolute;bottom:16px;left:0;right:0;text-align:center;font-size:12px;color:rgba(255,255,255,0.6)">Enfoca el cartel de la falla</div>
+            </div>
+            <div class="ocr-result">
+              <div class="ocr-field">
+                <span class="ocr-key">Nombre</span>
+                <span class="ocr-val">Na Jordana <span class="ocr-confidence">97%</span></span>
+              </div>
+              <div class="ocr-field">
+                <span class="ocr-key">Artista</span>
+                <span class="ocr-val">Joaquín Ballester <span class="ocr-confidence">94%</span></span>
+              </div>
+              <div class="ocr-field">
+                <span class="ocr-key">Categoría</span>
+                <span class="ocr-val">Especial <span class="ocr-confidence">99%</span></span>
+              </div>
+              <div class="ocr-field" style="margin-bottom:0">
+                <span class="ocr-key">Lema</span>
+                <span class="ocr-val" style="font-size:11px;max-width:140px;text-align:right">"L'art que perdura..." <span class="ocr-confidence">89%</span></span>
+              </div>
+              <div class="action-btn" style="margin-top:10px;padding:10px">Confirmar y guardar</div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab-item"><div class="tab-icon">🗺️</div><div class="tab-label">Mapa</div></div>
+            <div class="tab-item active"><div class="tab-icon">📷</div><div class="tab-label">Captura</div></div>
+            <div class="tab-item"><div class="tab-icon">🖼️</div><div class="tab-label">Galería</div></div>
+            <div class="tab-item"><div class="tab-icon">☁️</div><div class="tab-label">Sync</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">OCR · Escaneo del cartel</div>
+    </div>
+
+    <!-- 6. SYNC -->
+    <div>
+      <div class="iphone">
+        <div class="iphone-inner">
+          <div class="dynamic-island"></div>
+          <div class="status-bar">
+            <span class="status-time">18:17</span>
+            <div class="status-icons"><span>WiFi</span><span class="battery">55%</span></div>
+          </div>
+          <div class="nav-top">
+            <span></span>
+            <span class="nav-title">Sincronizar</span>
+            <span></span>
+          </div>
+          <div style="height: calc(100% - 50px - 44px - 83px); overflow:hidden; padding: 14px;">
+            <div class="last-sync">
+              <div class="sync-dot"></div>
+              Último sync: Hoy, 14:32
+            </div>
+
+            <div class="sync-stat">
+              <div class="sync-row">
+                <span class="sync-key">Fallas registradas</span>
+                <span class="sync-val">14 / 60</span>
+              </div>
+              <div class="sync-row">
+                <span class="sync-key">Fotos pendientes</span>
+                <span class="sync-val" style="color:#FF6B35">127</span>
+              </div>
+              <div class="sync-row" style="margin-bottom:0">
+                <span class="sync-key">Tamaño estimado</span>
+                <span class="sync-val">842 MB</span>
+              </div>
+            </div>
+
+            <div class="sync-stat">
+              <div class="sync-row" style="margin-bottom:0">
+                <span class="sync-key">Destino</span>
+                <span class="sync-val" style="color:#0a84ff;font-size:12px">Supabase Storage</span>
+              </div>
+            </div>
+
+            <div class="sync-btn">Sincronizar ahora</div>
+            <div class="sync-info">Solo se sincroniza cuando tú lo decides</div>
+
+            <div style="margin-top:16px">
+              <div class="section-title">Script Slimbook</div>
+              <div class="card" style="font-size:11px;font-family:monospace;color:#34c759;padding:10px">
+                python encesa_sync.py<br>
+                <span style="color:#8e8e93">→ 127 fotos · 14 fallas</span><br>
+                <span style="color:#8e8e93">→ dataset/2026/especial/...</span>
+              </div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab-item"><div class="tab-icon">🗺️</div><div class="tab-label">Mapa</div></div>
+            <div class="tab-item"><div class="tab-icon">📷</div><div class="tab-label">Captura</div></div>
+            <div class="tab-item"><div class="tab-icon">🖼️</div><div class="tab-label">Galería</div></div>
+            <div class="tab-item active"><div class="tab-icon">☁️</div><div class="tab-label">Sync</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">Sync · Control manual</div>
+    </div>
+
+  </div><!-- /screens -->
+
+  <!-- DIAGRAMS -->
+  <h2>Diagramas</h2>
+  <div class="diagrams">
+
+    <div class="diagram-card">
+      <div class="diagram-title">User Flow · Captura de una falla</div>
+      <div class="mermaid">
+flowchart TD
+    A([Abrir Encesa]) --> B[Mapa con todas las fallas JCF]
+    B --> C{Seleccionar falla}
+    C --> D[Ver ficha de falla\nmetadata precargada JCF]
+    D --> E{Cartel visible?}
+    E -->|Si| F[OCR - Apuntar cámara al cartel]
+    F --> G[Tesseract.js extrae texto]
+    G --> H[Revisar y confirmar campos]
+    E -->|No| H
+    H --> I[Captura de fotos por ángulo\nFrontal · Laterales · Trasera · Detalles]
+    I --> J[Rellenar valoraciones\nOriginalidad · Ejecución · Temática · Humor]
+    J --> K[Añadir notas libres]
+    K --> L{Checklist completo?}
+    L -->|No| I
+    L -->|Si| M([Falla 100% registrada ✓])
+
+    style A fill:#FF6B35,color:#fff
+    style M fill:#34c759,color:#fff
+    style F fill:#0a84ff,color:#fff
+      </div>
+    </div>
+
+    <div class="diagram-card">
+      <div class="diagram-title">Sync Flow · Datos de móvil a Slimbook</div>
+      <div class="mermaid">
+flowchart LR
+    subgraph iPhone["iPhone · En campo"]
+        A1[Captura fotos] --> A2[(IndexedDB\nDexie.js)]
+        A3[OCR cartel] --> A2
+        A4[Metadata + ratings] --> A2
+    end
+
+    subgraph Sync["Sync manual"]
+        B1([Pulsar Sincronizar])
+    end
+
+    subgraph Supabase["Supabase Cloud"]
+        C1[(PostgreSQL\nMetadata)]
+        C2[(Storage\nFotos)]
+    end
+
+    subgraph Slimbook["Slimbook · En casa"]
+        D1[python encesa_sync.py]
+        D2[LM Studio\nAnalisis visual]
+        D3[(Dataset local\nDataset listo para LoRA)]
+    end
+
+    A2 --> B1
+    B1 --> C1
+    B1 --> C2
+    C1 --> D1
+    C2 --> D1
+    D1 --> D2
+    D2 --> D3
+
+    style B1 fill:#FF6B35,color:#fff
+    style D3 fill:#34c759,color:#fff
+      </div>
+    </div>
+
+    <div class="diagram-card">
+      <div class="diagram-title">Arquitectura C4 · Contenedores</div>
+      <div class="mermaid">
+graph TB
+    User["Vicente\n[iPhone]"]
+
+    subgraph PWA["Encesa PWA"]
+        UI["UI Layer\nReact + Tailwind iOS"]
+        Features["Features\ncapture · map · ocr · sync · gallery"]
+        OfflineDB["IndexedDB\nDexie.js · Offline-first"]
+        SW["Service Worker\nPWA instalable"]
+    end
+
+    subgraph External["Externos"]
+        JCF["API Junta Central Fallera\nFallas oficiales 2026"]
+        SupaDB["Supabase PostgreSQL\nMetadata estructurada"]
+        SupaST["Supabase Storage\nFotos y videos"]
+        Tesseract["Tesseract.js\nOCR client-side"]
+    end
+
+    subgraph Home["Slimbook · En casa"]
+        Script["Python sync script\nencesa_sync.py"]
+        LMS["LM Studio\nAnalisis visual IA"]
+        Dataset["Dataset LoRA\n/dataset/2026/..."]
+    end
+
+    User --> PWA
+    UI --> Features
+    Features --> OfflineDB
+    Features --> Tesseract
+    Features --> JCF
+    OfflineDB --> SupaDB
+    OfflineDB --> SupaST
+    Script --> SupaDB
+    Script --> SupaST
+    Script --> LMS
+    LMS --> Dataset
+
+    style PWA fill:#1a3a5c,stroke:#FF6B35
+    style External fill:#1a2a1a,stroke:#34c759
+    style Home fill:#2a1a0a,stroke:#ff9500
+      </div>
+    </div>
+
+    <div class="diagram-card">
+      <div class="diagram-title">Data Model · Schema PostgreSQL</div>
+      <div class="mermaid">
+erDiagram
+    FALLA {
+        uuid id PK
+        string nombre
+        string barrio
+        string artista
+        string categoria
+        string lema
+        int anyo
+        float lat
+        float lng
+        string estado
+        float completitud_pct
+        timestamp created_at
+    }
+
+    FOTO {
+        uuid id PK
+        uuid falla_id FK
+        string angulo
+        string url_storage
+        string descripcion_ia
+        json metadata_exif
+        timestamp capturada_at
+    }
+
+    VALORACION {
+        uuid id PK
+        uuid falla_id FK
+        int originalidad
+        int ejecucion
+        int tematica
+        int humor
+        text notas
+        timestamp updated_at
+    }
+
+    OCR_RESULT {
+        uuid id PK
+        uuid falla_id FK
+        json campos_extraidos
+        float confianza
+        string url_foto_cartel
+        timestamp procesado_at
+    }
+
+    FALLA ||--o{ FOTO : "tiene"
+    FALLA ||--o| VALORACION : "tiene"
+    FALLA ||--o| OCR_RESULT : "tiene"
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    themeVariables: {
+      primaryColor: '#FF6B35',
+      primaryTextColor: '#fff',
+      primaryBorderColor: '#FF6B35',
+      lineColor: '#8e8e93',
+      secondaryColor: '#2c2c2e',
+      tertiaryColor: '#1c1c1e',
+      background: '#0d1117',
+      mainBkg: '#1c1c1e',
+      nodeBorder: '#3a3a3c',
+      clusterBkg: '#1a1a2e',
+      titleColor: '#FF6B35',
+      edgeLabelBackground: '#2c2c2e',
+      fontFamily: '-apple-system, BlinkMacSystemFont, SF Pro Display, sans-serif'
+    }
+  });
+</script>
+</body>
+</html>

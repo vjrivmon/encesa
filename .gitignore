@@ -1,0 +1,28 @@
+# App
+app/node_modules/
+app/dist/
+app/.env.local
+app/.env
+app/*.local
+
+# Dataset
+dataset/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
