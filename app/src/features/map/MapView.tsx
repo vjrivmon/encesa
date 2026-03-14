@@ -126,10 +126,10 @@ function UserLocationControl({ onLocation }: { onLocation: (pos: [number, number
       <div
         onClick={centerOnMe}
         style={{
-          position: 'absolute',
-          bottom: '12px',
+          position: 'fixed',
+          bottom: 'calc(86px + env(safe-area-inset-bottom, 0px) + 61px)',
           right: '12px',
-          zIndex: 500,
+          zIndex: 1002,
           width: '44px',
           height: '44px',
           borderRadius: '12px',
