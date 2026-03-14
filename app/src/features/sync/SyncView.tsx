@@ -140,7 +140,7 @@ export default function SyncView() {
             angulo: foto.angulo ?? 'frontal',
             url_storage: publicUrl,
             synced: true,
-            capturada_at: foto.capturada_at ?? foto.created_at ?? new Date().toISOString(),
+            capturada_at: foto.capturada_at ?? new Date().toISOString(),
           })
           await db.fotos.update(foto.id, { synced: true, url_storage: publicUrl })
           uploaded++
