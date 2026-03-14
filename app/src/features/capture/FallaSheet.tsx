@@ -55,13 +55,22 @@ export default function FallaSheet({ falla, isOpen, onClose, onOpenCamera }: Fal
       setFotos(fotasDB)
       setValoracion(valDB ?? null)
     })
+
+    // Auto-marcar OCR como completado: los datos del cartel ya vienen de la API
+    if (!falla.ocr_realizado) {
+      db.fallas.update(falla.id, { ocr_realizado: true, synced: false })
+    }
   }, [falla])
 
   if (!falla) return null
 
   const pct = calcularCompletitud(falla, fotos, valoracion ?? undefined, undefined)
   const tieneValoracion = !!(valoracion && valoracion.originalidad > 0)
-  const boceto = SEED_FALLAS.find(f => f.id === falla.id)?.boceto ?? ''
+  const seedData = SEED_FALLAS.find(f => f.id === falla.id)
+  const boceto = seedData?.boceto ?? ''
+  const fallera = seedData?.fallera ?? ''
+  const presidente = seedData?.presidente ?? ''
+  const anyoFundacion = seedData?.anyo_fundacion ?? null
 
   const botonCaptura =
     falla.estado === 'pendiente' ? 'Iniciar captura' :
@@ -158,6 +167,30 @@ export default function FallaSheet({ falla, isOpen, onClose, onOpenCamera }: Fal
           </div>
         )}
 
+        {/* Datos del cartel (de la API) */}
+        {(fallera || presidente || anyoFundacion) && (
+          <div style={{ background: '#2c2c2e', borderRadius: '10px', padding: '12px 14px', marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            {fallera && (
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
+                <span style={{ color: '#8e8e93' }}>Fallera mayor</span>
+                <span style={{ color: '#fff', fontWeight: 500 }}>{fallera}</span>
+              </div>
+            )}
+            {presidente && (
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
+                <span style={{ color: '#8e8e93' }}>Presidente</span>
+                <span style={{ color: '#fff', fontWeight: 500 }}>{presidente}</span>
+              </div>
+            )}
+            {anyoFundacion && (
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
+                <span style={{ color: '#8e8e93' }}>Fundada en</span>
+                <span style={{ color: '#fff', fontWeight: 500 }}>{anyoFundacion}</span>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Boceto oficial */}
         {boceto && (
           <div style={{ marginBottom: '20px', borderRadius: '12px', overflow: 'hidden', border: '0.5px solid #3a3a3c' }}>
@@ -181,7 +214,7 @@ export default function FallaSheet({ falla, isOpen, onClose, onOpenCamera }: Fal
           <div style={{ fontSize: '12px', color: '#8e8e93', fontWeight: 600, paddingTop: '10px', paddingBottom: '4px', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
             Checklist
           </div>
-          <CheckItem done={falla.ocr_realizado} label="OCR del cartel" />
+          <CheckItem done={true} label="Datos del cartel (API oficial)" />
           <CheckItem
             done={fotos.length > 0}
             label={fotos.length === 0 ? 'Sin fotos' : `${fotos.length} foto${fotos.length > 1 ? 's' : ''} tomada${fotos.length > 1 ? 's' : ''}`}
@@ -209,22 +242,25 @@ export default function FallaSheet({ falla, isOpen, onClose, onOpenCamera }: Fal
           >
             {botonCaptura}
           </button>
-          <button
-            style={{
-              flex: 1,
-              background: '#2c2c2e',
-              color: '#FF6B35',
-              border: '0.5px solid #FF6B35',
-              borderRadius: '12px',
-              padding: '12px',
-              fontSize: '14px',
-              fontWeight: 600,
-              cursor: 'pointer',
-              fontFamily: 'Inter, -apple-system, sans-serif',
-            }}
-          >
-            Escanear cartel
-          </button>
+          {boceto && (
+            <button
+              onClick={() => window.open(boceto, '_blank')}
+              style={{
+                flex: 1,
+                background: '#2c2c2e',
+                color: '#8e8e93',
+                border: '0.5px solid #3a3a3c',
+                borderRadius: '12px',
+                padding: '12px',
+                fontSize: '14px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                fontFamily: 'Inter, -apple-system, sans-serif',
+              }}
+            >
+              Ver boceto
+            </button>
+          )}
         </div>
 
         {/* Valoraciones */}
