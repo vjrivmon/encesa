@@ -169,18 +169,21 @@ export default function FallaSheet({ falla, isOpen, onClose, onOpenCamera }: Fal
   async function saveNotas() {
     if (!falla) return
     setSaving(true)
-    const now = new Date().toISOString()
-    const currentFotos = await db.fotos.where('falla_id').equals(falla.id).toArray()
-    const currentVal = await db.valoraciones.where('falla_id').equals(falla.id).first()
-    const newPct = calcularCompletitud({ ...falla, notas }, currentFotos, currentVal, undefined)
-    await db.fallas.update(falla.id, {
-      notas,
-      completitud_pct: newPct,
-      estado: getEstadoFromCompletitud(newPct),
-      updated_at: now,
-      synced: false,
-    })
-    setSaving(false)
+    try {
+      const now = new Date().toISOString()
+      const currentFotos = await db.fotos.where('falla_id').equals(falla.id).toArray()
+      const currentVal = await db.valoraciones.where('falla_id').equals(falla.id).first()
+      const newPct = calcularCompletitud({ ...falla, notas }, currentFotos, currentVal, undefined)
+      await db.fallas.update(falla.id, {
+        notas,
+        completitud_pct: newPct,
+        estado: getEstadoFromCompletitud(newPct),
+        updated_at: now,
+        synced: false,
+      })
+    } finally {
+      setSaving(false)
+    }
   }
 
   return (
@@ -269,7 +272,7 @@ export default function FallaSheet({ falla, isOpen, onClose, onOpenCamera }: Fal
             label={fotos.length === 0 ? 'Sin fotos' : `${fotos.length} foto${fotos.length > 1 ? 's' : ''} tomada${fotos.length > 1 ? 's' : ''}`}
           />
           <CheckItem done={tieneValoracion} label="Valoracion completada" />
-          <CheckItem done={!!(falla.notas && falla.notas.length > 0)} label="Notas escritas" />
+          <CheckItem done={!!(notas && notas.length > 0)} label="Notas escritas" />
         </div>
 
         {/* Action buttons */}
