@@ -141,8 +141,9 @@ export default function VideoImporter({ fallaId, onDone }: VideoImporterProps) {
       <div style={{
         position: 'fixed', inset: 0,
         background: '#1c1c1e',
-        zIndex: 9999,
+        zIndex: 10001,
         display: 'flex', flexDirection: 'column',
+        overflow: 'hidden',
       }}>
         {/* Header */}
         <div style={{
@@ -219,10 +220,14 @@ export default function VideoImporter({ fallaId, onDone }: VideoImporterProps) {
 
         {/* Footer */}
         <div style={{
-          padding: '16px 20px',
-          paddingBottom: 'calc(16px + env(safe-area-inset-bottom, 0px))',
+          position: 'sticky',
+          bottom: 0,
+          padding: '12px 20px',
+          paddingBottom: 'calc(12px + env(safe-area-inset-bottom, 0px))',
+          background: '#1c1c1e',
           borderTop: '0.5px solid #3a3a3c',
           flexShrink: 0,
+          zIndex: 2,
         }}>
           <button
             onClick={saveSelected}
