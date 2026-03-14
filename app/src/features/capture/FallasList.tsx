@@ -54,7 +54,8 @@ export default function FallasList() {
       return (
         f.nombre.toLowerCase().includes(q) ||
         f.artista.toLowerCase().includes(q) ||
-        f.barrio.toLowerCase().includes(q)
+        f.barrio.toLowerCase().includes(q) ||
+        (f.lema ?? '').toLowerCase().includes(q)
       )
     })
 
@@ -79,7 +80,7 @@ export default function FallasList() {
           <input
             value={search}
             onChange={e => setSearch(e.target.value)}
-            placeholder="Buscar falla, artista, barrio..."
+            placeholder="Buscar por nombre de calle o artista..."
             style={{
               flex: 1,
               background: 'transparent',
@@ -146,7 +147,11 @@ export default function FallasList() {
             paddingTop: '40px',
             fontFamily: 'Inter, -apple-system, sans-serif',
           }}>
-            Sin resultados
+            Sin resultados para "{search}"
+            <div style={{ fontSize: '12px', color: '#636366', marginTop: '8px' }}>
+              Los datos JCF usan nombres de calle, no de barrio.{'\n'}
+              Prueba: "Na Jordana", "Ruzafa" o el nombre del artista.
+            </div>
           </div>
         )}
       </div>
