@@ -36,7 +36,21 @@ html, body, #root {
   background: #2c2c2e;
   color: #ffffff;
   border: 0.5px solid #3a3a3c;
-  border-radius: 13px;
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  padding: 0;
+}
+
+.leaflet-popup-content {
+  margin: 0;
+  min-width: 220px;
+}
+
+.leaflet-popup-close-button {
+  color: #8e8e93 !important;
+  top: 10px !important;
+  right: 10px !important;
+  font-size: 18px !important;
 }
 
 .leaflet-popup-tip {
