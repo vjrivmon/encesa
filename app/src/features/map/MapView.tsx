@@ -280,7 +280,7 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
           top: 0,
           left: 0,
           right: 0,
-          zIndex: 50,
+          zIndex: 1001,
           padding: '10px 16px',
           background: 'rgba(28,28,30,0.9)',
           backdropFilter: 'blur(10px)',
@@ -312,7 +312,7 @@ export default function MapView({ onOpenCamera, onGoToFicha }: MapViewProps) {
       <MapContainer
         center={VALENCIA_CENTER}
         zoom={14}
-        style={{ width: '100%', height: '100%' }}
+        style={{ position: 'absolute', top: '49px', left: 0, right: 0, bottom: 0 }}
         zoomControl={false}
       >
         <TileLayer
