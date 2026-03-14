@@ -80,7 +80,7 @@ export default function FallasList({ onOpenCamera }: { onOpenCamera?: (fallaId: 
           <input
             value={search}
             onChange={e => setSearch(e.target.value)}
-            placeholder="Buscar por nombre de calle o artista..."
+            placeholder="Buscar falla, barrio o artista..."
             style={{
               flex: 1,
               background: 'transparent',
@@ -148,10 +148,6 @@ export default function FallasList({ onOpenCamera }: { onOpenCamera?: (fallaId: 
             fontFamily: 'Inter, -apple-system, sans-serif',
           }}>
             Sin resultados para "{search}"
-            <div style={{ fontSize: '12px', color: '#636366', marginTop: '8px' }}>
-              Los datos JCF usan nombres de calle, no de barrio.{'\n'}
-              Prueba: "Na Jordana", "Ruzafa" o el nombre del artista.
-            </div>
           </div>
         )}
       </div>

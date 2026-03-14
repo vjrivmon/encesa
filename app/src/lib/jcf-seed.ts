@@ -1,6 +1,6 @@
 // jcf-seed.ts — 702 fallas de Valencia 2026
 // Fuente: Portal de Datos Abiertos del Ayuntamiento de València
-// https://valencia.opendatasoft.com/explore/dataset/falles-fallas/
+// Barrios: point-in-polygon con dataset barris-barrios del Ayuntamiento
 
 export interface FallaData {
   id: string;
@@ -30,7 +30,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0001",
     "nombre": "Avinguda Jacinto Benavente-Regina Na Germana",
-    "barrio": "3C",
+    "barrio": "La Gran Via",
     "artista": "José Luis Pascual Nebot",
     "categoria": "tercera",
     "lema": "Les quatre estacions",
@@ -52,7 +52,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0002",
     "nombre": "Plaça Rojas Clemente",
-    "barrio": "6A",
+    "barrio": "El Botanic",
     "artista": "Vicente Julián García Pastor",
     "categoria": "tercera",
     "lema": "Aylan",
@@ -74,7 +74,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0003",
     "nombre": "Albereda-França",
-    "barrio": "3A",
+    "barrio": "Penya-Roja",
     "artista": "Falles i Fogueres Martínez Velló",
     "categoria": "tercera",
     "lema": "Cuidem lo nostre",
@@ -96,7 +96,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0004",
     "nombre": "Pintor Domingo-Guillem de Castro",
-    "barrio": "8B",
+    "barrio": "El Mercat",
     "artista": "Franciso Ribes López",
     "categoria": "tercera",
     "lema": "The fake art",
@@ -118,7 +118,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0005",
     "nombre": "Ciscar-Borriana",
-    "barrio": "1A",
+    "barrio": "La Gran Via",
     "artista": "Ernesto Cimas Ribera",
     "categoria": "primera",
     "lema": "El Naixement de la Primavera",
@@ -140,7 +140,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0006",
     "nombre": "Guillem Sorolla-Recaredo",
-    "barrio": "7B",
+    "barrio": "El Pilar",
     "artista": "Art de Foc",
     "categoria": "tercera",
     "lema": "De cine!",
@@ -162,7 +162,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0007",
     "nombre": "Carretera d'Escrivà-Coop. de Sant Ferran",
-    "barrio": "6C",
+    "barrio": "La Raiosa",
     "artista": "Joan Simó Arlandis",
     "categoria": "tercera",
     "lema": "Sacrifici",
@@ -184,7 +184,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0008",
     "nombre": "Visitació-Oriola",
-    "barrio": "6B",
+    "barrio": "Morvedre",
     "artista": "Xavier Herrero",
     "categoria": "tercera",
     "lema": "Nostra granja",
@@ -206,7 +206,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0009",
     "nombre": "Marqués de Montortal-Berní i Català",
-    "barrio": "2A",
+    "barrio": "Torrefiel",
     "artista": "Luis Espinosa Olmos",
     "categoria": "segunda",
     "lema": "Craks! la trepidant aventura de ser un número uno",
@@ -228,7 +228,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0010",
     "nombre": "Avinguda Ausiàs March-Na Rovella",
-    "barrio": "5C",
+    "barrio": "Malilla",
     "artista": "Víctor Caballero Gutiérrez",
     "categoria": "tercera",
     "lema": "Apocaliptic",
@@ -250,7 +250,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0011",
     "nombre": "Trinitat-Alboraia",
-    "barrio": "6B",
+    "barrio": "Trinitat",
     "artista": "José Antonio Marco",
     "categoria": "tercera",
     "lema": "Jeroglíficos",
@@ -272,7 +272,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0012",
     "nombre": "Ceramista Ros-Josep Maria Mortes Lerma",
-    "barrio": "2B",
+    "barrio": "Vara De Quart",
     "artista": "Falles i Fogueres Martínez Velló",
     "categoria": "segunda",
     "lema": "Temptacions",
@@ -294,7 +294,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0013",
     "nombre": "Manuel de Falla-Tamarindes",
-    "barrio": "4A",
+    "barrio": "Campanar",
     "artista": "Miguel March Azor",
     "categoria": "tercera",
     "lema": "World record",
@@ -316,7 +316,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0014",
     "nombre": "Quart-Túria",
-    "barrio": "8A",
+    "barrio": "El Botanic",
     "artista": "Rafael Vilches",
     "categoria": "tercera",
     "lema": "Mercat de Quart",
@@ -338,7 +338,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0015",
     "nombre": "Vilanova de Castelló-Horticultor Galán",
-    "barrio": "7A",
+    "barrio": "Tormos",
     "artista": "Mario N. Núñez Hernández",
     "categoria": "tercera",
     "lema": "Boogie nit",
@@ -360,7 +360,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0016",
     "nombre": "Baix-Mesó de Morella",
-    "barrio": "7C",
+    "barrio": "El Carme",
     "artista": "Cristian García Carrasco",
     "categoria": "tercera",
     "lema": "Zen per fora, foc per dins.",
@@ -382,7 +382,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0017",
     "nombre": "Pizarro-Ciril Amorós",
-    "barrio": "3A",
+    "barrio": "El Pla Del Remei",
     "artista": "Carlos Carsi García",
     "categoria": "tercera",
     "lema": "Vendeburras",
@@ -404,7 +404,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0018",
     "nombre": "Carabasses-En Gall",
-    "barrio": "5B",
+    "barrio": "El Mercat",
     "artista": "Pedro Espadero Colmenar",
     "categoria": "tercera",
     "lema": "Veo veo... Una Manxa molt viral!",
@@ -426,7 +426,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0019",
     "nombre": "Lleons-Poeta Mas i Ros",
-    "barrio": "5A",
+    "barrio": "Ciutat Jardi",
     "artista": "Fran Sierra Alarcón",
     "categoria": "tercera",
     "lema": "Equilibri",
@@ -448,7 +448,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0020",
     "nombre": "Avinguda de França-Alfred Toran i Olmos",
-    "barrio": "3A",
+    "barrio": "Penya-Roja",
     "artista": "Ximo Martí Fernández",
     "categoria": "tercera",
     "lema": "Desillucione en venezia",
@@ -470,7 +470,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0021",
     "nombre": "Sant Vicent de Paül-Dip. Clara Campoamor",
-    "barrio": "4B",
+    "barrio": "Els Orriols",
     "artista": "Vicente Julián García Pastor",
     "categoria": "tercera",
     "lema": "Connecta-des",
@@ -492,7 +492,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0022",
     "nombre": "En Sendra-Plaça Coll",
-    "barrio": "7C",
+    "barrio": "El Pilar",
     "artista": "Creaciones Zazu",
     "categoria": "tercera",
     "lema": "Histories valencianes",
@@ -514,7 +514,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0023",
     "nombre": "Plaça Pere María Orts i Bosch",
-    "barrio": "8C",
+    "barrio": "Soternes",
     "artista": "José Pascual Roda Fernando",
     "categoria": "tercera",
     "lema": "Imagingat",
@@ -536,7 +536,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0024",
     "nombre": "Lepant-Guillem de Castro",
-    "barrio": "6A",
+    "barrio": "El Botanic",
     "artista": "Anna Ruiz Sospedra",
     "categoria": "tercera",
     "lema": "Usuaris",
@@ -558,7 +558,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0025",
     "nombre": "Exposició-Misser Mascó",
-    "barrio": "E",
+    "barrio": "Exposicio",
     "artista": "Banyuls & Ruiz",
     "categoria": "especial",
     "lema": "Meditem",
@@ -580,7 +580,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0026",
     "nombre": "Costa i Borràs-Agustina d'Aragó",
-    "barrio": "4B",
+    "barrio": "L'Hort De Senabre",
     "artista": "Joan Simó Arlandis",
     "categoria": "tercera",
     "lema": "El desig",
@@ -602,7 +602,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0027",
     "nombre": "Avinguda de l'Oest",
-    "barrio": "1A",
+    "barrio": "Sant Francesc",
     "artista": "Paco Torres Josá",
     "categoria": "primera",
     "lema": "Sombra aquí, sombra allá ¡maquíllate!",
@@ -624,7 +624,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0028",
     "nombre": "Pintor Salvador Abril-Pere III El Gran",
-    "barrio": "5B",
+    "barrio": "Russafa",
     "artista": "Manuel García Lleonart",
     "categoria": "tercera",
     "lema": "Sensualitat",
@@ -646,7 +646,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0029",
     "nombre": "Jesús-Sant Francesc de Borja",
-    "barrio": "2A",
+    "barrio": "Arrancapins",
     "artista": "Paco Torres",
     "categoria": "segunda",
     "lema": "Tyché, destí o casualitat?",
@@ -668,7 +668,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0030",
     "nombre": "Cuba-Puerto Rico",
-    "barrio": "4A",
+    "barrio": "Russafa",
     "artista": "Gregorio Acebedo García",
     "categoria": "tercera",
     "lema": "(IA) ra qué?",
@@ -690,7 +690,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0031",
     "nombre": "Baró de San Petrillo-Leonor Jovani",
-    "barrio": "1B",
+    "barrio": "Benimaclet",
     "artista": "Arturo Vallés Bea",
     "categoria": "primera",
     "lema": "Quina bruixeria és això de la IA!",
@@ -712,7 +712,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0032",
     "nombre": "Barri de Sant Josep",
-    "barrio": "2B",
+    "barrio": "La Vega Baixa",
     "artista": "Lorenzo Fandos Ayoro",
     "categoria": "segunda",
     "lema": "Los siete magníficos",
@@ -734,7 +734,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0033",
     "nombre": "Doctor Gil i Morte-Doctor Vila Barberà",
-    "barrio": "2B",
+    "barrio": "Arrancapins",
     "artista": "Salva Bañuls y Néstor Ruiz",
     "categoria": "segunda",
     "lema": "esta cuina es una ruina",
@@ -756,7 +756,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0034",
     "nombre": "Avinguda Giorgeta-Roís de Corella",
-    "barrio": "4A",
+    "barrio": "Arrancapins",
     "artista": "Cristian García Carrasco",
     "categoria": "tercera",
     "lema": "Viatjar és viure",
@@ -778,7 +778,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0035",
     "nombre": "Calvo Acacio",
-    "barrio": "5A",
+    "barrio": "L'Hort De Senabre",
     "artista": "Vicente Chaveli y Martina Ghin",
     "categoria": "tercera",
     "lema": "Dichos y refranes",
@@ -800,7 +800,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0036",
     "nombre": "Carters-Litògraf Pasqual i Abad",
-    "barrio": "7C",
+    "barrio": "L'Hort De Senabre",
     "artista": "José Francisco Espinosa Pérez",
     "categoria": "tercera",
     "lema": "Contes chinos",
@@ -822,7 +822,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0037",
     "nombre": "Avinguda Regne de València-Duc de Calàbria",
-    "barrio": "E",
+    "barrio": "La Gran Via",
     "artista": "Sergio Musoles Ros",
     "categoria": "especial",
     "lema": "La falla del Regne ¡Animal!",
@@ -844,7 +844,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0038",
     "nombre": "Mestre Arambul Sanz-Campanar",
-    "barrio": "3B",
+    "barrio": "Campanar",
     "artista": "Enrique y Mario Cardells",
     "categoria": "tercera",
     "lema": "La (In)justicia",
@@ -866,7 +866,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0039",
     "nombre": "Cuba-Buenos Aires",
-    "barrio": "3B",
+    "barrio": "Russafa",
     "artista": "Cristian García Carrasco",
     "categoria": "tercera",
     "lema": "De fora vindran...",
@@ -888,7 +888,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0040",
     "nombre": "Just Vilar-Mercat del Cabanyal",
-    "barrio": "1A",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Xavier Herrero Martínez",
     "categoria": "primera",
     "lema": "Fem un truc?",
@@ -910,7 +910,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0041",
     "nombre": "Santa Genoveva Torres-Arquitecte Tolsà",
-    "barrio": "1A",
+    "barrio": "Sant Llorens",
     "artista": "Oscar Dols Molina",
     "categoria": "primera",
     "lema": "Bestial",
@@ -932,7 +932,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0042",
     "nombre": "Ramiro de Maeztu-Els Lleons",
-    "barrio": "1B",
+    "barrio": "Aiora",
     "artista": "Gotes de Foc C.B.",
     "categoria": "primera",
     "lema": "Matemàtiques",
@@ -954,7 +954,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0043",
     "nombre": "Manuel Melià i Fuster-Carles Cortina",
-    "barrio": "5C",
+    "barrio": "Benicalap",
     "artista": "Manuel García Lleonart",
     "categoria": "tercera",
     "lema": "Aixo si es una secta",
@@ -976,7 +976,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0044",
     "nombre": "Blas Gámez - Ángel Villena",
-    "barrio": "2B",
+    "barrio": "Ciutat De Les Arts I De Les Ciencies",
     "artista": "Fran Tarazona",
     "categoria": "segunda",
     "lema": "Històrica",
@@ -998,7 +998,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0045",
     "nombre": "Josep Maestre",
-    "barrio": "7B",
+    "barrio": "Tres Forques",
     "artista": "Iván Gómez Villalba",
     "categoria": "tercera",
     "lema": "Dioses",
@@ -1020,7 +1020,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0046",
     "nombre": "Pare Viñas-Agustín Lara",
-    "barrio": "6A",
+    "barrio": "Els Orriols",
     "artista": "Miguel Banaclocha Marín",
     "categoria": "tercera",
     "lema": "Aigua !",
@@ -1042,7 +1042,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0047",
     "nombre": "Barraca-Espadà",
-    "barrio": "3B",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Luis Espinosa Olmos",
     "categoria": "tercera",
     "lema": "En el pais dels jocs el tort és el rei",
@@ -1064,7 +1064,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0048",
     "nombre": "Progrés-Teatre de la Marina",
-    "barrio": "3C",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Daniel Pérez Martínez",
     "categoria": "tercera",
     "lema": "Somnis i llegendes",
@@ -1086,7 +1086,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0049",
     "nombre": "La Vall d'Albaida-La Canal de Navarrés",
-    "barrio": "8B",
+    "barrio": "Sant Pau",
     "artista": "Arturo Valles Bea",
     "categoria": "tercera",
     "lema": "Des-orientats",
@@ -1108,7 +1108,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0050",
     "nombre": "Plaça de l'Àngel",
-    "barrio": "8A",
+    "barrio": "El Carme",
     "artista": "Fet d'Encàrrec",
     "categoria": "tercera",
     "lema": "En Linea Recta",
@@ -1130,7 +1130,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0051",
     "nombre": "Mossén Josep Cuenca-Pinedo",
-    "barrio": "7A",
+    "barrio": "Pinedo",
     "artista": "A.Santaeulalia y Vicente Llácer",
     "categoria": "tercera",
     "lema": "Si fa sol, música es vol",
@@ -1152,7 +1152,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0052",
     "nombre": "Carrera de Sant Lluís-Avinguda Doctor Waksman",
-    "barrio": "3C",
+    "barrio": "En Corts",
     "artista": "Xavi Herrero",
     "categoria": "tercera",
     "lema": "O sole mío",
@@ -1174,7 +1174,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0053",
     "nombre": "Saineter Arniches-Arquitecte Ribes",
-    "barrio": "7B",
+    "barrio": "Soternes",
     "artista": "Isaac Argudo Molero",
     "categoria": "tercera",
     "lema": "L'inframon",
@@ -1196,7 +1196,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0054",
     "nombre": "Tomasos-Carles Cervera",
-    "barrio": "3C",
+    "barrio": "Russafa",
     "artista": "Joserra Lisarde",
     "categoria": "tercera",
     "lema": "Afortunats",
@@ -1218,7 +1218,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0055",
     "nombre": "Menéndez y Pelayo-Avinguda Catalunya",
-    "barrio": "4A",
+    "barrio": "Ciutat Universitaria",
     "artista": "Ignacio Ferrando Tamarit",
     "categoria": "tercera",
     "lema": "Qui no té faena, el dimoni li dona",
@@ -1262,7 +1262,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0057",
     "nombre": "Rosari-Plaça Calabuig",
-    "barrio": "4C",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Carlos Carsi García",
     "categoria": "tercera",
     "lema": "Art al carrer",
@@ -1284,7 +1284,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0058",
     "nombre": "Avinguda Campanar-Hipòlit Rovira",
-    "barrio": "5B",
+    "barrio": "El Calvari",
     "artista": "Agustín Torralba Soto",
     "categoria": "tercera",
     "lema": "Quién canta y baila.....",
@@ -1306,7 +1306,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0059",
     "nombre": "Ministre Luis Mayans-Argenter Suárez",
-    "barrio": "4B",
+    "barrio": "Morvedre",
     "artista": "Víctor Navarro Granero",
     "categoria": "tercera",
     "lema": "Començaments",
@@ -1328,7 +1328,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0060",
     "nombre": "Acàcies-Picaio",
-    "barrio": "5B",
+    "barrio": "Benicalap",
     "artista": "Xavi Herrero",
     "categoria": "tercera",
     "lema": "Pintant",
@@ -1350,7 +1350,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0061",
     "nombre": "Glòria-Felicitat-El Tremolar",
-    "barrio": "4A",
+    "barrio": "Castellar-L'Oliveral",
     "artista": "Álvaro Guija Moreno",
     "categoria": "tercera",
     "lema": "Gambito de falla",
@@ -1372,7 +1372,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0062",
     "nombre": "Plaça La Creu -Els Àngels",
-    "barrio": "5C",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Carlos Carsi García",
     "categoria": "tercera",
     "lema": "Chuntalletres",
@@ -1394,7 +1394,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0063",
     "nombre": "Sant Vicent-Marvà",
-    "barrio": "3A",
+    "barrio": "Arrancapins",
     "artista": "José Ramón Lisarde Ferrer",
     "categoria": "tercera",
     "lema": "Quina por...quería!!",
@@ -1416,7 +1416,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0064",
     "nombre": "Cadis-Mossén Femenia-Puerto Rico",
-    "barrio": "4C",
+    "barrio": "Russafa",
     "artista": "Estudio Chuky",
     "categoria": "tercera",
     "lema": "Històries de la transició",
@@ -1438,7 +1438,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0065",
     "nombre": "Goya-El Brasil",
-    "barrio": "4C",
+    "barrio": "Nou Moles",
     "artista": "Fede Alonso Andreu",
     "categoria": "tercera",
     "lema": "Un més de la família",
@@ -1460,7 +1460,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0066",
     "nombre": "Blasco Ibáñez-Mestre Ripoll",
-    "barrio": "FC",
+    "barrio": "Betero",
     "artista": "La Comissió",
     "categoria": "tercera",
     "lema": "Un castillo de naipes en el pais de las maravillas",
@@ -1482,7 +1482,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0067",
     "nombre": "Carrera de Malilla-Enginyer J. Benlloch",
-    "barrio": "2A",
+    "barrio": "Malilla",
     "artista": "García Ribes Artes Plasticas",
     "categoria": "segunda",
     "lema": "Geopolítica: Juego de Mesa",
@@ -1504,7 +1504,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0068",
     "nombre": "Camí de Barcelona-Travessera i Camí de Montcada",
-    "barrio": "6B",
+    "barrio": "Tormos",
     "artista": "Miguel Banaclocha Marín",
     "categoria": "tercera",
     "lema": "Pont de fusta (la estació)",
@@ -1526,7 +1526,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0069",
     "nombre": "Barri de Sant Isidre",
-    "barrio": "3B",
+    "barrio": "Sant Isidre",
     "artista": "Vicente Herrando Soler",
     "categoria": "tercera",
     "lema": "M´estic afobiant!",
@@ -1548,7 +1548,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0070",
     "nombre": "Sagunt-Sant Guillem",
-    "barrio": "5B",
+    "barrio": "Morvedre",
     "artista": "Mario N. Núñez Hernández",
     "categoria": "tercera",
     "lema": "Namaste",
@@ -1570,7 +1570,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0071",
     "nombre": "Borrull-Socors",
-    "barrio": "5A",
+    "barrio": "El Botanic",
     "artista": "Paco Ribes + Pîchiavo",
     "categoria": "tercera",
     "lema": "Per ofrenar",
@@ -1592,7 +1592,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0072",
     "nombre": "Benimodo-Enginyer Dicenta",
-    "barrio": "7B",
+    "barrio": "Benimamet",
     "artista": "Antonio Sales",
     "categoria": "tercera",
     "lema": "Un dia de platja",
@@ -1614,7 +1614,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0073",
     "nombre": "Corretgeria-Bany dels Pavesos",
-    "barrio": "5C",
+    "barrio": "La Seu",
     "artista": "Agustín Torralba Soto",
     "categoria": "tercera",
     "lema": "Els banys",
@@ -1636,7 +1636,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0074",
     "nombre": "Palleter-Erudit Orellana",
-    "barrio": "4A",
+    "barrio": "Arrancapins",
     "artista": "Manuel Martín Huguet",
     "categoria": "tercera",
     "lema": "Trencacaps",
@@ -1658,7 +1658,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0075",
     "nombre": "Plaça Pintor Segrelles",
-    "barrio": "1B",
+    "barrio": "Arrancapins",
     "artista": "José Ramón Devis Benet",
     "categoria": "primera",
     "lema": "Desses i Deus en el metavers",
@@ -1680,7 +1680,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0076",
     "nombre": "Veneçuela-Agustí Sales",
-    "barrio": "4C",
+    "barrio": "La Raiosa",
     "artista": "Francisco José Sierra Alarcón",
     "categoria": "tercera",
     "lema": "Xe Que Por",
@@ -1702,7 +1702,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0077",
     "nombre": "Puebla de Valverde-II República Espanyola",
-    "barrio": "7C",
+    "barrio": "Vara De Quart",
     "artista": "Carlos Sevilla Lieto",
     "categoria": "tercera",
     "lema": "El ajedrez",
@@ -1724,7 +1724,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0078",
     "nombre": "Conchita Piquer-Monestir de Poblet",
-    "barrio": "7A",
+    "barrio": "El Calvari",
     "artista": "Antonio Benavente Alcaina",
     "categoria": "tercera",
     "lema": "Marionetes",
@@ -1746,7 +1746,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0079",
     "nombre": "República Argentina-Doctor Pallarés Iranzo",
-    "barrio": "5A",
+    "barrio": "L'Amistat",
     "artista": "David Zahonero del Fresno",
     "categoria": "tercera",
     "lema": "Ochentame otra vez",
@@ -1768,7 +1768,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0080",
     "nombre": "Lo Rat Penat",
-    "barrio": "1B",
+    "barrio": "Cami Fondo",
     "artista": "Joserra Lisarde",
     "categoria": "primera",
     "lema": "Anem a contar mentires tra-la-rá",
@@ -1790,7 +1790,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0081",
     "nombre": "Mare de Déu de la Cabeça-J.M. Mortes Lerma",
-    "barrio": "6C",
+    "barrio": "Vara De Quart",
     "artista": "Manuel García Lleonart",
     "categoria": "tercera",
     "lema": "En molt d'estil",
@@ -1812,7 +1812,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0082",
     "nombre": "Santiago Rusiñol-Comte de Lumiares",
-    "barrio": "4B",
+    "barrio": "Els Orriols",
     "artista": "Fran Santonja- Arte Efímero",
     "categoria": "tercera",
     "lema": "EL Paradis Perdut",
@@ -1834,7 +1834,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0083",
     "nombre": "Poeta Alberola-Totana",
-    "barrio": "3B",
+    "barrio": "Nou Moles",
     "artista": "Víctor Hugo Giner Blasco",
     "categoria": "tercera",
     "lema": "Tornem enrrere",
@@ -1856,7 +1856,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0084",
     "nombre": "Doctor Joan Josep Dómine-Port",
-    "barrio": "4A",
+    "barrio": "El Grau",
     "artista": "Fet d´Encàrrec",
     "categoria": "tercera",
     "lema": "Per un futur de colors",
@@ -1878,7 +1878,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0085",
     "nombre": "Pintor Stolz-Burgos",
-    "barrio": "7A",
+    "barrio": "Nou Moles",
     "artista": "Paco y David",
     "categoria": "tercera",
     "lema": "L'arc d'Artemisa",
@@ -1900,7 +1900,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0086",
     "nombre": "Cedre-Explorador Andrés",
-    "barrio": "8A",
+    "barrio": "Ciutat Jardi",
     "artista": "La Comissió",
     "categoria": "tercera",
     "lema": "Somnis de fusta",
@@ -1922,7 +1922,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0087",
     "nombre": "Marqués de Caro-Doctor Chiarri",
-    "barrio": "7C",
+    "barrio": "El Carme",
     "artista": "Xavi Bonilla",
     "categoria": "tercera",
     "lema": "Infancia",
@@ -1944,7 +1944,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0088",
     "nombre": "Cases de Bàrcena",
-    "barrio": "8A",
+    "barrio": "Les Cases De Barcena",
     "artista": "Álvaro Dutrús Montes",
     "categoria": "tercera",
     "lema": "El crepuscle dels deus",
@@ -1966,7 +1966,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0089",
     "nombre": "Daroca-Pare Viñas",
-    "barrio": "7B",
+    "barrio": "Els Orriols",
     "artista": "Ignacio Ferrando Tamarit",
     "categoria": "tercera",
     "lema": "Cuento de invierno",
@@ -1988,7 +1988,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0090",
     "nombre": "Pare Alegre-Enric Navarro",
-    "barrio": "6A",
+    "barrio": "Benimaclet",
     "artista": "Roberto Climent Cremades",
     "categoria": "tercera",
     "lema": "De por",
@@ -2010,7 +2010,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0091",
     "nombre": "Indústria-Sants Just i Pastor",
-    "barrio": "2A",
+    "barrio": "Aiora",
     "artista": "Pasky Roda",
     "categoria": "segunda",
     "lema": "Falles e Vents",
@@ -2032,7 +2032,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0092",
     "nombre": "Arxiduc Carles-Xiva",
-    "barrio": "3A",
+    "barrio": "Patraix",
     "artista": "Oscar García",
     "categoria": "tercera",
     "lema": "Temps no fugit",
@@ -2054,7 +2054,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0093",
     "nombre": "Joan Baptista Vives",
-    "barrio": "8A",
+    "barrio": "Nou Moles",
     "artista": "David Zahonero del Fresno",
     "categoria": "tercera",
     "lema": "Superfalla",
@@ -2076,7 +2076,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0094",
     "nombre": "Polo y Peyrolón-Ciutat de Mula",
-    "barrio": "6A",
+    "barrio": "Mestalla",
     "artista": "Mario N. Núñez Hernández",
     "categoria": "tercera",
     "lema": "El cortador de Bambú",
@@ -2098,7 +2098,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0095",
     "nombre": "Carcaixent-Compromís de Casp",
-    "barrio": "8A",
+    "barrio": "Patraix",
     "artista": "David Sanruperto Pérez",
     "categoria": "tercera",
     "lema": "Falla del Drac",
@@ -2120,7 +2120,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0096",
     "nombre": "Poetes Anònims-Real de Gandia",
-    "barrio": "8C",
+    "barrio": "Cami De Vera",
     "artista": "Arturo Valles Bea",
     "categoria": "tercera",
     "lema": "Es cosa del Dimoni",
@@ -2142,7 +2142,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0097",
     "nombre": "Olivereta-Cerdà i Rico",
-    "barrio": "4B",
+    "barrio": "Nou Moles",
     "artista": "García Ribas Artes Plásticas",
     "categoria": "tercera",
     "lema": "Feliç dia del pare",
@@ -2164,7 +2164,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0098",
     "nombre": "Jerónima Galés-Litògraf Pascual i Abad",
-    "barrio": "1A",
+    "barrio": "L'Hort De Senabre",
     "artista": "Luís Espinosa Olmos",
     "categoria": "primera",
     "lema": "Sobre rodes... i a lo loco!",
@@ -2186,7 +2186,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0099",
     "nombre": "Arquitecte Alfaro-Francesc Cubells",
-    "barrio": "4A",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Miguel Banaclocha Marín",
     "categoria": "tercera",
     "lema": "Paga Fiestas",
@@ -2208,7 +2208,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0100",
     "nombre": "Azcàrraga-Ferran el Catòlic",
-    "barrio": "3B",
+    "barrio": "La Petxina",
     "artista": "José Ramón Lisarde Ferrer",
     "categoria": "tercera",
     "lema": "¡Volem maaambo!",
@@ -2230,7 +2230,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0101",
     "nombre": "Sèneca-Poeta Mas i Ros",
-    "barrio": "6C",
+    "barrio": "L'Amistat",
     "artista": "Roberto Climent Cremades",
     "categoria": "tercera",
     "lema": "Tiempo de cambios",
@@ -2252,7 +2252,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0102",
     "nombre": "Arxiduc Carles-Músic Gomis",
-    "barrio": "1B",
+    "barrio": "Safranar",
     "artista": "Ernesto Cimas Ribera",
     "categoria": "primera",
     "lema": "Innovació vs tradició",
@@ -2274,7 +2274,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0103",
     "nombre": "Guillem de Castro-Triador",
-    "barrio": "8B",
+    "barrio": "El Pilar",
     "artista": "Celso Sierra Barberá",
     "categoria": "tercera",
     "lema": "Mediterrani",
@@ -2296,7 +2296,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0104",
     "nombre": "Isaac Peral-Méndez Núñez",
-    "barrio": "5A",
+    "barrio": "El Grau",
     "artista": "Ximo Martí Fernández",
     "categoria": "tercera",
     "lema": "Donant la nota",
@@ -2318,7 +2318,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0105",
     "nombre": "Duc de Gaeta-La Pobla de Farnals",
-    "barrio": "1B",
+    "barrio": "Albors",
     "artista": "Art En Foc",
     "categoria": "primera",
     "lema": "Quins elements",
@@ -2340,7 +2340,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0106",
     "nombre": "Poeta Emili Baró-Enric Ginesta",
-    "barrio": "5B",
+    "barrio": "Cami De Vera",
     "artista": "Víctor Caballero Gutiérrez",
     "categoria": "tercera",
     "lema": "Equilibri",
@@ -2362,7 +2362,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0107",
     "nombre": "Avinguda Malva-Rosa-Antoni Ponz-Cavite",
-    "barrio": "1B",
+    "barrio": "La Malva-Rosa",
     "artista": "SacabutxART",
     "categoria": "primera",
     "lema": "Migracions",
@@ -2384,7 +2384,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0108",
     "nombre": "Àngel Villena-Pintor Sabater",
-    "barrio": "8A",
+    "barrio": "Na Rovella",
     "artista": "Víctor Navarro Granero",
     "categoria": "tercera",
     "lema": "Riscos",
@@ -2406,7 +2406,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0109",
     "nombre": "Illes Canàries-Trafalgar",
-    "barrio": "1A",
+    "barrio": "La Creu Del Grau",
     "artista": "Vicente Herrando Soler",
     "categoria": "primera",
     "lema": "Somiar es gratis?.de moment",
@@ -2428,7 +2428,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0110",
     "nombre": "Plaça del Negret",
-    "barrio": "6A",
+    "barrio": "La Seu",
     "artista": "Lorenzo Fandos Ayoro",
     "categoria": "tercera",
     "lema": "Bé o Mal?",
@@ -2450,7 +2450,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0111",
     "nombre": "Sants Just i Pastor-Serradora",
-    "barrio": "5A",
+    "barrio": "Aiora",
     "artista": "Pedro Espadero Colmenar",
     "categoria": "tercera",
     "lema": "Embruixats",
@@ -2472,7 +2472,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0112",
     "nombre": "Plaça Lope de Vega",
-    "barrio": "3B",
+    "barrio": "La Seu",
     "artista": "Pedro Vicente Baenas García",
     "categoria": "tercera",
     "lema": "Encantats",
@@ -2494,7 +2494,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0113",
     "nombre": "Aras de Alpuente-Castell de Pop",
-    "barrio": "4A",
+    "barrio": "Natzaret",
     "artista": "Arturo Valles Bea",
     "categoria": "tercera",
     "lema": "I love valencia",
@@ -2516,7 +2516,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0114",
     "nombre": "",
-    "barrio": "Valencia",
+    "barrio": "Benicalap",
     "artista": "",
     "categoria": "tercera",
     "lema": "",
@@ -2538,7 +2538,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0115",
     "nombre": "Josep Maria Bayarri-Los Isidros",
-    "barrio": "7A",
+    "barrio": "La Llum",
     "artista": "Salvador Espert Corachán",
     "categoria": "tercera",
     "lema": "Que ve el llop!",
@@ -2560,7 +2560,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0116",
     "nombre": "Mestre Aguilar-Maties Perelló",
-    "barrio": "6A",
+    "barrio": "Russafa",
     "artista": "Eliot García Martín",
     "categoria": "tercera",
     "lema": "Maestros del Fuego",
@@ -2582,7 +2582,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0117",
     "nombre": "Antiga Senda de Senent-Albereda",
-    "barrio": "8A",
+    "barrio": "Mestalla",
     "artista": "Art de Foc",
     "categoria": "tercera",
     "lema": "Si sol fa... el palau sona. el fallero",
@@ -2604,7 +2604,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0118",
     "nombre": "Espartero-Ramón y Cajal",
-    "barrio": "1A",
+    "barrio": "La Roqueta",
     "artista": "Vicente Manuel Martínez Aparici",
     "categoria": "primera",
     "lema": "Desengany",
@@ -2626,7 +2626,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0119",
     "nombre": "Santa Cruz de Tenerife",
-    "barrio": "6A",
+    "barrio": "Tres Forques",
     "artista": "Álvaro Dutrús Montes",
     "categoria": "tercera",
     "lema": "Vikingos que barbaritat!",
@@ -2648,7 +2648,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0120",
     "nombre": "Menorca-Lluís Bolinches",
-    "barrio": "7C",
+    "barrio": "Penya-Roja",
     "artista": "Francisco Dauver Estopiña",
     "categoria": "tercera",
     "lema": "Tot se crema",
@@ -2670,7 +2670,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0121",
     "nombre": "Lluís Lamarca-Velázquez",
-    "barrio": "3C",
+    "barrio": "Nou Moles",
     "artista": "Art En Foc",
     "categoria": "tercera",
     "lema": "Valentia sacra est",
@@ -2692,7 +2692,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0122",
     "nombre": "Camí de Montcada-Pintor Jacomart",
-    "barrio": "4C",
+    "barrio": "Benicalap",
     "artista": "Pepe Sales",
     "categoria": "tercera",
     "lema": "Autèntic",
@@ -2714,7 +2714,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0123",
     "nombre": "Llanterna-Na Rovella-Avinguda de l’Oest",
-    "barrio": "1A",
+    "barrio": "El Mercat",
     "artista": "Fernando Llopis Torres",
     "categoria": "primera",
     "lema": "El verí",
@@ -2736,7 +2736,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0124",
     "nombre": "Misser Rabassa-Poeta Maragall",
-    "barrio": "8A",
+    "barrio": "La Raiosa",
     "artista": "Amparo Ordaz Ceballos",
     "categoria": "tercera",
     "lema": "L´Almassereta",
@@ -2758,7 +2758,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0125",
     "nombre": "Portal de la Valldigna-Salines",
-    "barrio": "7B",
+    "barrio": "El Carme",
     "artista": "Álvaro Guija Moreno",
     "categoria": "tercera",
     "lema": "Bus turistic al carmen",
@@ -2780,7 +2780,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0126",
     "nombre": "Illes Canàries-Dama d'Elx",
-    "barrio": "3A",
+    "barrio": "La Creu Del Grau",
     "artista": "Javier Rico Catalán",
     "categoria": "tercera",
     "lema": "El sexe és vida",
@@ -2802,7 +2802,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0127",
     "nombre": "Quart Extramurs-Velázquez",
-    "barrio": "1A",
+    "barrio": "Nou Moles",
     "artista": "Víctor Hugo Giner Blasco",
     "categoria": "primera",
     "lema": "Rebentem-ho tot!!",
@@ -2824,7 +2824,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0128",
     "nombre": "Dalt-Sant Tomàs",
-    "barrio": "7A",
+    "barrio": "El Carme",
     "artista": "Antonio Benavente Alcaina",
     "categoria": "tercera",
     "lema": "Dels 90 als 00s",
@@ -2846,7 +2846,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0129",
     "nombre": "Pare Domènech-Avinguda Pius XII",
-    "barrio": "7A",
+    "barrio": "Campanar",
     "artista": "Sergio García",
     "categoria": "tercera",
     "lema": "Arreu del mòn",
@@ -2868,7 +2868,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0130",
     "nombre": "Sant Pere-Mare de Déu de la Vallivana",
-    "barrio": "5C",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Rafael Iván Esteller Peris",
     "categoria": "tercera",
     "lema": "Mare natura",
@@ -2890,7 +2890,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0131",
     "nombre": "Plaça Sequiota-El Palmar",
-    "barrio": "4C",
+    "barrio": "El Palmar",
     "artista": "Creaciones Zazu",
     "categoria": "tercera",
     "lema": "Invasió xinesa",
@@ -2912,7 +2912,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0132",
     "nombre": "En Plom-Guillem de Castro",
-    "barrio": "6B",
+    "barrio": "El Pilar",
     "artista": "Agustín Torralba Soto",
     "categoria": "tercera",
     "lema": "Entre portes i festes",
@@ -2934,7 +2934,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0133",
     "nombre": "Suïssa-L'Alquería del Favero",
-    "barrio": "8C",
+    "barrio": "La Punta",
     "artista": "Paco y David",
     "categoria": "tercera",
     "lema": "Un any de màgia",
@@ -2956,7 +2956,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0134",
     "nombre": "Avinguda Pianista Martínez Carrasco-Eslida",
-    "barrio": "8B",
+    "barrio": "Malilla",
     "artista": "Fet d´Encàrrec",
     "categoria": "tercera",
     "lema": "I si...?",
@@ -2978,7 +2978,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0135",
     "nombre": "Sueca-Literat Azorín",
-    "barrio": "E",
+    "barrio": "Russafa",
     "artista": "Pedro Santaeulalia Serrán",
     "categoria": "especial",
     "lema": "Onírica",
@@ -3000,7 +3000,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0136",
     "nombre": "Cadis-Literat Azorín",
-    "barrio": "3A",
+    "barrio": "Russafa",
     "artista": "SacabutxART",
     "categoria": "tercera",
     "lema": "Amore Amore",
@@ -3022,7 +3022,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0137",
     "nombre": "Iecla-Cardenal Benlloch",
-    "barrio": "7A",
+    "barrio": "L'Amistat",
     "artista": "Fernando López Cabañero",
     "categoria": "tercera",
     "lema": "Invents al segle XX",
@@ -3044,7 +3044,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0138",
     "nombre": "Sant Rafael-Antón Martín",
-    "barrio": "5A",
+    "barrio": "La Malva-Rosa",
     "artista": "Miguel March Azor",
     "categoria": "tercera",
     "lema": "Predicciones",
@@ -3066,7 +3066,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0139",
     "nombre": "Alqueries de Bellver-Garbí",
-    "barrio": "3B",
+    "barrio": "Benicalap",
     "artista": "Juan Jesús García Pérez",
     "categoria": "tercera",
     "lema": "Rubicon",
@@ -3088,7 +3088,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0140",
     "nombre": "Josep Maria Haro-Poeta Mas i Ros",
-    "barrio": "7B",
+    "barrio": "L'Illa Perduda",
     "artista": "Rubén Vela Romero de Ávila",
     "categoria": "tercera",
     "lema": "Somnis d'Arabia",
@@ -3110,7 +3110,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0141",
     "nombre": "Doctor Manuel Candela-Avinguda del Port",
-    "barrio": "6A",
+    "barrio": "Aiora",
     "artista": "Fernando López Cabañero",
     "categoria": "tercera",
     "lema": "Supercalifragilisticoespialidoso",
@@ -3132,7 +3132,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0142",
     "nombre": "Francesc Climent-L'Uruguai",
-    "barrio": "5A",
+    "barrio": "La Raiosa",
     "artista": "Deivid Belenguer Ramírez",
     "categoria": "tercera",
     "lema": "Lluitadora",
@@ -3154,7 +3154,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0143",
     "nombre": "Pintor Pasqual Capuz-Fontanars",
-    "barrio": "5A",
+    "barrio": "Safranar",
     "artista": "Jesús Liñana Ferrando",
     "categoria": "tercera",
     "lema": "A Ballar per callar ...",
@@ -3176,7 +3176,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0144",
     "nombre": "Ramon de Rocafull-Comte d'Alaquàs",
-    "barrio": "4B",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Francisco Javier Sierra Alarcón",
     "categoria": "tercera",
     "lema": "Mirando al mar soñé",
@@ -3198,7 +3198,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0145",
     "nombre": "Rubén Vela-Avinguda Doctor Waksman",
-    "barrio": "5B",
+    "barrio": "En Corts",
     "artista": "Antonio Benavente Alcaina",
     "categoria": "tercera",
     "lema": "Futur imperfecte",
@@ -3220,7 +3220,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0146",
     "nombre": "Jacint Labaila-Manuel Simó",
-    "barrio": "6B",
+    "barrio": "Patraix",
     "artista": "Arturo Vallés Bea",
     "categoria": "tercera",
     "lema": "Las mil y una",
@@ -3242,7 +3242,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0147",
     "nombre": "Grups Mare de Déu del Carme",
-    "barrio": "4B",
+    "barrio": "La Carrasca",
     "artista": "Francisco Fuentes Moreno",
     "categoria": "tercera",
     "lema": "Amor a la tercera edat",
@@ -3264,7 +3264,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0148",
     "nombre": "Cervantes-Pare Jofré",
-    "barrio": "3C",
+    "barrio": "La Roqueta",
     "artista": "Mauricio Moreira Santos",
     "categoria": "tercera",
     "lema": "Mare nostrum",
@@ -3286,7 +3286,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0149",
     "nombre": "Plaça Sant Bult",
-    "barrio": "4C",
+    "barrio": "La Xerea",
     "artista": "Art En Foc",
     "categoria": "tercera",
     "lema": "Poc trellat i molta  ia",
@@ -3308,7 +3308,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0150",
     "nombre": "Pare Lluís Navarro-Remunta",
-    "barrio": "8C",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "La Comissió",
     "categoria": "tercera",
     "lema": "Els 30",
@@ -3330,7 +3330,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0151",
     "nombre": "Sant Vicent-Periodista Azzati",
-    "barrio": "1A",
+    "barrio": "Sant Francesc",
     "artista": "Juane Cortell Dasca",
     "categoria": "primera",
     "lema": "El joc del poder",
@@ -3352,7 +3352,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0152",
     "nombre": "Joaquim Costa-Comte d'Altea",
-    "barrio": "1B",
+    "barrio": "La Gran Via",
     "artista": "Manolo Martín - Marina Puche",
     "categoria": "primera",
     "lema": "Perrhijos",
@@ -3374,7 +3374,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0153",
     "nombre": "Hernández Lázaro-Vall de la Ballestera",
-    "barrio": "8C",
+    "barrio": "Sant Pau",
     "artista": "Isidro Martínez Aparicio",
     "categoria": "tercera",
     "lema": "El marquesat del pouet",
@@ -3396,7 +3396,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0154",
     "nombre": "Plaça del Poble.-Sant Roc",
-    "barrio": "8C",
+    "barrio": "Carpesa",
     "artista": "Cristhian García Carrasco",
     "categoria": "tercera",
     "lema": "Estem en-fil-ats!",
@@ -3418,7 +3418,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0155",
     "nombre": "Sapadors-Vicent Lleó",
-    "barrio": "2A",
+    "barrio": "En Corts",
     "artista": "SacabutxART",
     "categoria": "segunda",
     "lema": "Desllenguats",
@@ -3440,7 +3440,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0156",
     "nombre": "Baró de Patraix-Conca",
-    "barrio": "4B",
+    "barrio": "Patraix",
     "artista": "Enrique Andrés Alandi",
     "categoria": "tercera",
     "lema": "Que puta es la vellea",
@@ -3462,7 +3462,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0157",
     "nombre": "Serra Martés-Miguel Servet",
-    "barrio": "3C",
+    "barrio": "Benicalap",
     "artista": "Enrique Andrés Alandí",
     "categoria": "tercera",
     "lema": "Les aparences enganyen",
@@ -3484,7 +3484,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0158",
     "nombre": "Marqués de Lozoya-Poeta Josep Cervera i Grifol",
-    "barrio": "6C",
+    "barrio": "Ciutat De Les Arts I De Les Ciencies",
     "artista": "Fallas i Fogueres Paco y David",
     "categoria": "tercera",
     "lema": "Cinema paradiso",
@@ -3506,7 +3506,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0159",
     "nombre": "Avinguda de la Plata-La Senyera",
-    "barrio": "6B",
+    "barrio": "Na Rovella",
     "artista": "Sergio Carrero Melián",
     "categoria": "tercera",
     "lema": "¿Quien Caza a Quien?",
@@ -3528,7 +3528,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0160",
     "nombre": "Gravador Esteve-Ciril Amorós",
-    "barrio": "1A",
+    "barrio": "El Pla Del Remei",
     "artista": "Paco Giner Núñez",
     "categoria": "primera",
     "lema": "Discordia",
@@ -3550,7 +3550,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0161",
     "nombre": "Gonzalo Tejero Langarita - Vicente Chuliá Campos",
-    "barrio": "4C",
+    "barrio": "Malilla",
     "artista": "Vicente Julián García Pastor",
     "categoria": "tercera",
     "lema": "ELA",
@@ -3572,7 +3572,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0162",
     "nombre": "Ripalda-Soguers",
-    "barrio": "5C",
+    "barrio": "El Carme",
     "artista": "José Sales Marco",
     "categoria": "tercera",
     "lema": "Metamorfosis",
@@ -3594,7 +3594,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0163",
     "nombre": "Blocs Platja",
-    "barrio": "2B",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Víctor Hugo Giner Blasco",
     "categoria": "segunda",
     "lema": "Substantia",
@@ -3616,7 +3616,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0164",
     "nombre": "Ciutat de l'Artista Faller",
-    "barrio": "5C",
+    "barrio": "Ciutat Fallera",
     "artista": "Manuel García Lleonart",
     "categoria": "tercera",
     "lema": "Evolució fallera",
@@ -3638,7 +3638,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0165",
     "nombre": "Marqués de Montortal-Josep Esteve",
-    "barrio": "3C",
+    "barrio": "Torrefiel",
     "artista": "Fernando Llopis Torres",
     "categoria": "tercera",
     "lema": "Animalaes vikingues i no tan vikingues",
@@ -3660,7 +3660,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0166",
     "nombre": "Avinguda de Valladolid-Enginyer Vicent Pichó",
-    "barrio": "5B",
+    "barrio": "Cami De Vera",
     "artista": "José Antonio Marco Gómez",
     "categoria": "tercera",
     "lema": "Dualidad",
@@ -3682,7 +3682,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0167",
     "nombre": "Pius XI-Fontanars",
-    "barrio": "3A",
+    "barrio": "Safranar",
     "artista": "Agustín Torralba Soto",
     "categoria": "tercera",
     "lema": "Dando el cante",
@@ -3704,7 +3704,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0168",
     "nombre": "Albacete-Marvà",
-    "barrio": "2A",
+    "barrio": "Arrancapins",
     "artista": "Sergio Carrero Melián",
     "categoria": "segunda",
     "lema": "Perfumes",
@@ -3726,7 +3726,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0169",
     "nombre": "Lluís Oliag-Mariola-Granada",
-    "barrio": "8A",
+    "barrio": "Montolivet",
     "artista": "David Malucha",
     "categoria": "tercera",
     "lema": "Perill, Vedat de Caça",
@@ -3748,7 +3748,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0170",
     "nombre": "Plaça Mossén Milà",
-    "barrio": "8A",
+    "barrio": "La Xerea",
     "artista": "Vicente Albert García",
     "categoria": "tercera",
     "lema": "Bora mar",
@@ -3770,7 +3770,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0171",
     "nombre": "Montortal-Torrefiel",
-    "barrio": "3A",
+    "barrio": "Torrefiel",
     "artista": "Toni Fornes",
     "categoria": "tercera",
     "lema": "Negacionisme",
@@ -3792,7 +3792,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0172",
     "nombre": "Pelai-Matemàtic Marzal",
-    "barrio": "4B",
+    "barrio": "La Roqueta",
     "artista": "Art de Foc",
     "categoria": "tercera",
     "lema": "En Directe",
@@ -3814,7 +3814,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0173",
     "nombre": "Plaça del Pilar",
-    "barrio": "E",
+    "barrio": "El Pilar",
     "artista": "Paco Torres Josa",
     "categoria": "especial",
     "lema": "La Nit",
@@ -3836,7 +3836,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0174",
     "nombre": "Campament-La Iessa",
-    "barrio": "6B",
+    "barrio": "Benimamet",
     "artista": "Álvaro Dutrús Montes",
     "categoria": "tercera",
     "lema": "Aduladors",
@@ -3858,7 +3858,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0175",
     "nombre": "Avinguda Peris i Valero-Cuba",
-    "barrio": "3C",
+    "barrio": "Russafa",
     "artista": "Ignacio Ferrando Tamarit",
     "categoria": "tercera",
     "lema": "Verum Mulieres",
@@ -3880,7 +3880,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0176",
     "nombre": "Avinguda Mestre Rodrigo-General Avilés",
-    "barrio": "3A",
+    "barrio": "Sant Pau",
     "artista": "Enrique Cardells Martínez",
     "categoria": "tercera",
     "lema": "Impossibles",
@@ -3902,7 +3902,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0177",
     "nombre": "Conserva-Berenguer Mallol",
-    "barrio": "4A",
+    "barrio": "Aiora",
     "artista": "Miguel Banaclocha Marín",
     "categoria": "tercera",
     "lema": "Cami a Santiago",
@@ -3924,7 +3924,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0178",
     "nombre": "Fontcalent-Lebon",
-    "barrio": "6B",
+    "barrio": "La Creu Del Grau",
     "artista": "Pascual Montes Carrasco",
     "categoria": "tercera",
     "lema": "Experiments",
@@ -3946,7 +3946,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0179",
     "nombre": "Bilbao-Maximilià Thous",
-    "barrio": "2B",
+    "barrio": "Sant Antoni",
     "artista": "Chimo Martí Fernández",
     "categoria": "segunda",
     "lema": "Te comería a versos",
@@ -3968,7 +3968,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0180",
     "nombre": "Pere Cabanes-Comte de Lumiares",
-    "barrio": "6A",
+    "barrio": "Torrefiel",
     "artista": "David San Ruperto",
     "categoria": "tercera",
     "lema": "El regreso de Tutanmamon",
@@ -3990,7 +3990,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0181",
     "nombre": "Norman Bethune - Guillem Despuig",
-    "barrio": "6C",
+    "barrio": "Tres Forques",
     "artista": "Manuel Soriano Cruza",
     "categoria": "tercera",
     "lema": "El show de norman",
@@ -4012,7 +4012,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0182",
     "nombre": "Peu de La Creu-En Joan de Vila-Rasa",
-    "barrio": "2A",
+    "barrio": "El Pilar",
     "artista": "Ximo Esteve Mares",
     "categoria": "segunda",
     "lema": "Aeloria 'la cobdicia que conquesta la magia'",
@@ -4034,7 +4034,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0183",
     "nombre": "Ferros-Joan Baptista Perales",
-    "barrio": "2B",
+    "barrio": "Aiora",
     "artista": "Miguel Ángel Santaeulalia Serrán",
     "categoria": "segunda",
     "lema": "Meravelles",
@@ -4056,7 +4056,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0184",
     "nombre": "Plaça Mercé",
-    "barrio": "1A",
+    "barrio": "El Mercat",
     "artista": "Art En Foc",
     "categoria": "primera",
     "lema": "Expecto fallorum",
@@ -4078,7 +4078,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0185",
     "nombre": "Blanqueries",
-    "barrio": "7C",
+    "barrio": "El Carme",
     "artista": "Javier Gómez Gil (Javi Valiente)",
     "categoria": "tercera",
     "lema": "Mentides en construcció",
@@ -4100,7 +4100,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0186",
     "nombre": "Plaça Patraix",
-    "barrio": "5B",
+    "barrio": "Patraix",
     "artista": "Vicente Julián García Pastor",
     "categoria": "tercera",
     "lema": "Esfinge",
@@ -4122,7 +4122,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0187",
     "nombre": "Plaça Vicent Castell Maíques",
-    "barrio": "7C",
+    "barrio": "La Llum",
     "artista": "Ramón Lemos Sierra",
     "categoria": "tercera",
     "lema": "Comença la funció",
@@ -4166,7 +4166,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0189",
     "nombre": "Plaça Jesús",
-    "barrio": "6B",
+    "barrio": "La Raiosa",
     "artista": "David Moreno Terrón",
     "categoria": "tercera",
     "lema": "Saló de ball",
@@ -4188,7 +4188,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0190",
     "nombre": "Avinguda.Burjassot-Serra d'Agullent",
-    "barrio": "7B",
+    "barrio": "Ciutat Fallera",
     "artista": "Manolo García Vareta",
     "categoria": "tercera",
     "lema": "Mar de lios",
@@ -4210,7 +4210,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0191",
     "nombre": "Llorers-Arquitecte Lucini",
-    "barrio": "6A",
+    "barrio": "Tormos",
     "artista": "Isidro Martínez Aparicio",
     "categoria": "tercera",
     "lema": "Qué porta la paella?",
@@ -4232,7 +4232,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0192",
     "nombre": "Vicent Sancho Tello-Xile",
-    "barrio": "1B",
+    "barrio": "Mestalla",
     "artista": "J.Ramón Núñez- J de Juanes",
     "categoria": "primera",
     "lema": "El Temple del Tribut",
@@ -4254,7 +4254,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0193",
     "nombre": "Avinguda de Burjassot-Joaquim Ballester",
-    "barrio": "4A",
+    "barrio": "Les Tendetes",
     "artista": "Jordi Palanca Marqués",
     "categoria": "tercera",
     "lema": "Tirant de Rutes",
@@ -4276,7 +4276,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0194",
     "nombre": "Avinguda Tarongers-Universitat Politècnica",
-    "barrio": "4C",
+    "barrio": "La Carrasca",
     "artista": "Vicente Julián García Pastor",
     "categoria": "tercera",
     "lema": "Som",
@@ -4298,7 +4298,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0195",
     "nombre": "Cuba-Literat Azorín",
-    "barrio": "E",
+    "barrio": "Russafa",
     "artista": "Carlos Carsi García",
     "categoria": "especial",
     "lema": "Passant a millor vida",
@@ -4320,7 +4320,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0196",
     "nombre": "Poeta Asins-Alegret-Puçol",
-    "barrio": "5B",
+    "barrio": "Benimaclet",
     "artista": "Sergio Carrero Melián",
     "categoria": "tercera",
     "lema": "Pallasos!",
@@ -4342,7 +4342,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0197",
     "nombre": "Comte de Salvatierra-Ciril Amorós",
-    "barrio": "1A",
+    "barrio": "El Pla Del Remei",
     "artista": "José Ramón Devis Benet",
     "categoria": "primera",
     "lema": "Zawadi",
@@ -4364,7 +4364,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0198",
     "nombre": "Sant Ignasi de Loiola-Jesús i Maria",
-    "barrio": "4A",
+    "barrio": "La Petxina",
     "artista": "Vicente Albert García",
     "categoria": "tercera",
     "lema": "L´alenar de la magia",
@@ -4386,7 +4386,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0199",
     "nombre": "Guardacostes-Músic Jarque Cualladó",
-    "barrio": "5C",
+    "barrio": "Tormos",
     "artista": "Efímero S.L.",
     "categoria": "tercera",
     "lema": "Conquestes",
@@ -4408,7 +4408,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0200",
     "nombre": "La Pobla del Duc-Benipeixcar",
-    "barrio": "7A",
+    "barrio": "Morvedre",
     "artista": "Ramón Lemos Sierra",
     "categoria": "tercera",
     "lema": "Tot es conte",
@@ -4430,7 +4430,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0201",
     "nombre": "La Vall de Laguar-Pare Ferris",
-    "barrio": "5C",
+    "barrio": "Les Tendetes",
     "artista": "Anna Ruiz Sospedra",
     "categoria": "tercera",
     "lema": "Subjectes",
@@ -4452,7 +4452,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0202",
     "nombre": "Enginyer Josep Sirera-Pius IX",
-    "barrio": "5B",
+    "barrio": "Sant Marcel.Li",
     "artista": "Rafael Martínez Reig",
     "categoria": "tercera",
     "lema": "IA",
@@ -4474,7 +4474,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0203",
     "nombre": "Ferran el Catòlic-Erudit Orellana",
-    "barrio": "6C",
+    "barrio": "Arrancapins",
     "artista": "Vicente Julián García Pastor",
     "categoria": "tercera",
     "lema": "El Xoc",
@@ -4496,7 +4496,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0204",
     "nombre": "Escalante-Marina",
-    "barrio": "7B",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Creaciones Zazu",
     "categoria": "tercera",
     "lema": "Les penes amb arros",
@@ -4518,7 +4518,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0205",
     "nombre": "Doctor Manuel Candela-Beatriz Tortosa",
-    "barrio": "6A",
+    "barrio": "L'Amistat",
     "artista": "Andreu Sánchez Hernández",
     "categoria": "tercera",
     "lema": "Dame mi like",
@@ -4540,7 +4540,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0206",
     "nombre": "Avinguda Portugal-Fragata",
-    "barrio": "7C",
+    "barrio": "Marxalenes",
     "artista": "Jordi Palanca Marques",
     "categoria": "tercera",
     "lema": "The dark side of the moon. Wish you were here",
@@ -4562,7 +4562,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0207",
     "nombre": "Tres Forques-Conca-Pérez Galdós",
-    "barrio": "3C",
+    "barrio": "Patraix",
     "artista": "Víctor Navarro Granero",
     "categoria": "tercera",
     "lema": "Involució",
@@ -4584,7 +4584,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0208",
     "nombre": "Mercat de Castella",
-    "barrio": "4B",
+    "barrio": "Tres Forques",
     "artista": "Javier Rico Catalán",
     "categoria": "tercera",
     "lema": "Som com xiquets",
@@ -4606,7 +4606,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0209",
     "nombre": "Joan d'Aguiló-Gaspar Aguilar",
-    "barrio": "3C",
+    "barrio": "Safranar",
     "artista": "Enrique Cardells Martínez",
     "categoria": "tercera",
     "lema": "Calent",
@@ -4628,7 +4628,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0210",
     "nombre": "Fèlix Pizcueta-Ciril Amorós",
-    "barrio": "2A",
+    "barrio": "El Pla Del Remei",
     "artista": "Ximo Martí Fernández",
     "categoria": "segunda",
     "lema": "Reciclem Nostra Conducta",
@@ -4650,7 +4650,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0211",
     "nombre": "Alberic-Heroi Romeu",
-    "barrio": "4B",
+    "barrio": "Arrancapins",
     "artista": "Álvaro Guija Moreno",
     "categoria": "tercera",
     "lema": "Eres poc bruixa",
@@ -4672,7 +4672,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0212",
     "nombre": "Senent Ibáñez-Massarrojos",
-    "barrio": "8B",
+    "barrio": "Massarrojos",
     "artista": "Isidro Martínez Aparicio",
     "categoria": "tercera",
     "lema": "Como estan ustedes?",
@@ -4694,7 +4694,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0213",
     "nombre": "Avinguda Burjassot-Pare Carbonell",
-    "barrio": "2B",
+    "barrio": "Benicalap",
     "artista": "Luis Espinosa Olmos",
     "categoria": "segunda",
     "lema": "De boqueta",
@@ -4716,7 +4716,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0214",
     "nombre": "Plaça Santa Creu",
-    "barrio": "7B",
+    "barrio": "El Carme",
     "artista": "Francisco Javier Ribes López",
     "categoria": "tercera",
     "lema": "Pecat amagat i cua fora",
@@ -4738,7 +4738,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0215",
     "nombre": "Avinguda Regne de València-Sant Valer",
-    "barrio": "2A",
+    "barrio": "Russafa",
     "artista": "Luis Espinosa Olmos",
     "categoria": "segunda",
     "lema": "Darrere de la porta",
@@ -4760,7 +4760,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0216",
     "nombre": "Ciutat de Córdova-Vicent Tomàs Martí",
-    "barrio": "7C",
+    "barrio": "Beniferri",
     "artista": "David Sanruperto Pérez",
     "categoria": "tercera",
     "lema": "Bruixa i carabassa, les dos a la brasa",
@@ -4782,7 +4782,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0217",
     "nombre": "",
-    "barrio": "Valencia",
+    "barrio": "Benicalap",
     "artista": "",
     "categoria": "tercera",
     "lema": "",
@@ -4804,7 +4804,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0218",
     "nombre": "Ribera-Convent de Santa Clara",
-    "barrio": "1A",
+    "barrio": "Sant Francesc",
     "artista": "Miguel Ángel Santaeulalia Serrán",
     "categoria": "primera",
     "lema": "Desperta",
@@ -4826,7 +4826,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0219",
     "nombre": "Reina-Vicent Guillot",
-    "barrio": "6C",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Ramón Lemos Sierra",
     "categoria": "tercera",
     "lema": "Che que bó!",
@@ -4848,7 +4848,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0220",
     "nombre": "Nord-Doctor Zamenhoff",
-    "barrio": "4B",
+    "barrio": "La Petxina",
     "artista": "Art de Foc",
     "categoria": "tercera",
     "lema": "Carnaval",
@@ -4870,7 +4870,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0221",
     "nombre": "Josep Benlliure-Teatre de la Marina",
-    "barrio": "6C",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Toni Sales",
     "categoria": "tercera",
     "lema": "Bufonades",
@@ -4892,7 +4892,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0222",
     "nombre": "Quart-Palomar",
-    "barrio": "1A",
+    "barrio": "El Carme",
     "artista": "Enrique Cardells Martínez",
     "categoria": "primera",
     "lema": "Contrariats",
@@ -4914,7 +4914,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0223",
     "nombre": "Carrera de Malilla-Illa Cabrera",
-    "barrio": "1B",
+    "barrio": "Malilla",
     "artista": "Mario y Enrique Cardells",
     "categoria": "primera",
     "lema": "I que te conte?",
@@ -4936,7 +4936,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0224",
     "nombre": "Músic Espí-Gravador Fabregat",
-    "barrio": "7A",
+    "barrio": "Torrefiel",
     "artista": "Pepe Gómez",
     "categoria": "tercera",
     "lema": "Valentia",
@@ -4958,7 +4958,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0225",
     "nombre": "Almirall Cadarso-Comte d'Altea",
-    "barrio": "E",
+    "barrio": "La Gran Via",
     "artista": "Francisco Giner Nuñez",
     "categoria": "especial",
     "lema": "Res en excés",
@@ -4980,7 +4980,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0226",
     "nombre": "Oltà-Juan Ramón Jiménez",
-    "barrio": "5A",
+    "barrio": "Malilla",
     "artista": "Miguel March",
     "categoria": "tercera",
     "lema": "Tribus urbanes i no tan urbanes",
@@ -5002,7 +5002,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0227",
     "nombre": "Alfons el Magnànim-Nau-Bonaire",
-    "barrio": "8A",
+    "barrio": "Sant Francesc",
     "artista": "La Comissió",
     "categoria": "tercera",
     "lema": "Perill",
@@ -5024,7 +5024,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0228",
     "nombre": "Mare de Déu de la Fontsanta",
-    "barrio": "7B",
+    "barrio": "La Fontsanta",
     "artista": "José Francisco Espinosa Pérez",
     "categoria": "tercera",
     "lema": "Neurodivergent",
@@ -5046,7 +5046,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0229",
     "nombre": "Sevilla-Dénia",
-    "barrio": "6C",
+    "barrio": "Russafa",
     "artista": "Joserra Lisarde",
     "categoria": "tercera",
     "lema": "All you need is foc",
@@ -5068,7 +5068,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0230",
     "nombre": "Avinguda Primat Reig-Sant Vicent de Paül",
-    "barrio": "4C",
+    "barrio": "Els Orriols",
     "artista": "Miguel Banaclocha Marín",
     "categoria": "tercera",
     "lema": "Els 3 desitjos",
@@ -5090,7 +5090,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0231",
     "nombre": "Borrull-Túria",
-    "barrio": "5A",
+    "barrio": "El Botanic",
     "artista": "Vicente Julián García Pastor",
     "categoria": "tercera",
     "lema": "De los hilos del pasado nace la fuerza del presente",
@@ -5112,7 +5112,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0232",
     "nombre": "Sant Josep de la Muntanya-Terol",
-    "barrio": "2A",
+    "barrio": "La Petxina",
     "artista": "Pau Soler Marchante",
     "categoria": "segunda",
     "lema": "Guerreres",
@@ -5134,7 +5134,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0233",
     "nombre": "Gayano Lluch",
-    "barrio": "1B",
+    "barrio": "Torrefiel",
     "artista": "Luis Espinosa Olmos",
     "categoria": "primera",
     "lema": "Això és...qüestíó de sort!",
@@ -5156,7 +5156,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0234",
     "nombre": "Humanista Mariner-Manuel Simó",
-    "barrio": "5A",
+    "barrio": "Patraix",
     "artista": "Alejandro Martínez Fernández",
     "categoria": "tercera",
     "lema": "A la lluita dels monstres del segle XXI",
@@ -5178,7 +5178,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0235",
     "nombre": "Cadis-Dénia",
-    "barrio": "3B",
+    "barrio": "Russafa",
     "artista": "Víctor Navarro Granero",
     "categoria": "tercera",
     "lema": "Popcorn-amentes",
@@ -5200,7 +5200,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0236",
     "nombre": "",
-    "barrio": "Valencia",
+    "barrio": "Sant Francesc",
     "artista": "",
     "categoria": "tercera",
     "lema": "",
@@ -5222,7 +5222,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0237",
     "nombre": "Doctor Peset Aleixandre-En Guillem Ferrer",
-    "barrio": "6C",
+    "barrio": "Marxalenes",
     "artista": "Vicente Albert García",
     "categoria": "tercera",
     "lema": "Quina mar!",
@@ -5244,7 +5244,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0238",
     "nombre": "Plaça Mare de Déu de Lepant",
-    "barrio": "3C",
+    "barrio": "Castellar-L'Oliveral",
     "artista": "Francisco Hidalgo Guillamón",
     "categoria": "tercera",
     "lema": "La batalla de castellar",
@@ -5266,7 +5266,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0239",
     "nombre": "Sant Joan Bosco-Duc de Mandas",
-    "barrio": "6C",
+    "barrio": "Els Orriols",
     "artista": "Rubén Vela Romero de Ávila",
     "categoria": "tercera",
     "lema": "Mare natura",
@@ -5288,7 +5288,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0240",
     "nombre": "Carrera de Sant Lluís-Rafael Albiñana",
-    "barrio": "6B",
+    "barrio": "En Corts",
     "artista": "Agustín Torralba Soto",
     "categoria": "tercera",
     "lema": "Arte dramatico",
@@ -5310,7 +5310,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0241",
     "nombre": "Avinguda Regne de València-Mestre Serrano",
-    "barrio": "7B",
+    "barrio": "Russafa",
     "artista": "Xavier Herrero Martínez",
     "categoria": "tercera",
     "lema": "Congrés Galliner",
@@ -5332,7 +5332,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0242",
     "nombre": "Escultor García Mas-Puerto de Santa María",
-    "barrio": "7C",
+    "barrio": "Sant Pau",
     "artista": "Arturo Valles Bea",
     "categoria": "tercera",
     "lema": "La jungla",
@@ -5354,7 +5354,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0243",
     "nombre": "L'Alguer-Enginyer Rafael Janini",
-    "barrio": "3A",
+    "barrio": "Betero",
     "artista": "Toni Fornes",
     "categoria": "tercera",
     "lema": "Autocensura",
@@ -5376,7 +5376,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0244",
     "nombre": "Joaquim Navarro-Carrícola",
-    "barrio": "7B",
+    "barrio": "La Creu Coberta",
     "artista": "Xaume Torrent",
     "categoria": "tercera",
     "lema": "Supers de la terreta",
@@ -5398,7 +5398,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0245",
     "nombre": "Rubén Darío-Fra Lluís Colomer",
-    "barrio": "6A",
+    "barrio": "Ciutat Universitaria",
     "artista": "Víctor Navarro Granero",
     "categoria": "tercera",
     "lema": "De portes cap a ....",
@@ -5420,7 +5420,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0246",
     "nombre": "Avinguda l'Equador-Alcalde Gurrea",
-    "barrio": "4C",
+    "barrio": "Benicalap",
     "artista": "Manuel José Blanco Climent",
     "categoria": "tercera",
     "lema": "De cine",
@@ -5442,7 +5442,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0247",
     "nombre": "Barraca-Església del Rosari",
-    "barrio": "4C",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Lorenzo Fandos Ayoro",
     "categoria": "tercera",
     "lema": "Falles, un pais de meravelles",
@@ -5464,7 +5464,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0248",
     "nombre": "Castielfabib-Marqués de Sant Joan",
-    "barrio": "5C",
+    "barrio": "Campanar",
     "artista": "Agustín Torralba Soto",
     "categoria": "tercera",
     "lema": "En falles no tanques",
@@ -5486,7 +5486,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0249",
     "nombre": "Santa Maria Micaela-Martí l'Humà",
-    "barrio": "1B",
+    "barrio": "La Petxina",
     "artista": "SacabutxART",
     "categoria": "primera",
     "lema": "Ikaros",
@@ -5508,7 +5508,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0250",
     "nombre": "Arquebisbe Olaechea-Sant Marcel·lí",
-    "barrio": "1A",
+    "barrio": "Sant Marcel.Li",
     "artista": "SacabutxART",
     "categoria": "primera",
     "lema": "Sacrificis",
@@ -5530,7 +5530,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0251",
     "nombre": "Josep Benlliure-Vicent Guillot",
-    "barrio": "7C",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Antonio Benavente Alcaina",
     "categoria": "tercera",
     "lema": "El Renáixer del Fénix",
@@ -5552,7 +5552,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0252",
     "nombre": "Riu Segura-Forn d'Alcedo",
-    "barrio": "5A",
+    "barrio": "El Forn D'Alcedo",
     "artista": "Pedro Espadero Colmenar",
     "categoria": "tercera",
     "lema": "Pensionistes",
@@ -5574,7 +5574,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0253",
     "nombre": "Enginyer Manuel Maese-Cristóbal Llorens",
-    "barrio": "4C",
+    "barrio": "La Malva-Rosa",
     "artista": "Álvaro Guija Moreno",
     "categoria": "tercera",
     "lema": "Sense anestesia",
@@ -5596,7 +5596,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0254",
     "nombre": "Pérez Galdós-Jesús-Mestre Sosa",
-    "barrio": "8B",
+    "barrio": "Patraix",
     "artista": "Marcos Robles Zapata",
     "categoria": "tercera",
     "lema": "Jurasic falla",
@@ -5618,7 +5618,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0255",
     "nombre": "Avinguda Burjassot-Carretera de Paterna",
-    "barrio": "8C",
+    "barrio": "Marxalenes",
     "artista": "Jorge A. Mas Martí",
     "categoria": "tercera",
     "lema": "Ens anem a...",
@@ -5640,7 +5640,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0256",
     "nombre": "Plaça de l'Arbre",
-    "barrio": "4C",
+    "barrio": "El Carme",
     "artista": "Miguel Hache",
     "categoria": "tercera",
     "lema": "La casa per la finestra",
@@ -5662,7 +5662,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0257",
     "nombre": "Plaça Hondures",
-    "barrio": "8B",
+    "barrio": "Ciutat Jardi",
     "artista": "José Luis Platero Cosi",
     "categoria": "tercera",
     "lema": "La emojifalla",
@@ -5684,7 +5684,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0258",
     "nombre": "Sant Vicent Màrtir-Pianista Empar Iturbi",
-    "barrio": "3C",
+    "barrio": "La Raiosa",
     "artista": "Manuel José Blanco Climent",
     "categoria": "tercera",
     "lema": "Inteligencia artificial",
@@ -5706,7 +5706,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0259",
     "nombre": "Bailén-Xàtiva",
-    "barrio": "3C",
+    "barrio": "La Roqueta",
     "artista": "Matías Almela Piqueras",
     "categoria": "tercera",
     "lema": "La història de Vicent",
@@ -5728,7 +5728,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0260",
     "nombre": "Doctor Olóriz-Arquebisbe Fabián i Fuero",
-    "barrio": "3A",
+    "barrio": "Marxalenes",
     "artista": "Pedro Vicente Baenas García",
     "categoria": "tercera",
     "lema": "Endiosats",
@@ -5750,7 +5750,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0261",
     "nombre": "Nador-Miraculosa",
-    "barrio": "4A",
+    "barrio": "Morvedre",
     "artista": "Eliot García Martín",
     "categoria": "tercera",
     "lema": "En companya mola mes",
@@ -5772,7 +5772,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0262",
     "nombre": "Benicadell-Sant Roc",
-    "barrio": "5C",
+    "barrio": "Benicalap",
     "artista": "Fernando Martínez Hernández",
     "categoria": "tercera",
     "lema": "Vudú",
@@ -5794,7 +5794,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0263",
     "nombre": "Riu Bidasoa-Comte de Torrefiel",
-    "barrio": "6B",
+    "barrio": "Torrefiel",
     "artista": "Cristian García Carrasco",
     "categoria": "tercera",
     "lema": "Mas R.I.P. que rap",
@@ -5816,7 +5816,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0264",
     "nombre": "Àngel Guimerà-Pintor Vila Prades",
-    "barrio": "FC",
+    "barrio": "La Petxina",
     "artista": "La Comissió",
     "categoria": "tercera",
     "lema": "En peu de pau",
@@ -5838,7 +5838,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0265",
     "nombre": "Pintor Salvador Abril-Peris i Valero",
-    "barrio": "2A",
+    "barrio": "Russafa",
     "artista": "Sergio Musoles",
     "categoria": "segunda",
     "lema": "Aparentemente... un Carnaval permanente",
@@ -5860,7 +5860,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0266",
     "nombre": "Maria Ros-Manuel Iranzo",
-    "barrio": "7C",
+    "barrio": "La Torre",
     "artista": "Paco y David",
     "categoria": "tercera",
     "lema": "Titans",
@@ -5882,7 +5882,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0267",
     "nombre": "Grup de Peixcadors  del Perellonet",
-    "barrio": "6B",
+    "barrio": "El Perellonet",
     "artista": "Iván Gómez Villalba",
     "categoria": "tercera",
     "lema": "Som festa",
@@ -5904,7 +5904,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0268",
     "nombre": "Doctor Sanchis Bergón-Túria",
-    "barrio": "6A",
+    "barrio": "El Botanic",
     "artista": "Rafael Martínez Reig",
     "categoria": "tercera",
     "lema": "Colapshow",
@@ -5926,7 +5926,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0269",
     "nombre": "Riu Tajo-Cavite",
-    "barrio": "5C",
+    "barrio": "La Malva-Rosa",
     "artista": "Francisco Fuentes Moreno",
     "categoria": "tercera",
     "lema": "De major vuic ser...",
@@ -5948,7 +5948,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0270",
     "nombre": "Plaça Mercat Central",
-    "barrio": "1A",
+    "barrio": "El Mercat",
     "artista": "Palacio i Serra Artesans",
     "categoria": "primera",
     "lema": "Indio-tades",
@@ -5970,7 +5970,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0271",
     "nombre": "Avinguda Pérez Galdós-Calixt III",
-    "barrio": "5A",
+    "barrio": "La Petxina",
     "artista": "Vicente Albert García",
     "categoria": "tercera",
     "lema": "Cuina d'autor",
@@ -5992,7 +5992,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0272",
     "nombre": "Pere Cabanes-Joan XXIII",
-    "barrio": "6B",
+    "barrio": "Benicalap",
     "artista": "Sergio Lis Abril",
     "categoria": "tercera",
     "lema": "Arrasa amb el que veus i que el món siga dels teus",
@@ -6014,7 +6014,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0273",
     "nombre": "Camí d'Alba-Castell de Cullera",
-    "barrio": "7C",
+    "barrio": "La Torre",
     "artista": "David Zahonero Y Paco Cuadros",
     "categoria": "tercera",
     "lema": "Buscant el dorado",
@@ -6036,7 +6036,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0274",
     "nombre": "Manuel Arnau-La Creu Coberta",
-    "barrio": "7B",
+    "barrio": "La Creu Coberta",
     "artista": "Mauricio Moreira Santos",
     "categoria": "tercera",
     "lema": "Caprici",
@@ -6058,7 +6058,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0275",
     "nombre": "Mestre Bellver-Marià Ribera",
-    "barrio": "6C",
+    "barrio": "Patraix",
     "artista": "Iris Moreno Cuesta",
     "categoria": "tercera",
     "lema": "Monstruosa soledat",
@@ -6080,7 +6080,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0276",
     "nombre": "Barraca-Columbretes",
-    "barrio": "7A",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Fusta i Cartó, S.L.",
     "categoria": "tercera",
     "lema": "Una ullada a l'infancia",
@@ -6102,7 +6102,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0277",
     "nombre": "Doctor Serrano-Carles Cervera-Clero",
-    "barrio": "2B",
+    "barrio": "Russafa",
     "artista": "Sergio Musoles Ros",
     "categoria": "segunda",
     "lema": "Guerrers",
@@ -6124,7 +6124,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0278",
     "nombre": "Gravador Jordán-Escultor Pastor",
-    "barrio": "5C",
+    "barrio": "La Fonteta S.Lluis",
     "artista": "Carlos Sevilla Lieto",
     "categoria": "tercera",
     "lema": "Far west",
@@ -6146,7 +6146,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0279",
     "nombre": "Plaça Mercat de Montolivet",
-    "barrio": "3B",
+    "barrio": "Montolivet",
     "artista": "Ximo Esteve Mares",
     "categoria": "tercera",
     "lema": "Gastronomía global",
@@ -6168,7 +6168,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0280",
     "nombre": "Sant Josep de Pignatelli-Doctor Peset Aleixandre",
-    "barrio": "6B",
+    "barrio": "Benicalap",
     "artista": "Daniel Barea Ortiz",
     "categoria": "tercera",
     "lema": "Crisálida",
@@ -6190,7 +6190,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0281",
     "nombre": "Sagunt-Sant Antoni-Pare Urbano",
-    "barrio": "4B",
+    "barrio": "Sant Antoni",
     "artista": "Miguel Banaclocha Marín",
     "categoria": "tercera",
     "lema": "Saguntensis Pater Urbanus MMXXVI",
@@ -6212,7 +6212,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0282",
     "nombre": "Alemanya-El Batxiller",
-    "barrio": "5C",
+    "barrio": "Jaume Roig",
     "artista": "Pedro Espadero Colmenar",
     "categoria": "tercera",
     "lema": "Somos Espaciales",
@@ -6234,7 +6234,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0283",
     "nombre": "Mestre Valls-Marí Albesa",
-    "barrio": "6C",
+    "barrio": "Aiora",
     "artista": "Rubén Vela Romero de Ávila",
     "categoria": "tercera",
     "lema": "Viento en popa a toda vela",
@@ -6256,7 +6256,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0284",
     "nombre": "General Llorens",
-    "barrio": "3B",
+    "barrio": "Benicalap",
     "artista": "Cristian García Carrasco",
     "categoria": "tercera",
     "lema": "Molta festa i poc trellat",
@@ -6278,7 +6278,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0285",
     "nombre": "Pintor Maella-Avinguda França-Menorca",
-    "barrio": "2A",
+    "barrio": "Penya-Roja",
     "artista": "Falles I Fogueres (Martínez Vello)",
     "categoria": "segunda",
     "lema": "Ben dur",
@@ -6300,7 +6300,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0286",
     "nombre": "Bisbe Jaume Pérez-Lluís Oliag",
-    "barrio": "5A",
+    "barrio": "Montolivet",
     "artista": "David Llopis Perpiñán",
     "categoria": "tercera",
     "lema": "Quan tot sona igual, algo va mal",
@@ -6322,7 +6322,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0287",
     "nombre": "Bosseria-Tossal",
-    "barrio": "3A",
+    "barrio": "El Mercat",
     "artista": "Art En Foc",
     "categoria": "tercera",
     "lema": "Carmen",
@@ -6344,7 +6344,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0288",
     "nombre": "Plaça de la Tenda",
-    "barrio": "3A",
+    "barrio": "Benimamet",
     "artista": "Ximo Martí Fernández",
     "categoria": "tercera",
     "lema": "Canvi climatic",
@@ -6366,7 +6366,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0289",
     "nombre": "Avinguda Poeta García Lorca-Oltà",
-    "barrio": "3C",
+    "barrio": "Malilla",
     "artista": "Miguel Banaclocha Marín",
     "categoria": "tercera",
     "lema": "Juga, juga?i voràs.",
@@ -6388,7 +6388,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0290",
     "nombre": "Plaça Segòvia-Avinguda Doctor Tomàs Sala",
-    "barrio": "4B",
+    "barrio": "L'Hort De Senabre",
     "artista": "Art de Foc",
     "categoria": "tercera",
     "lema": "Misteris i encanteris....en el mon de les falles",
@@ -6410,7 +6410,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0291",
     "nombre": "Monestir de Poblet-Aparicio Albiñana",
-    "barrio": "E",
+    "barrio": "Campanar",
     "artista": "Josué Beitia Cardós",
     "categoria": "especial",
     "lema": "Sent i Ment",
@@ -6432,7 +6432,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0292",
     "nombre": "Embarcador-Historiador Betí",
-    "barrio": "7A",
+    "barrio": "El Saler",
     "artista": "Iván Gómez Villalba",
     "categoria": "tercera",
     "lema": "Un juego real",
@@ -6454,7 +6454,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0293",
     "nombre": "Mestre Gozalbo-Comte d'Altea",
-    "barrio": "1A",
+    "barrio": "La Gran Via",
     "artista": "David Sánchez Llongo",
     "categoria": "primera",
     "lema": "Patria",
@@ -6476,7 +6476,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0294",
     "nombre": "Poeta Altet-Benicarló",
-    "barrio": "7B",
+    "barrio": "Benimaclet",
     "artista": "José Antonio Marco Gómez",
     "categoria": "tercera",
     "lema": "Glacior",
@@ -6498,7 +6498,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0295",
     "nombre": "Rodríguez de Cepeda-Llorenç Palmireno",
-    "barrio": "4A",
+    "barrio": "Albors",
     "artista": "Gotes de Foc C.B.",
     "categoria": "tercera",
     "lema": "NAR",
@@ -6520,7 +6520,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0296",
     "nombre": "Plaça Doctor Collado",
-    "barrio": "1B",
+    "barrio": "El Mercat",
     "artista": "Tedi Chichanova",
     "categoria": "primera",
     "lema": "Respira",
@@ -6542,7 +6542,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0297",
     "nombre": "Andreu Piles Ivars-Salvador Tuset",
-    "barrio": "2B",
+    "barrio": "Benicalap",
     "artista": "Rafael Ibañez Sánchez",
     "categoria": "segunda",
     "lema": "Apardalats",
@@ -6564,7 +6564,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0298",
     "nombre": "Hort de Sant Valer-Avinguda de la Plata",
-    "barrio": "8C",
+    "barrio": "Ciutat De Les Arts I De Les Ciencies",
     "artista": "Mon de Color",
     "categoria": "tercera",
     "lema": "Natura viva",
@@ -6586,7 +6586,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0299",
     "nombre": "Enginyer Manuel Soto - Avinguda França",
-    "barrio": "6A",
+    "barrio": "El Grau",
     "artista": "Pedro Vicente Baenas García",
     "categoria": "tercera",
     "lema": "el rey del grao",
@@ -6608,7 +6608,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0300",
     "nombre": "Salamanca-Comte d'Altea",
-    "barrio": "4A",
+    "barrio": "La Gran Via",
     "artista": "Gotes de Foc C.B.",
     "categoria": "tercera",
     "lema": "'Fent la del Fum'",
@@ -6630,7 +6630,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0301",
     "nombre": "Frederic Mistral-Murta",
-    "barrio": "2B",
+    "barrio": "Benimaclet",
     "artista": "Juane Cortell Dasca",
     "categoria": "segunda",
     "lema": "Guerres, batalles i rabietes",
@@ -6652,7 +6652,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0302",
     "nombre": "Màlaga-Doctor Montoro",
-    "barrio": "8B",
+    "barrio": "Marxalenes",
     "artista": "Marcos Robles Zapata",
     "categoria": "tercera",
     "lema": "Quins dimonis",
@@ -6674,7 +6674,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0303",
     "nombre": "Actor Mora-Avinguda Constitució",
-    "barrio": "7A",
+    "barrio": "Morvedre",
     "artista": "Matías Almela Piqueras",
     "categoria": "tercera",
     "lema": "Fida Ninfa",
@@ -6696,7 +6696,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0304",
     "nombre": "Vivons-Romeu de Corbera",
-    "barrio": "6A",
+    "barrio": "Russafa",
     "artista": "Víctor Caballero Gutiérrez",
     "categoria": "tercera",
     "lema": "Kun-fu-sion",
@@ -6718,7 +6718,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0305",
     "nombre": "Barri Beteró",
-    "barrio": "4A",
+    "barrio": "Betero",
     "artista": "Francisco Javier Gómez Morollón",
     "categoria": "tercera",
     "lema": "Aquas",
@@ -6740,7 +6740,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0306",
     "nombre": "Vidal de Canyelles-Sánchez Coello",
-    "barrio": "6B",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Víctor Caballero Gutiérrez",
     "categoria": "tercera",
     "lema": "Romançers",
@@ -6762,7 +6762,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0307",
     "nombre": "Xiva-Francisco de Llano",
-    "barrio": "5B",
+    "barrio": "Patraix",
     "artista": "Anna Ruiz Sospedra",
     "categoria": "tercera",
     "lema": "Com és que no aconsegueixes volar més?",
@@ -6784,7 +6784,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0308",
     "nombre": "",
-    "barrio": "Valencia",
+    "barrio": "Favara",
     "artista": "",
     "categoria": "tercera",
     "lema": "",
@@ -6806,7 +6806,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0309",
     "nombre": "Sèneca-Iecla",
-    "barrio": "6C",
+    "barrio": "L'Amistat",
     "artista": "SacabutxART",
     "categoria": "tercera",
     "lema": "FUTUR IMPERFECTE",
@@ -6828,7 +6828,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0310",
     "nombre": "Fra J. Rodríguez-Pintor Cortina",
-    "barrio": "3B",
+    "barrio": "L'Hort De Senabre",
     "artista": "Vicente Albert García",
     "categoria": "tercera",
     "lema": "¿Vicis o Necessitats?",
@@ -6850,7 +6850,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0311",
     "nombre": "Arts i Oficis-Actor Llorens",
-    "barrio": "5B",
+    "barrio": "Albors",
     "artista": "Vicente Albert García",
     "categoria": "tercera",
     "lema": "Mediterrànea",
@@ -6872,7 +6872,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0312",
     "nombre": "Plaça Sant Miquel-Vicent Iborra",
-    "barrio": "6B",
+    "barrio": "El Carme",
     "artista": "Marta Póvez López",
     "categoria": "tercera",
     "lema": "Les noves llegendes de por",
@@ -6894,7 +6894,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0313",
     "nombre": "Dr. García Brustenga - Vicente Barrera Cambra",
-    "barrio": "2A",
+    "barrio": "Benimaclet",
     "artista": "Vicente García Pérez",
     "categoria": "segunda",
     "lema": "Em.....mascarats",
@@ -6916,7 +6916,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0314",
     "nombre": "Universitat Vella-Plaça Patriarca",
-    "barrio": "5B",
+    "barrio": "La Xerea",
     "artista": "Javier Gómez Gil (Javi Valiente )",
     "categoria": "tercera",
     "lema": "Manual de Formes Falleres",
@@ -6938,7 +6938,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0315",
     "nombre": "Plaça d'Espanya-Ramón y Cajal-Pintor Benedito",
-    "barrio": "5A",
+    "barrio": "La Roqueta",
     "artista": "Vicente Chaveli y Martina Ghin",
     "categoria": "tercera",
     "lema": "Jazz tem altra vegada",
@@ -6960,7 +6960,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0316",
     "nombre": "Isabel la Catòlica-Ciril Amorós",
-    "barrio": "2A",
+    "barrio": "El Pla Del Remei",
     "artista": "Art En Foc",
     "categoria": "segunda",
     "lema": "¡Quina Modernor!",
@@ -6982,7 +6982,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0317",
     "nombre": "",
-    "barrio": "Valencia",
+    "barrio": "El Perellonet",
     "artista": "",
     "categoria": "tercera",
     "lema": "",
@@ -7004,7 +7004,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0318",
     "nombre": "Hellín-Pere de Luna",
-    "barrio": "5A",
+    "barrio": "La Torre",
     "artista": "Tedi Chichanova",
     "categoria": "tercera",
     "lema": "... de por a la valenciana.",
@@ -7026,7 +7026,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0319",
     "nombre": "Periodista Gil Sumbiela-Assutzena",
-    "barrio": "4A",
+    "barrio": "Benicalap",
     "artista": "Enrique Andrés Alandi",
     "categoria": "tercera",
     "lema": "Els vells rokers mai moren",
@@ -7048,7 +7048,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0320",
     "nombre": "Cuenca Tramoyeres-La Guàrdia Civil",
-    "barrio": "4C",
+    "barrio": "Benimaclet",
     "artista": "Miguel Banaclocha Marín",
     "categoria": "tercera",
     "lema": "Falla y casal",
@@ -7070,7 +7070,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0321",
     "nombre": "Castelló-Sogorb",
-    "barrio": "3C",
+    "barrio": "Russafa",
     "artista": "Iván Gómez Villalba",
     "categoria": "tercera",
     "lema": "The queens",
@@ -7092,7 +7092,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0322",
     "nombre": "Cuba-Dénia",
-    "barrio": "4B",
+    "barrio": "Russafa",
     "artista": "Enrique y Mario Cardells",
     "categoria": "tercera",
     "lema": "Mami",
@@ -7114,7 +7114,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0323",
     "nombre": "Murillo-Palomar",
-    "barrio": "8B",
+    "barrio": "El Pilar",
     "artista": "Celso Sierra Barberá",
     "categoria": "tercera",
     "lema": "Valencia for sale",
@@ -7136,7 +7136,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0324",
     "nombre": "Ripalda-Beneficència-Sant Ramon",
-    "barrio": "5C",
+    "barrio": "El Carme",
     "artista": "Reyes Pe",
     "categoria": "tercera",
     "lema": "Silenci",
@@ -7158,7 +7158,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0325",
     "nombre": "Joaquim Costa-Borriana",
-    "barrio": "2B",
+    "barrio": "La Gran Via",
     "artista": "Art En Foc",
     "categoria": "segunda",
     "lema": "Insomnia",
@@ -7180,7 +7180,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0326",
     "nombre": "Ferran el Catòlic-Àngel Guimerà",
-    "barrio": "1B",
+    "barrio": "Arrancapins",
     "artista": "Noel Hervás García",
     "categoria": "primera",
     "lema": "Encanteris",
@@ -7202,7 +7202,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0327",
     "nombre": "Major-Moraira-Natzaret",
-    "barrio": "4B",
+    "barrio": "Natzaret",
     "artista": "José Ramón Devis Benet",
     "categoria": "tercera",
     "lema": "Electrificació",
@@ -7224,7 +7224,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0328",
     "nombre": "Camí Nou de Picanya-Nicolau Primitiu",
-    "barrio": "3B",
+    "barrio": "Sant Isidre",
     "artista": "Javier Rico Catalán",
     "categoria": "tercera",
     "lema": "Els majors també Somien",
@@ -7246,7 +7246,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0329",
     "nombre": "Maties Perello-Lluís de Santàngel",
-    "barrio": "2B",
+    "barrio": "Russafa",
     "artista": "Ilusión Artística S.L.",
     "categoria": "segunda",
     "lema": "Metamorfosis",
@@ -7268,7 +7268,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0330",
     "nombre": "Mossén Sorell-Corona",
-    "barrio": "3B",
+    "barrio": "El Carme",
     "artista": "Manuel Martín Huguet",
     "categoria": "tercera",
     "lema": "Churros Unicornio. Més enllà d'allò conegut",
@@ -7290,7 +7290,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0331",
     "nombre": "Plaça Mercat de Russafa",
-    "barrio": "5C",
+    "barrio": "Russafa",
     "artista": "Eliot García Martín",
     "categoria": "tercera",
     "lema": "Les veus dels deus",
@@ -7312,7 +7312,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0332",
     "nombre": "Convent de Jerusalem-Matemàtic Marzal",
-    "barrio": "E",
+    "barrio": "La Roqueta",
     "artista": "David Sánchez Llongo",
     "categoria": "especial",
     "lema": "Redimonis",
@@ -7334,7 +7334,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0333",
     "nombre": "Avinguda Primat Reig-Vinaròs",
-    "barrio": "7C",
+    "barrio": "Benimaclet",
     "artista": "Vicente Albert García",
     "categoria": "tercera",
     "lema": "Qui en xiquets se gita....",
@@ -7356,7 +7356,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0334",
     "nombre": "Alcàsser-Iàtova",
-    "barrio": "6C",
+    "barrio": "Soternes",
     "artista": "Xavi Bonilla (Artixavi)",
     "categoria": "tercera",
     "lema": "Prohibido prohibir",
@@ -7378,7 +7378,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0335",
     "nombre": "Cadis-Els Centelles",
-    "barrio": "3A",
+    "barrio": "Russafa",
     "artista": "José Vicente Zurita Abad",
     "categoria": "tercera",
     "lema": "Equilibri emocional",
@@ -7400,7 +7400,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0336",
     "nombre": "Molinell-Alboraia",
-    "barrio": "2A",
+    "barrio": "Trinitat",
     "artista": "Ximo Martí Fernández",
     "categoria": "segunda",
     "lema": "Temps de viure",
@@ -7422,7 +7422,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0337",
     "nombre": "Josep Soto Micó-Síndic Mocholí",
-    "barrio": "5C",
+    "barrio": "Cami Real",
     "artista": "Francisco Javier Tur Ortiz",
     "categoria": "tercera",
     "lema": "La vida es un circ",
@@ -7444,7 +7444,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0338",
     "nombre": "Tres Camins-Pinedo",
-    "barrio": "6A",
+    "barrio": "La Punta",
     "artista": "Jaume Chornet Roig",
     "categoria": "tercera",
     "lema": "Tautologia del silenci",
@@ -7466,7 +7466,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0339",
     "nombre": "Doctor Álvaro López-Sant Joan de Déu",
-    "barrio": "7B",
+    "barrio": "La Malva-Rosa",
     "artista": "Víctor Navarro Granero",
     "categoria": "tercera",
     "lema": "Voramar",
@@ -7488,7 +7488,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0340",
     "nombre": "",
-    "barrio": "Valencia",
+    "barrio": "Sant Pau",
     "artista": "",
     "categoria": "tercera",
     "lema": "",
@@ -7510,7 +7510,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0341",
     "nombre": "Plaça Doctor Berenguer Ferrer",
-    "barrio": "8C",
+    "barrio": "La Fontsanta",
     "artista": "Joserra Lisarde",
     "categoria": "tercera",
     "lema": "Pirats i pirates",
@@ -7532,7 +7532,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0342",
     "nombre": "Manuel Melià i Fuster-María Fernanda D'Ocón",
-    "barrio": "7B",
+    "barrio": "Benicalap",
     "artista": "Jordi Palanca Marqués",
     "categoria": "tercera",
     "lema": "Una Falla de Cine",
@@ -7554,7 +7554,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0343",
     "nombre": "Ramiro de Maeztu-Humanista Furió",
-    "barrio": "3B",
+    "barrio": "Aiora",
     "artista": "Javier Rico Catalán",
     "categoria": "tercera",
     "lema": "Divas!",
@@ -7576,7 +7576,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0344",
     "nombre": "Plaça Bisbe Amigó-Conca",
-    "barrio": "1B",
+    "barrio": "Arrancapins",
     "artista": "Salva Bañuls y Néstor Ruiz",
     "categoria": "primera",
     "lema": "Mes que pixels",
@@ -7598,7 +7598,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0345",
     "nombre": "Reina-Pau-Sant Vicent",
-    "barrio": "2A",
+    "barrio": "La Seu",
     "artista": "Manuel Algarra Viguer",
     "categoria": "segunda",
     "lema": "Reina, un bes de pau",
@@ -7620,7 +7620,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0346",
     "nombre": "Serrans-Plaça Els Furs",
-    "barrio": "2A",
+    "barrio": "El Carme",
     "artista": "Juane Cortell Dasca",
     "categoria": "segunda",
     "lema": "Cap a cap lloc...",
@@ -7642,7 +7642,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0347",
     "nombre": "Escalante-Empar Guillén",
-    "barrio": "7C",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Cremades",
     "categoria": "tercera",
     "lema": "La Corte del Faraón",
@@ -7664,7 +7664,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0348",
     "nombre": "Na Jordana",
-    "barrio": "E",
+    "barrio": "El Carme",
     "artista": "Mario Gual del Olmo",
     "categoria": "especial",
     "lema": "Passions a la deriva",
@@ -7686,7 +7686,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0349",
     "nombre": "Avinguda Regne de València-Ciscar",
-    "barrio": "3B",
+    "barrio": "La Gran Via",
     "artista": "Gotes de Foc C.B.",
     "categoria": "tercera",
     "lema": "Fent la descoberta",
@@ -7708,7 +7708,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0350",
     "nombre": "General Pando-Serrano Flores",
-    "barrio": "4B",
+    "barrio": "Mestalla",
     "artista": "Mauricio Moreira Santos",
     "categoria": "tercera",
     "lema": "Samba",
@@ -7730,7 +7730,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0351",
     "nombre": "Plaça Lluís Cano",
-    "barrio": "4A",
+    "barrio": "Benimamet",
     "artista": "Antonio Benavente Alcaina",
     "categoria": "tercera",
     "lema": "La secta",
@@ -7752,7 +7752,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0352",
     "nombre": "Puebla de Valverde-II República Espanyola (Infantil)",
-    "barrio": "11",
+    "barrio": "Vara De Quart",
     "artista": "Alfredo Villena López",
     "categoria": "tercera",
     "lema": "Arriba el estiu",
@@ -7774,7 +7774,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0353",
     "nombre": "Plaça Pintor Segrelles (Infantil)",
-    "barrio": "6",
+    "barrio": "Arrancapins",
     "artista": "Javier Álvarez-Sala Salinas",
     "categoria": "segunda",
     "lema": "Un passeig pel bosc",
@@ -7796,7 +7796,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0354",
     "nombre": "Serra Martés-Miguel Servet (Infantil)",
-    "barrio": "11",
+    "barrio": "Benicalap",
     "artista": "Laia Boheme",
     "categoria": "tercera",
     "lema": "Aventures a la mar",
@@ -7818,7 +7818,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0355",
     "nombre": "Avinguda Pérez Galdós-Calixt III (Infantil)",
-    "barrio": "17",
+    "barrio": "La Petxina",
     "artista": "Daniel Salvador Esteve",
     "categoria": "tercera",
     "lema": "La canço del mar",
@@ -7840,7 +7840,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0356",
     "nombre": "Màlaga-Doctor Montoro (Infantil)",
-    "barrio": "19",
+    "barrio": "Marxalenes",
     "artista": "Carlos Carsí García",
     "categoria": "tercera",
     "lema": "El somni de Salma",
@@ -7862,7 +7862,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0357",
     "nombre": "Lluís Lamarca-Velázquez (Infantil)",
-    "barrio": "13",
+    "barrio": "Nou Moles",
     "artista": "Sacabutxart",
     "categoria": "tercera",
     "lema": "Hocus pocus",
@@ -7884,7 +7884,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0358",
     "nombre": "Quart-Túria (Infantil)",
-    "barrio": "19",
+    "barrio": "El Botanic",
     "artista": "Rafael Vilches",
     "categoria": "tercera",
     "lema": "Una falla de Quartoon",
@@ -7906,7 +7906,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0359",
     "nombre": "Poetes Anònims-Real de Gandia (Infantil)",
-    "barrio": "22",
+    "barrio": "Cami De Vera",
     "artista": "La Comissió",
     "categoria": "tercera",
     "lema": "Dolços i Llepolies",
@@ -7928,7 +7928,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0360",
     "nombre": "Salamanca-Comte d'Altea (Infantil)",
-    "barrio": "6",
+    "barrio": "La Gran Via",
     "artista": "Vicente Domínguez Pérez",
     "categoria": "segunda",
     "lema": "Sombra aquí, sombra allá",
@@ -7950,7 +7950,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0361",
     "nombre": "Mossén Josep Cuenca-Pinedo (Infantil)",
-    "barrio": "15",
+    "barrio": "Pinedo",
     "artista": "Manuel José Blanco Climent",
     "categoria": "tercera",
     "lema": "Lletres de falla",
@@ -7972,7 +7972,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0362",
     "nombre": "Na Jordana (Infantil)",
-    "barrio": "3",
+    "barrio": "El Carme",
     "artista": "José Luis Platero Cosi",
     "categoria": "primera",
     "lema": "Exo-planetes",
@@ -7994,7 +7994,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0363",
     "nombre": "Cuba-Literat Azorín (Infantil)",
-    "barrio": "2",
+    "barrio": "Russafa",
     "artista": "Gonzalo Rojas Rodríguez",
     "categoria": "primera",
     "lema": "Atenció",
@@ -8016,7 +8016,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0364",
     "nombre": "La Vall d'Albaida-La Canal de Navarrés (Infantil)",
-    "barrio": "21",
+    "barrio": "Sant Pau",
     "artista": "Arturo Vallés Bea",
     "categoria": "tercera",
     "lema": "Sol naixent",
@@ -8038,7 +8038,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0365",
     "nombre": "Blanqueries (Infantil)",
-    "barrio": "21",
+    "barrio": "El Carme",
     "artista": "Javier Guillermo Gómez Gil",
     "categoria": "tercera",
     "lema": "Mentides en construcció",
@@ -8060,7 +8060,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0366",
     "nombre": "Portal de la Valldigna-Salines (Infantil)",
-    "barrio": "16",
+    "barrio": "El Carme",
     "artista": "Álvaro Guija Moreno",
     "categoria": "tercera",
     "lema": "Els pirates arriben al portal",
@@ -8082,7 +8082,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0367",
     "nombre": "Exposició-Misser Mascó (Infantil)",
-    "barrio": "IE",
+    "barrio": "Exposicio",
     "artista": "Gonzalo Rojas Rodríguez",
     "categoria": "tercera",
     "lema": "Alma",
@@ -8104,7 +8104,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0368",
     "nombre": "Antiga Senda de Senent-Albereda (Infantil)",
-    "barrio": "22",
+    "barrio": "Mestalla",
     "artista": "La Comissió",
     "categoria": "tercera",
     "lema": "Unir piezas. unir personas",
@@ -8126,7 +8126,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0369",
     "nombre": "Plaça La Creu -Els Àngels (Infantil)",
-    "barrio": "14",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Xavi Bonilla",
     "categoria": "tercera",
     "lema": "Benvinguts a La Calderona",
@@ -8148,7 +8148,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0370",
     "nombre": "Avinguda Poeta García Lorca-Oltà (Infantil)",
-    "barrio": "9",
+    "barrio": "Malilla",
     "artista": "Sergio Sánchez García",
     "categoria": "tercera",
     "lema": "Aprén curiositats genials al col·le dels animals.",
@@ -8170,7 +8170,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0371",
     "nombre": "Doctor Olóriz-Arquebisbe Fabián i Fuero (Infantil)",
-    "barrio": "10",
+    "barrio": "Marxalenes",
     "artista": "Salvador Ferrís Cerveró",
     "categoria": "tercera",
     "lema": "Sota, caball i...",
@@ -8192,7 +8192,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0372",
     "nombre": "Illes Canàries-Trafalgar (Infantil)",
-    "barrio": "3",
+    "barrio": "La Creu Del Grau",
     "artista": "Francisco Tarazona García",
     "categoria": "primera",
     "lema": "Fruitastika",
@@ -8214,7 +8214,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0373",
     "nombre": "Serrans-Plaça Els Furs (Infantil)",
-    "barrio": "1",
+    "barrio": "El Carme",
     "artista": "David Ojeda Amorós",
     "categoria": "especial",
     "lema": "¡Que venen!",
@@ -8236,7 +8236,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0374",
     "nombre": "Borrull-Túria (Infantil)",
-    "barrio": "18",
+    "barrio": "El Botanic",
     "artista": "La Comissió",
     "categoria": "tercera",
     "lema": "Falla 3.0 The Evolution",
@@ -8258,7 +8258,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0375",
     "nombre": "Plaça Lope de Vega (Infantil)",
-    "barrio": "9",
+    "barrio": "El Mercat",
     "artista": "Pepe Gómez Olmos",
     "categoria": "tercera",
     "lema": "Made in València",
@@ -8280,7 +8280,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0376",
     "nombre": "Misser Rabassa-Poeta Maragall (Infantil)",
-    "barrio": "19",
+    "barrio": "La Raiosa",
     "artista": "Amparo Ordaz Ceballos",
     "categoria": "tercera",
     "lema": "Obri la porta",
@@ -8302,7 +8302,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0377",
     "nombre": "Cadis-Dénia (Infantil)",
-    "barrio": "12",
+    "barrio": "Russafa",
     "artista": "Rubén Canet Burillo",
     "categoria": "tercera",
     "lema": "Estant a l'altura",
@@ -8324,7 +8324,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0378",
     "nombre": "Pelai-Matemàtic Marzal (Infantil)",
-    "barrio": "10",
+    "barrio": "La Roqueta",
     "artista": "El Taller de J de Juanes, S.L.",
     "categoria": "tercera",
     "lema": "Ambaixadors Som",
@@ -8346,7 +8346,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0379",
     "nombre": "Calvo Acacio (Infantil)",
-    "barrio": "16",
+    "barrio": "L'Hort De Senabre",
     "artista": "Vicente Espeleta García",
     "categoria": "tercera",
     "lema": "Terra",
@@ -8368,7 +8368,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0380",
     "nombre": "General Pando-Serrano Flores (Infantil)",
-    "barrio": "6",
+    "barrio": "Mestalla",
     "artista": "Xaume Torrent Arenas",
     "categoria": "segunda",
     "lema": "Estacions",
@@ -8390,7 +8390,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0381",
     "nombre": "Norman Bethune - Guillem Despuig (Infantil)",
-    "barrio": "14",
+    "barrio": "Tres Forques",
     "artista": "Vidal Garrido Gavidia",
     "categoria": "tercera",
     "lema": "Wonderland",
@@ -8412,7 +8412,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0382",
     "nombre": "Plaça Hondures (Infantil)",
-    "barrio": "21",
+    "barrio": "Ciutat Jardi",
     "artista": "José Luis Platero Cosi",
     "categoria": "tercera",
     "lema": "Erase una vez un emoji",
@@ -8434,7 +8434,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0383",
     "nombre": "Arquitecte Alfaro-Francesc Cubells (Infantil)",
-    "barrio": "3",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Kuebien Valencia SLU",
     "categoria": "primera",
     "lema": "Plantes Nocturnes",
@@ -8456,7 +8456,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0384",
     "nombre": "Ferran el Catòlic-Erudit Orellana (Infantil)",
-    "barrio": "16",
+    "barrio": "Arrancapins",
     "artista": "Vicente Julián García Pastor",
     "categoria": "tercera",
     "lema": "El Joc",
@@ -8478,7 +8478,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0385",
     "nombre": "Dr. García Brustenga - Vicente Barrera Cambra (Infantil)",
-    "barrio": "7",
+    "barrio": "Benimaclet",
     "artista": "Jesús Liñana Ferrando",
     "categoria": "segunda",
     "lema": "Els refranys del avis, els més savis",
@@ -8500,7 +8500,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0386",
     "nombre": "Plaça Mare de Déu de Lepant (Infantil)",
-    "barrio": "4",
+    "barrio": "Castellar-L'Oliveral",
     "artista": "Francisco Hidalgo Guillamón",
     "categoria": "primera",
     "lema": "Valéncia",
@@ -8522,7 +8522,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0387",
     "nombre": "Avinguda Mestre Rodrigo-General Avilés (Infantil)",
-    "barrio": "8",
+    "barrio": "Sant Pau",
     "artista": "Rubén Canet Burillo",
     "categoria": "segunda",
     "lema": "Rodrigum encanteris",
@@ -8544,7 +8544,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0388",
     "nombre": "Mercat de Castella (Infantil)",
-    "barrio": "9",
+    "barrio": "Tres Forques",
     "artista": "David Ojeda Amorós",
     "categoria": "tercera",
     "lema": "El llapis que va dibuixar somnis",
@@ -8566,7 +8566,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0389",
     "nombre": "Nador-Miraculosa (Infantil)",
-    "barrio": "13",
+    "barrio": "Morvedre",
     "artista": "Eliot García Martín",
     "categoria": "tercera",
     "lema": "M'enseyes a jugar?",
@@ -8588,7 +8588,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0390",
     "nombre": "Mestre Gozalbo-Comte d'Altea (Infantil)",
-    "barrio": "IE",
+    "barrio": "La Gran Via",
     "artista": "Sergio Alcañiz Valiente",
     "categoria": "tercera",
     "lema": "Tinc el cap ences en flama",
@@ -8610,7 +8610,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0391",
     "nombre": "Manuel Melià i Fuster-María Fernanda D'Ocón (Infantil)",
-    "barrio": "19",
+    "barrio": "Benicalap",
     "artista": "Pablo Andreu González",
     "categoria": "tercera",
     "lema": "Descon nexió",
@@ -8632,7 +8632,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0392",
     "nombre": "Baix-Mesó de Morella (Infantil)",
-    "barrio": "22",
+    "barrio": "El Carme",
     "artista": "Vicente Domínguez",
     "categoria": "tercera",
     "lema": "Horòscop chinenc",
@@ -8654,7 +8654,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0393",
     "nombre": "Costa i Borràs-Agustina d'Aragó (Infantil)",
-    "barrio": "11",
+    "barrio": "L'Hort De Senabre",
     "artista": "Erika Mateo Martínez",
     "categoria": "tercera",
     "lema": "Quan siga major",
@@ -8676,7 +8676,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0394",
     "nombre": "Camí d'Alba-Castell de Cullera (Infantil)",
-    "barrio": "18",
+    "barrio": "La Torre",
     "artista": "David Zahonero y Paco Cuadros",
     "categoria": "tercera",
     "lema": "Pujant al porxe",
@@ -8698,7 +8698,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0395",
     "nombre": "Ceramista Ros-Josep Maria Mortes Lerma (Infantil)",
-    "barrio": "2",
+    "barrio": "Vara De Quart",
     "artista": "Nanoarts",
     "categoria": "primera",
     "lema": "Dulce rebelión",
@@ -8720,7 +8720,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0396",
     "nombre": "Llanterna-Na Rovella-Avinguda de l’Oest (Infantil)",
-    "barrio": "5",
+    "barrio": "El Mercat",
     "artista": "Carlos Herrero Muria",
     "categoria": "segunda",
     "lema": "La llum que portes dins",
@@ -8742,7 +8742,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0397",
     "nombre": "Aras de Alpuente-Castell de Pop (Infantil)",
-    "barrio": "2",
+    "barrio": "Natzaret",
     "artista": "Miriam García Sandemetrio",
     "categoria": "primera",
     "lema": "Evolutiva",
@@ -8764,7 +8764,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0398",
     "nombre": "Hellín-Pere de Luna (Infantil)",
-    "barrio": "16",
+    "barrio": "La Torre",
     "artista": "Tedi Chichanova",
     "categoria": "tercera",
     "lema": "Conta'm un conte...",
@@ -8786,7 +8786,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0399",
     "nombre": "Sant Joan Bosco-Duc de Mandas (Infantil)",
-    "barrio": "14",
+    "barrio": "Els Orriols",
     "artista": "Rubén Vela Romero de Ávila",
     "categoria": "tercera",
     "lema": "A la taula i al llit al primer crit",
@@ -8808,7 +8808,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0400",
     "nombre": "Plaça Pere María Orts i Bosch (Infantil)",
-    "barrio": "21",
+    "barrio": "Soternes",
     "artista": "Francisco Hidalgo Guillamón",
     "categoria": "tercera",
     "lema": "El misteri de Marquina",
@@ -8830,7 +8830,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0401",
     "nombre": "Guardacostes-Músic Jarque Cualladó (Infantil)",
-    "barrio": "14",
+    "barrio": "Tormos",
     "artista": "Víctor Caballero Gutiérrez",
     "categoria": "tercera",
     "lema": "Qui no corre vola",
@@ -8852,7 +8852,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0402",
     "nombre": "Alberic-Heroi Romeu (Infantil)",
-    "barrio": "6",
+    "barrio": "Arrancapins",
     "artista": "Carlos Herrero Muria",
     "categoria": "segunda",
     "lema": "Cada marca, una aventura...",
@@ -8874,7 +8874,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0403",
     "nombre": "Mestre Aguilar-Maties Perelló (Infantil)",
-    "barrio": "16",
+    "barrio": "Russafa",
     "artista": "Eliot García Martín",
     "categoria": "tercera",
     "lema": "Erase una vez, desde un lejano lugar llamado China",
@@ -8896,7 +8896,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0404",
     "nombre": "Albereda-França (Infantil)",
-    "barrio": "5",
+    "barrio": "Penya-Roja",
     "artista": "Alex López",
     "categoria": "segunda",
     "lema": "Planeta AF-375",
@@ -8918,7 +8918,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0405",
     "nombre": "Gonzalo Tejero Langarita - Vicente Chuliá Campos (Infantil)",
-    "barrio": "21",
+    "barrio": "Malilla",
     "artista": "José Arocas Fernández",
     "categoria": "tercera",
     "lema": "Cuida't",
@@ -8940,7 +8940,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0406",
     "nombre": "Carters-Litògraf Pasqual i Abad (Infantil)",
-    "barrio": "11",
+    "barrio": "L'Hort De Senabre",
     "artista": "José Francisco Espinosa Pérez",
     "categoria": "tercera",
     "lema": "No es chocolate todo lo que reluce",
@@ -8962,7 +8962,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0407",
     "nombre": "Cuba-Dénia (Infantil)",
-    "barrio": "13",
+    "barrio": "Russafa",
     "artista": "Xavi Ureña Rodenes",
     "categoria": "tercera",
     "lema": "Un mar de falles",
@@ -8984,7 +8984,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0408",
     "nombre": "Manuel de Falla-Tamarindes (Infantil)",
-    "barrio": "10",
+    "barrio": "Campanar",
     "artista": "Ángela Grau González",
     "categoria": "tercera",
     "lema": "Tinc el conte encés en flama!_",
@@ -9006,7 +9006,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0409",
     "nombre": "Josep Soto Micó-Síndic Mocholí (Infantil)",
-    "barrio": "15",
+    "barrio": "Cami Real",
     "artista": "Mon de Color",
     "categoria": "tercera",
     "lema": "Si som el que mengem, aquests superherois...",
@@ -9028,7 +9028,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0410",
     "nombre": "Mestre Valls-Marí Albesa (Infantil)",
-    "barrio": "16",
+    "barrio": "Aiora",
     "artista": "Rubén Vela Romero",
     "categoria": "tercera",
     "lema": "Viaje a la luna",
@@ -9050,7 +9050,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0411",
     "nombre": "Actor Mora-Avinguda Constitució (Infantil)",
-    "barrio": "16",
+    "barrio": "Tormos",
     "artista": "Matías Almela Piqueras",
     "categoria": "tercera",
     "lema": "Star Wars",
@@ -9072,7 +9072,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0412",
     "nombre": "Riu Tajo-Cavite (Infantil)",
-    "barrio": "19",
+    "barrio": "La Malva-Rosa",
     "artista": "Francisco Fuentes Moreno",
     "categoria": "tercera",
     "lema": "L`hora de ...",
@@ -9094,7 +9094,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0413",
     "nombre": "Plaça Sant Bult (Infantil)",
-    "barrio": "12",
+    "barrio": "La Xerea",
     "artista": "Superarte",
     "categoria": "tercera",
     "lema": "Menuts  elements",
@@ -9116,7 +9116,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0414",
     "nombre": "Alemanya-El Batxiller (Infantil)",
-    "barrio": "6",
+    "barrio": "Jaume Roig",
     "artista": "Alejandro Cano Hernández",
     "categoria": "segunda",
     "lema": "Canta Canta",
@@ -9138,7 +9138,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0415",
     "nombre": "Avinguda de l'Oest (Infantil)",
-    "barrio": "4",
+    "barrio": "Sant Francesc",
     "artista": "Pamdenas (Francisco Tarazona)",
     "categoria": "primera",
     "lema": "Muack",
@@ -9160,7 +9160,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0416",
     "nombre": "Alcàsser-Iàtova (Infantil)",
-    "barrio": "12",
+    "barrio": "Soternes",
     "artista": "Clara Ruiz Barberá",
     "categoria": "tercera",
     "lema": "Próxima parada: la falla",
@@ -9182,7 +9182,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0417",
     "nombre": "Quart-Palomar (Infantil)",
-    "barrio": "9",
+    "barrio": "El Carme",
     "artista": "Rubén Canet Burillo",
     "categoria": "tercera",
     "lema": "D'extraescolar? Falleeeeera!",
@@ -9204,7 +9204,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0418",
     "nombre": "Castelló-Sogorb (Infantil)",
-    "barrio": "7",
+    "barrio": "Russafa",
     "artista": "Francisco Fons Castillo",
     "categoria": "segunda",
     "lema": "Armonia natural",
@@ -9226,7 +9226,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0419",
     "nombre": "Avinguda Portugal-Fragata (Infantil)",
-    "barrio": "11",
+    "barrio": "Marxalenes",
     "artista": "Rafael Vilches",
     "categoria": "tercera",
     "lema": "Gelateria 139",
@@ -9248,7 +9248,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0420",
     "nombre": "Xiva-Francisco de Llano (Infantil)",
-    "barrio": "5",
+    "barrio": "Patraix",
     "artista": "Carmen Ibáñez Luna",
     "categoria": "segunda",
     "lema": "Gastronomía valenciana",
@@ -9270,7 +9270,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0421",
     "nombre": "Dalt-Sant Tomàs (Infantil)",
-    "barrio": "18",
+    "barrio": "El Carme",
     "artista": "Antonio Benavente Alcaina",
     "categoria": "tercera",
     "lema": "Eixe ritme que no pare!",
@@ -9292,7 +9292,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0422",
     "nombre": "Joaquim Navarro-Carrícola (Infantil)",
-    "barrio": "18",
+    "barrio": "L'Hort De Senabre",
     "artista": "Xaume Torrent Arenas",
     "categoria": "tercera",
     "lema": "Loc@ x ti",
@@ -9314,7 +9314,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0423",
     "nombre": "Gravador Esteve-Ciril Amorós (Infantil)",
-    "barrio": "2",
+    "barrio": "El Pla Del Remei",
     "artista": "Rubén Arcos Martí",
     "categoria": "primera",
     "lema": "Pardalets",
@@ -9336,7 +9336,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0424",
     "nombre": "Embarcador-Historiador Betí (Infantil)",
-    "barrio": "17",
+    "barrio": "El Saler",
     "artista": "Iván Gómez Villalba",
     "categoria": "tercera",
     "lema": "Come el coco",
@@ -9358,7 +9358,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0425",
     "nombre": "Avinguda Campanar-Hipòlit Rovira (Infantil)",
-    "barrio": "8",
+    "barrio": "El Calvari",
     "artista": "Francisco Tarazona García",
     "categoria": "segunda",
     "lema": "Climática",
@@ -9380,7 +9380,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0426",
     "nombre": "Menéndez y Pelayo-Avinguda Catalunya (Infantil)",
-    "barrio": "6",
+    "barrio": "Ciutat Universitaria",
     "artista": "Daniel López Iglesias",
     "categoria": "segunda",
     "lema": "Segons com es mire",
@@ -9402,7 +9402,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0427",
     "nombre": "Doctor Sanchis Bergón-Túria (Infantil)",
-    "barrio": "12",
+    "barrio": "El Botanic",
     "artista": "Ferran García Madero-Candelas",
     "categoria": "tercera",
     "lema": "Love",
@@ -9424,7 +9424,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0428",
     "nombre": "Arxiduc Carles-Xiva (Infantil)",
-    "barrio": "3",
+    "barrio": "Tres Forques",
     "artista": "Manuel José Blanco Climent",
     "categoria": "primera",
     "lema": "Un viatge de tres anys",
@@ -9446,7 +9446,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0429",
     "nombre": "Plaça Mercat de Montolivet (Infantil)",
-    "barrio": "4",
+    "barrio": "Montolivet",
     "artista": "Andreu Sánchez Hernández",
     "categoria": "primera",
     "lema": "Quan el sol besa a la lluna",
@@ -9468,7 +9468,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0430",
     "nombre": "Ripalda-Soguers (Infantil)",
-    "barrio": "15",
+    "barrio": "El Carme",
     "artista": "Fet d´encàrrec",
     "categoria": "tercera",
     "lema": "Què fàcil que és despistar-se!",
@@ -9490,7 +9490,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0431",
     "nombre": "Doctor Álvaro López-Sant Joan de Déu (Infantil)",
-    "barrio": "17",
+    "barrio": "La Malva-Rosa",
     "artista": "Adrián Ballesteros Rubio",
     "categoria": "tercera",
     "lema": "Tresor pirata",
@@ -9512,7 +9512,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0432",
     "nombre": "Cuba-Buenos Aires (Infantil)",
-    "barrio": "8",
+    "barrio": "Russafa",
     "artista": "Cristian García Carrasco",
     "categoria": "segunda",
     "lema": "Monstres valencians i on trobar-los",
@@ -9534,7 +9534,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0433",
     "nombre": "Avinguda.Burjassot-Serra d'Agullent (Infantil)",
-    "barrio": "20",
+    "barrio": "Ciutat Fallera",
     "artista": "Manolo García Vareta",
     "categoria": "tercera",
     "lema": "Clásicos de la lectura infantil",
@@ -9556,7 +9556,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0434",
     "nombre": "Sueca-Literat Azorín (Infantil)",
-    "barrio": "1",
+    "barrio": "Russafa",
     "artista": "Rubén Arcos Martí",
     "categoria": "especial",
     "lema": "Invisible",
@@ -9578,7 +9578,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0435",
     "nombre": "Vivons-Romeu de Corbera (Infantil)",
-    "barrio": "16",
+    "barrio": "Russafa",
     "artista": "Víctor Caballero Gutiérrez",
     "categoria": "tercera",
     "lema": "Sentiments",
@@ -9600,7 +9600,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0436",
     "nombre": "Benimodo-Enginyer Dicenta (Infantil)",
-    "barrio": "19",
+    "barrio": "Benimamet",
     "artista": "Antonio Sales",
     "categoria": "tercera",
     "lema": "Un día en el circo",
@@ -9622,7 +9622,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0437",
     "nombre": "Sant Rafael-Antón Martín (Infantil)",
-    "barrio": "14",
+    "barrio": "La Malva-Rosa",
     "artista": "Miguel March Azor",
     "categoria": "tercera",
     "lema": "Nit i dia",
@@ -9644,7 +9644,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0438",
     "nombre": "Hernández Lázaro-Vall de la Ballestera (Infantil)",
-    "barrio": "20",
+    "barrio": "Sant Pau",
     "artista": "Isidro Martínez Aparicio",
     "categoria": "tercera",
     "lema": "De cine",
@@ -9666,7 +9666,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0439",
     "nombre": "Jacint Labaila-Manuel Simó (Infantil)",
-    "barrio": "19",
+    "barrio": "Patraix",
     "artista": "Arturo Vallés Bea",
     "categoria": "tercera",
     "lema": "Mi amiga la IA",
@@ -9688,7 +9688,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0440",
     "nombre": "Avinguda Primat Reig-Vinaròs (Infantil)",
-    "barrio": "18",
+    "barrio": "Sant Llorens",
     "artista": "Alejandro Cano Hernández",
     "categoria": "tercera",
     "lema": "Amb una llavoreta",
@@ -9710,7 +9710,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0441",
     "nombre": "Pérez Galdós-Jesús-Mestre Sosa (Infantil)",
-    "barrio": "22",
+    "barrio": "Patraix",
     "artista": "Marcos Robles Zapata",
     "categoria": "tercera",
     "lema": "Osifalla. Una falla de Osos",
@@ -9732,7 +9732,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0442",
     "nombre": "Vilanova de Castelló-Horticultor Galán (Infantil)",
-    "barrio": "22",
+    "barrio": "Tormos",
     "artista": "La Comissió",
     "categoria": "tercera",
     "lema": "Tinc el cor content",
@@ -9754,7 +9754,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0443",
     "nombre": "Poeta Altet-Benicarló (Infantil)",
-    "barrio": "17",
+    "barrio": "Benimaclet",
     "artista": "José Antonio Marco Gómez",
     "categoria": "tercera",
     "lema": "Reina Aurora y su gran panal",
@@ -9776,7 +9776,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0444",
     "nombre": "Universitat Vella-Plaça Patriarca (Infantil)",
-    "barrio": "20",
+    "barrio": "Sant Francesc",
     "artista": "Fet d´encàrrec",
     "categoria": "tercera",
     "lema": "Llapis i paper",
@@ -9798,7 +9798,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0445",
     "nombre": "Poeta Emili Baró-Enric Ginesta (Infantil)",
-    "barrio": "7",
+    "barrio": "Cami De Vera",
     "artista": "Juanjo Salom Díaz",
     "categoria": "segunda",
     "lema": "Imaginarium",
@@ -9820,7 +9820,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0446",
     "nombre": "Lepant-Guillem de Castro (Infantil)",
-    "barrio": "17",
+    "barrio": "El Botanic",
     "artista": "Fet d´encàrrec",
     "categoria": "tercera",
     "lema": "Tria color",
@@ -9842,7 +9842,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0447",
     "nombre": "Marqués de Caro-Doctor Chiarri (Infantil)",
-    "barrio": "20",
+    "barrio": "El Carme",
     "artista": "Xavi Bonilla",
     "categoria": "tercera",
     "lema": "Vacances Didàctiques",
@@ -9864,7 +9864,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0448",
     "nombre": "Plaça del Pilar (Infantil)",
-    "barrio": "1",
+    "barrio": "El Pilar",
     "artista": "Cromatiq Estudio",
     "categoria": "especial",
     "lema": "Vila Emoció",
@@ -9886,7 +9886,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0449",
     "nombre": "Avinguda Peris i Valero-Cuba (Infantil)",
-    "barrio": "8",
+    "barrio": "Russafa",
     "artista": "Rodrigo Nuñez López",
     "categoria": "segunda",
     "lema": "La colla neteja",
@@ -9908,7 +9908,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0450",
     "nombre": "Rubén Darío-Fra Lluís Colomer (Infantil)",
-    "barrio": "17",
+    "barrio": "Ciutat Universitaria",
     "artista": "Andreu Sánchez Hernández",
     "categoria": "tercera",
     "lema": "Que fer abans de naixer?",
@@ -9930,7 +9930,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0451",
     "nombre": "Pare Lluís Navarro-Remunta (Infantil)",
-    "barrio": "20",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "La Comissió",
     "categoria": "tercera",
     "lema": "Un dia de partit",
@@ -9952,7 +9952,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0452",
     "nombre": "Músic Espí-Gravador Fabregat (Infantil)",
-    "barrio": "18",
+    "barrio": "Torrefiel",
     "artista": "Pepe Gómez Olmos",
     "categoria": "tercera",
     "lema": "Musikets",
@@ -9974,7 +9974,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0453",
     "nombre": "Nord-Doctor Zamenhoff (Infantil)",
-    "barrio": "13",
+    "barrio": "La Petxina",
     "artista": "Art, Fusta i Foc",
     "categoria": "tercera",
     "lema": "El temps",
@@ -9996,7 +9996,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0454",
     "nombre": "Plaça de l'Arbre (Infantil)",
-    "barrio": "16",
+    "barrio": "El Carme",
     "artista": "Miguel Hache",
     "categoria": "tercera",
     "lema": "La casa per la finestra",
@@ -10018,7 +10018,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0455",
     "nombre": "Sant Vicent de Paül-Dip. Clara Campoamor (Infantil)",
-    "barrio": "11",
+    "barrio": "Els Orriols",
     "artista": "Vicente Julián García Pastor",
     "categoria": "tercera",
     "lema": "Des-connecta",
@@ -10040,7 +10040,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0456",
     "nombre": "Maria Ros-Manuel Iranzo (Infantil)",
-    "barrio": "21",
+    "barrio": "La Torre",
     "artista": "Paco y David S.L",
     "categoria": "tercera",
     "lema": "La fantasfalla",
@@ -10062,7 +10062,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0457",
     "nombre": "Daroca-Pare Viñas (Infantil)",
-    "barrio": "18",
+    "barrio": "Els Orriols",
     "artista": "Álvaro Guija Moreno",
     "categoria": "tercera",
     "lema": "I a tu, que t'agrada fer?",
@@ -10084,7 +10084,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0458",
     "nombre": "Sant Pere-Mare de Déu de la Vallivana (Infantil)",
-    "barrio": "8",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Salvador Dolz Rubio",
     "categoria": "segunda",
     "lema": "Herois de hui",
@@ -10106,7 +10106,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0459",
     "nombre": "Menorca-Lluís Bolinches (Infantil)",
-    "barrio": "19",
+    "barrio": "Penya-Roja",
     "artista": "Francisco Dauver Estopiña",
     "categoria": "tercera",
     "lema": "A la conquesta de la Lluna de València",
@@ -10128,7 +10128,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0460",
     "nombre": "Grups Mare de Déu del Carme (Infantil)",
-    "barrio": "8",
+    "barrio": "La Carrasca",
     "artista": "Francisco Fuentes Moreno",
     "categoria": "segunda",
     "lema": "Instruments, notes, emocions i somnis",
@@ -10150,7 +10150,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0461",
     "nombre": "Camí de Montcada-Pintor Jacomart (Infantil)",
-    "barrio": "9",
+    "barrio": "Benicalap",
     "artista": "Pepe Sales",
     "categoria": "tercera",
     "lema": "Tac tic tac",
@@ -10172,7 +10172,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0462",
     "nombre": "Humanista Mariner-Manuel Simó (Infantil)",
-    "barrio": "11",
+    "barrio": "Patraix",
     "artista": "Alejandro Martínez Fernández",
     "categoria": "tercera",
     "lema": "De la gossera al casal... amb molt d'amor animal",
@@ -10194,7 +10194,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0463",
     "nombre": "Carrera de Malilla-Enginyer J. Benlloch (Infantil)",
-    "barrio": "2",
+    "barrio": "Malilla",
     "artista": "Salvador Dolz Rubio",
     "categoria": "primera",
     "lema": "Animal-art",
@@ -10216,7 +10216,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0464",
     "nombre": "Poeta Asins-Alegret-Puçol (Infantil)",
-    "barrio": "13",
+    "barrio": "Benimaclet",
     "artista": "Sergio Carrero Melián",
     "categoria": "tercera",
     "lema": "Somni primaveral",
@@ -10238,7 +10238,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0465",
     "nombre": "Avinguda Giorgeta-Roís de Corella (Infantil)",
-    "barrio": "10",
+    "barrio": "La Raiosa",
     "artista": "Rubén Canet Burillo",
     "categoria": "tercera",
     "lema": "Welcome to gior-jeta!",
@@ -10260,7 +10260,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0466",
     "nombre": "Baró de Patraix-Conca (Infantil)",
-    "barrio": "10",
+    "barrio": "Patraix",
     "artista": "Laia Nuñez Porcar",
     "categoria": "tercera",
     "lema": "Volem volar",
@@ -10282,7 +10282,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0467",
     "nombre": "Ciscar-Borriana (Infantil)",
-    "barrio": "IE",
+    "barrio": "La Gran Via",
     "artista": "Joan Sáez Blanch",
     "categoria": "tercera",
     "lema": "ojalá queeeee...",
@@ -10304,7 +10304,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0468",
     "nombre": "Fra J. Rodríguez-Pintor Cortina (Infantil)",
-    "barrio": "2",
+    "barrio": "L'Hort De Senabre",
     "artista": "Carlos Herrero Muria",
     "categoria": "primera",
     "lema": "Eres energía",
@@ -10326,7 +10326,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0469",
     "nombre": "Plaça Mercat Central (Infantil)",
-    "barrio": "8",
+    "barrio": "El Mercat",
     "artista": "Joaquín Rubio Yáñez",
     "categoria": "segunda",
     "lema": "Galáctica",
@@ -10348,7 +10348,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0470",
     "nombre": "Doctor Peset Aleixandre-En Guillem Ferrer (Infantil)",
-    "barrio": "14",
+    "barrio": "Marxalenes",
     "artista": "Vicente Albert García",
     "categoria": "tercera",
     "lema": "Amics de breçol",
@@ -10370,7 +10370,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0471",
     "nombre": "Riu Bidasoa-Comte de Torrefiel (Infantil)",
-    "barrio": "15",
+    "barrio": "Torrefiel",
     "artista": "Cristian García Carrasco",
     "categoria": "tercera",
     "lema": "Ballem!",
@@ -10392,7 +10392,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0472",
     "nombre": "L'Alguer-Enginyer Rafael Janini (Infantil)",
-    "barrio": "2",
+    "barrio": "Betero",
     "artista": "Tedi Chichanova",
     "categoria": "primera",
     "lema": "Pide un deseo...",
@@ -10414,7 +10414,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0473",
     "nombre": "Santa Maria Micaela-Martí l'Humà (Infantil)",
-    "barrio": "1",
+    "barrio": "La Petxina",
     "artista": "Miguel Hache",
     "categoria": "especial",
     "lema": "Santa María Mikado",
@@ -10436,7 +10436,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0474",
     "nombre": "Isaac Peral-Méndez Núñez (Infantil)",
-    "barrio": "12",
+    "barrio": "El Grau",
     "artista": "Barraques Art",
     "categoria": "tercera",
     "lema": "Em-pomala",
@@ -10458,7 +10458,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0475",
     "nombre": "Lo Rat Penat (Infantil)",
-    "barrio": "4",
+    "barrio": "Cami Fondo",
     "artista": "Alejandro Rubio Capella",
     "categoria": "primera",
     "lema": "Semana Fallera emoció verdadera",
@@ -10480,7 +10480,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0476",
     "nombre": "Barri de Sant Josep (Infantil)",
-    "barrio": "8",
+    "barrio": "La Vega Baixa",
     "artista": "Loren y Sergio Fandos",
     "categoria": "segunda",
     "lema": "Cor de fusta",
@@ -10502,7 +10502,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0477",
     "nombre": "Plaça Rojas Clemente (Infantil)",
-    "barrio": "17",
+    "barrio": "El Botanic",
     "artista": "Vicente Julián García Pastor",
     "categoria": "tercera",
     "lema": "Ni il·legals, ni invisibles",
@@ -10524,7 +10524,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0478",
     "nombre": "Cadis-Els Centelles (Infantil)",
-    "barrio": "6",
+    "barrio": "Russafa",
     "artista": "Alejandro López Sánchez",
     "categoria": "segunda",
     "lema": "Espurna",
@@ -10546,7 +10546,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0479",
     "nombre": "Pizarro-Ciril Amorós (Infantil)",
-    "barrio": "1",
+    "barrio": "El Pla Del Remei",
     "artista": "Zvonimir Ostoic",
     "categoria": "especial",
     "lema": "Llegir per a saber",
@@ -10568,7 +10568,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0480",
     "nombre": "Carretera d'Escrivà-Coop. de Sant Ferran (Infantil)",
-    "barrio": "18",
+    "barrio": "La Raiosa",
     "artista": "Antonio Ramos Asensi",
     "categoria": "tercera",
     "lema": "On està el gamusino?",
@@ -10590,7 +10590,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0481",
     "nombre": "Tres Forques-Conca-Pérez Galdós (Infantil)",
-    "barrio": "9",
+    "barrio": "Patraix",
     "artista": "Víctor Navarro Granero",
     "categoria": "tercera",
     "lema": "El poder del somriure",
@@ -10612,7 +10612,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0482",
     "nombre": "Andreu Piles Ivars-Salvador Tuset (Infantil)",
-    "barrio": "2",
+    "barrio": "Benicalap",
     "artista": "Rafael Ibáñez Sánchez",
     "categoria": "primera",
     "lema": "Huits, nous i algun déu",
@@ -10634,7 +10634,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0483",
     "nombre": "Àngel Villena-Pintor Sabater (Infantil)",
-    "barrio": "18",
+    "barrio": "Na Rovella",
     "artista": "Víctor Navarro Granero",
     "categoria": "tercera",
     "lema": "Som la mar",
@@ -10656,7 +10656,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0484",
     "nombre": "Pere Cabanes-Comte de Lumiares (Infantil)",
-    "barrio": "21",
+    "barrio": "Torrefiel",
     "artista": "David Sanruperto Pérez",
     "categoria": "tercera",
     "lema": "Una vida de conte",
@@ -10678,7 +10678,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0485",
     "nombre": "Joaquim Costa-Borriana (Infantil)",
-    "barrio": "2",
+    "barrio": "La Gran Via",
     "artista": "David Ojeda Amorós",
     "categoria": "primera",
     "lema": "Com el dia i la nit",
@@ -10700,7 +10700,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0486",
     "nombre": "Doctor Gil i Morte-Doctor Vila Barberà (Infantil)",
-    "barrio": "12",
+    "barrio": "Arrancapins",
     "artista": "Santiago Muñoz Girón",
     "categoria": "tercera",
     "lema": "Bon dia",
@@ -10722,7 +10722,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0487",
     "nombre": "Cedre-Explorador Andrés (Infantil)",
-    "barrio": "16",
+    "barrio": "Ciutat Jardi",
     "artista": "Clara Ruiz Barberá",
     "categoria": "tercera",
     "lema": "Falles en el cap",
@@ -10744,7 +10744,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0488",
     "nombre": "Carrera de Sant Lluís-Avinguda Doctor Waksman (Infantil)",
-    "barrio": "6",
+    "barrio": "En Corts",
     "artista": "Daniel López Iglesias",
     "categoria": "segunda",
     "lema": "Mare nostrum",
@@ -10766,7 +10766,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0489",
     "nombre": "Ribera-Convent de Santa Clara (Infantil)",
-    "barrio": "1",
+    "barrio": "Sant Francesc",
     "artista": "Javier Álvarez-Sala Salinas",
     "categoria": "especial",
     "lema": "¡Mira quí pinta!",
@@ -10788,7 +10788,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0490",
     "nombre": "Baró de San Petrillo-Leonor Jovani (Infantil)",
-    "barrio": "6",
+    "barrio": "Benimaclet",
     "artista": "Pepe Gómez Olmos",
     "categoria": "segunda",
     "lema": "Vosté està ací",
@@ -10810,7 +10810,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0491",
     "nombre": "Major-Moraira-Natzaret (Infantil)",
-    "barrio": "7",
+    "barrio": "Natzaret",
     "artista": "Sevior &Priol Arts",
     "categoria": "segunda",
     "lema": "Flower Power",
@@ -10832,7 +10832,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0492",
     "nombre": "Santa Genoveva Torres-Arquitecte Tolsà (Infantil)",
-    "barrio": "1",
+    "barrio": "Sant Llorens",
     "artista": "Miriam García Sandemetrio",
     "categoria": "especial",
     "lema": "Oh no! Matopeies",
@@ -10854,7 +10854,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0493",
     "nombre": "Indústria-Sants Just i Pastor (Infantil)",
-    "barrio": "4",
+    "barrio": "Aiora",
     "artista": "Javier Rico Catalá",
     "categoria": "primera",
     "lema": "Valencia",
@@ -10876,7 +10876,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0494",
     "nombre": "Gayano Lluch (Infantil)",
-    "barrio": "IE",
+    "barrio": "Torrefiel",
     "artista": "Raúl García Pertusa",
     "categoria": "tercera",
     "lema": "Saber es Poder",
@@ -10898,7 +10898,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0495",
     "nombre": "Sagunt-Sant Antoni-Pare Urbano (Infantil)",
-    "barrio": "9",
+    "barrio": "Sant Antoni",
     "artista": "Ana Duró I Adrián Ballesteros",
     "categoria": "tercera",
     "lema": "El llenguatge de les flors",
@@ -10920,7 +10920,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0496",
     "nombre": "Avinguda Primat Reig-Sant Vicent de Paül (Infantil)",
-    "barrio": "10",
+    "barrio": "Els Orriols",
     "artista": "Vicente Domínguez Pérez",
     "categoria": "tercera",
     "lema": "Operación popó",
@@ -10942,7 +10942,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0497",
     "nombre": "Cadis-Mossén Femenia-Puerto Rico (Infantil)",
-    "barrio": "13",
+    "barrio": "Russafa",
     "artista": "Nerea Duro Gómez",
     "categoria": "tercera",
     "lema": "La rebel·lió dels valents",
@@ -10964,7 +10964,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0498",
     "nombre": " (Infantil)",
-    "barrio": "Valencia",
+    "barrio": "Benicalap",
     "artista": "",
     "categoria": "tercera",
     "lema": "",
@@ -10986,7 +10986,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0499",
     "nombre": "Santa Cruz de Tenerife (Infantil)",
-    "barrio": "12",
+    "barrio": "Tres Forques",
     "artista": "Salvador Aguilella Moreno",
     "categoria": "tercera",
     "lema": "Estacromía",
@@ -11008,7 +11008,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0500",
     "nombre": "Plaça Sequiota-El Palmar (Infantil)",
-    "barrio": "17",
+    "barrio": "El Palmar",
     "artista": "Creaciones Zazu",
     "categoria": "tercera",
     "lema": "Conta un conte",
@@ -11030,7 +11030,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0501",
     "nombre": "Iecla-Cardenal Benlloch (Infantil)",
-    "barrio": "14",
+    "barrio": "L'Amistat",
     "artista": "Andreu Sánchez Hernández",
     "categoria": "tercera",
     "lema": "Nakanas fallers",
@@ -11052,7 +11052,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0502",
     "nombre": "Plaça Patraix (Infantil)",
-    "barrio": "15",
+    "barrio": "Patraix",
     "artista": "Vicente Julián García Pastor",
     "categoria": "tercera",
     "lema": "Explora",
@@ -11074,7 +11074,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0503",
     "nombre": "Enginyer Manuel Maese-Cristóbal Llorens (Infantil)",
-    "barrio": "4",
+    "barrio": "La Malva-Rosa",
     "artista": "Salvador Dolz Rubio",
     "categoria": "primera",
     "lema": "Maese está de moda",
@@ -11096,7 +11096,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0504",
     "nombre": "Àngel Guimerà-Pintor Vila Prades (Infantil)",
-    "barrio": "FC",
+    "barrio": "La Petxina",
     "artista": "La Comissió",
     "categoria": "tercera",
     "lema": "Alça la pau",
@@ -11118,7 +11118,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0505",
     "nombre": "Lluís Oliag-Mariola-Granada (Infantil)",
-    "barrio": "20",
+    "barrio": "Montolivet",
     "artista": "Tedi Chichanova",
     "categoria": "tercera",
     "lema": "1 Ovella..., 2 Ovelles..., 3 Ovelles...",
@@ -11140,7 +11140,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0506",
     "nombre": "Pare Domènech-Avinguda Pius XII (Infantil)",
-    "barrio": "10",
+    "barrio": "Campanar",
     "artista": "Art de Foc",
     "categoria": "tercera",
     "lema": "La reina del meu jardí",
@@ -11162,7 +11162,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0507",
     "nombre": "Rubén Vela-Avinguda Doctor Waksman (Infantil)",
-    "barrio": "15",
+    "barrio": "En Corts",
     "artista": "Alejandro Martínez Fernández",
     "categoria": "tercera",
     "lema": "Cuidem del nostre mon",
@@ -11184,7 +11184,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0508",
     "nombre": "Carrera de Malilla-Illa Cabrera (Infantil)",
-    "barrio": "2",
+    "barrio": "Malilla",
     "artista": "Fran Tarazona (Pam de Nas)",
     "categoria": "primera",
     "lema": "Nu daurat, els 50 vestits",
@@ -11206,7 +11206,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0509",
     "nombre": "Montortal-Torrefiel (Infantil)",
-    "barrio": "5",
+    "barrio": "Torrefiel",
     "artista": "Imaginarte",
     "categoria": "segunda",
     "lema": "Estem de faula",
@@ -11228,7 +11228,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0510",
     "nombre": "Carrera de Sant Lluís-Rafael Albiñana (Infantil)",
-    "barrio": "13",
+    "barrio": "En Corts",
     "artista": "Clara Ruiz Barberá",
     "categoria": "tercera",
     "lema": "Insectivoria",
@@ -11250,7 +11250,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0511",
     "nombre": "Escalante-Marina (Infantil)",
-    "barrio": "12",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Alejandro Arredondo Ortega",
     "categoria": "tercera",
     "lema": "Navega i batega",
@@ -11272,7 +11272,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0512",
     "nombre": "Sant Vicent-Periodista Azzati (Infantil)",
-    "barrio": "2",
+    "barrio": "Sant Francesc",
     "artista": "Santiago Muñoz Girón",
     "categoria": "primera",
     "lema": "Canta-la, Estima-la",
@@ -11294,7 +11294,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0513",
     "nombre": "Alqueries de Bellver-Garbí (Infantil)",
-    "barrio": "8",
+    "barrio": "Benicalap",
     "artista": "Alejandro Arredondo Ortega",
     "categoria": "segunda",
     "lema": "Naix 1 idea",
@@ -11316,7 +11316,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0514",
     "nombre": "Jerónima Galés-Litògraf Pascual i Abad (Infantil)",
-    "barrio": "3",
+    "barrio": "L'Hort De Senabre",
     "artista": "Tracatart S. L",
     "categoria": "primera",
     "lema": "Dolç frenesí",
@@ -11338,7 +11338,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0515",
     "nombre": "General Llorens (Infantil)",
-    "barrio": "4",
+    "barrio": "Benicalap",
     "artista": "Vicente Domínguez Pérez",
     "categoria": "primera",
     "lema": "La ceramo",
@@ -11360,7 +11360,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0516",
     "nombre": "Avinguda Burjassot-Pare Carbonell (Infantil)",
-    "barrio": "6",
+    "barrio": "Benicalap",
     "artista": "Ángel Navarro Requena",
     "categoria": "segunda",
     "lema": "Visita al humanografic",
@@ -11382,7 +11382,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0517",
     "nombre": "Barri de Sant Isidre (Infantil)",
-    "barrio": "5",
+    "barrio": "Sant Isidre",
     "artista": "Pepe Gómez Olmos",
     "categoria": "segunda",
     "lema": "Qui és qui? El joc dels sectors.",
@@ -11404,7 +11404,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0518",
     "nombre": "Trinitat-Alboraia (Infantil)",
-    "barrio": "13",
+    "barrio": "Trinitat",
     "artista": "Fet d'Encàrrec",
     "categoria": "tercera",
     "lema": "Què serà: la primavera o que están en la Figuera?",
@@ -11426,7 +11426,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0519",
     "nombre": "Bailén-Xàtiva (Infantil)",
-    "barrio": "15",
+    "barrio": "La Roqueta",
     "artista": "Paco y David",
     "categoria": "tercera",
     "lema": "Baby star wars",
@@ -11448,7 +11448,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0520",
     "nombre": "Ramon de Rocafull-Comte d'Alaquàs (Infantil)",
-    "barrio": "9",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Salvador Dolz Rubio",
     "categoria": "tercera",
     "lema": "L´encantament",
@@ -11470,7 +11470,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0521",
     "nombre": "Illes Canàries-Dama d'Elx (Infantil)",
-    "barrio": "4",
+    "barrio": "La Creu Del Grau",
     "artista": "Pepe Gómez Olmos",
     "categoria": "primera",
     "lema": "Alló que no vorem",
@@ -11492,7 +11492,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0522",
     "nombre": "Blas Gámez - Ángel Villena (Infantil)",
-    "barrio": "IE",
+    "barrio": "Ciutat De Les Arts I De Les Ciencies",
     "artista": "Fran Tarazona",
     "categoria": "tercera",
     "lema": "Victoria",
@@ -11514,7 +11514,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0523",
     "nombre": "Benicadell-Sant Roc (Infantil)",
-    "barrio": "11",
+    "barrio": "Benicalap",
     "artista": "Fernando Martínez Hernández",
     "categoria": "tercera",
     "lema": "Halloween",
@@ -11536,7 +11536,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0524",
     "nombre": " (Infantil)",
-    "barrio": "Valencia",
+    "barrio": "Favara",
     "artista": "",
     "categoria": "tercera",
     "lema": "",
@@ -11558,7 +11558,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0525",
     "nombre": "Avinguda Regne de València-Ciscar (Infantil)",
-    "barrio": "6",
+    "barrio": "La Gran Via",
     "artista": "Francisco Tarazona García",
     "categoria": "segunda",
     "lema": "Temps fugit",
@@ -11580,7 +11580,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0526",
     "nombre": "Plaça d'Espanya-Ramón y Cajal-Pintor Benedito (Infantil)",
-    "barrio": "13",
+    "barrio": "La Roqueta",
     "artista": "Enrique Nuñez Nuñez",
     "categoria": "tercera",
     "lema": "Mamá",
@@ -11602,7 +11602,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0527",
     "nombre": "Avinguda Jacinto Benavente-Regina Na Germana (Infantil)",
-    "barrio": "10",
+    "barrio": "La Gran Via",
     "artista": "Ferrán García Madero-Candelas",
     "categoria": "tercera",
     "lema": "Ambaixada",
@@ -11624,7 +11624,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0528",
     "nombre": "Pintor Maella-Avinguda França-Menorca (Infantil)",
-    "barrio": "3",
+    "barrio": "Penya-Roja",
     "artista": "David Mourelle Nicolás",
     "categoria": "primera",
     "lema": "Al vent",
@@ -11646,7 +11646,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0529",
     "nombre": "Escalante-Empar Guillén (Infantil)",
-    "barrio": "20",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Roberto  Climent Cremades",
     "categoria": "tercera",
     "lema": "Escuela de Faraones",
@@ -11668,7 +11668,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0530",
     "nombre": "Quart Extramurs-Velázquez (Infantil)",
-    "barrio": "7",
+    "barrio": "Nou Moles",
     "artista": "Enrique Núñez Núñez",
     "categoria": "segunda",
     "lema": "Açò és una mentira .... piadosa",
@@ -11690,7 +11690,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0531",
     "nombre": "Mare de Déu de la Cabeça-J.M. Mortes Lerma (Infantil)",
-    "barrio": "7",
+    "barrio": "Vara De Quart",
     "artista": "Ferrán García Madero-Candelas",
     "categoria": "segunda",
     "lema": "Marea",
@@ -11712,7 +11712,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0532",
     "nombre": "Avinguda de França-Alfred Toran i Olmos (Infantil)",
-    "barrio": "3",
+    "barrio": "Penya-Roja",
     "artista": "Carlos Herrero Muria",
     "categoria": "primera",
     "lema": "Tot creix en tu",
@@ -11734,7 +11734,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0533",
     "nombre": "Barraca-Església del Rosari (Infantil)",
-    "barrio": "11",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Lorenzo Fandos Ayoro",
     "categoria": "tercera",
     "lema": "Refrans valencias",
@@ -11756,7 +11756,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0534",
     "nombre": "Carabasses-En Gall (Infantil)",
-    "barrio": "16",
+    "barrio": "El Mercat",
     "artista": "Alejandro Cano Hernández",
     "categoria": "tercera",
     "lema": "Aigua de vida",
@@ -11778,7 +11778,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0535",
     "nombre": "En Plom-Guillem de Castro (Infantil)",
-    "barrio": "16",
+    "barrio": "El Pilar",
     "artista": "Juan Alberto Navarro Guijarro",
     "categoria": "tercera",
     "lema": "Reina per naturalesa",
@@ -11800,7 +11800,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0536",
     "nombre": "Alfons el Magnànim-Nau-Bonaire (Infantil)",
-    "barrio": "17",
+    "barrio": "Sant Francesc",
     "artista": "Art, Fusta i Foc",
     "categoria": "tercera",
     "lema": "Expresa't en valencià",
@@ -11822,7 +11822,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0537",
     "nombre": "Blasco Ibáñez-Mestre Ripoll (Infantil)",
-    "barrio": "FC",
+    "barrio": "La Carrasca",
     "artista": "La Comissió",
     "categoria": "tercera",
     "lema": "El pozo de los deseos",
@@ -11844,7 +11844,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0538",
     "nombre": "Avinguda Regne de València-Mestre Serrano (Infantil)",
-    "barrio": "9",
+    "barrio": "Russafa",
     "artista": "Sevior & Priol Arts",
     "categoria": "tercera",
     "lema": "Somnis",
@@ -11866,7 +11866,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0539",
     "nombre": "Progrés-Teatre de la Marina (Infantil)",
-    "barrio": "5",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Salvador Dolz Rubio",
     "categoria": "segunda",
     "lema": "Som tradició, som progrés",
@@ -11888,7 +11888,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0540",
     "nombre": "Camí Nou de Picanya-Nicolau Primitiu (Infantil)",
-    "barrio": "1",
+    "barrio": "Sant Isidre",
     "artista": "Ángel Navarro Requena",
     "categoria": "especial",
     "lema": "I volta, i volta, i volta...",
@@ -11910,7 +11910,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0541",
     "nombre": "Pare Alegre-Enric Navarro (Infantil)",
-    "barrio": "17",
+    "barrio": "Benimaclet",
     "artista": "Javier Rico Catalá",
     "categoria": "tercera",
     "lema": "La historia de gambrinus",
@@ -11932,7 +11932,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0542",
     "nombre": "Plaça de l'Àngel (Infantil)",
-    "barrio": "18",
+    "barrio": "El Carme",
     "artista": "Fet d'Encárrec",
     "categoria": "tercera",
     "lema": "Fem Equip",
@@ -11954,7 +11954,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0543",
     "nombre": "Veneçuela-Agustí Sales (Infantil)",
-    "barrio": "15",
+    "barrio": "La Raiosa",
     "artista": "Francisco José Sierra Alarcón",
     "categoria": "tercera",
     "lema": "Nuestro Reino",
@@ -11976,7 +11976,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0544",
     "nombre": "Rosari-Plaça Calabuig (Infantil)",
-    "barrio": "12",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Carlos Carsí García",
     "categoria": "tercera",
     "lema": "Felicità",
@@ -11998,7 +11998,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0545",
     "nombre": "Ramiro de Maeztu-Els Lleons (Infantil)",
-    "barrio": "4",
+    "barrio": "Aiora",
     "artista": "El Talleret O.C.",
     "categoria": "primera",
     "lema": "El bosc de llibres",
@@ -12020,7 +12020,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0546",
     "nombre": "Vicent Sancho Tello-Xile (Infantil)",
-    "barrio": "2",
+    "barrio": "Mestalla",
     "artista": "Ángel Navarro Requena",
     "categoria": "primera",
     "lema": "Viaje al planeta donde todo es posible",
@@ -12042,7 +12042,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0547",
     "nombre": "Carcaixent-Compromís de Casp (Infantil)",
-    "barrio": "20",
+    "barrio": "La Raiosa",
     "artista": "Alejandro Cano Hernández",
     "categoria": "tercera",
     "lema": "Escola de Magia",
@@ -12064,7 +12064,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0548",
     "nombre": "Sevilla-Dénia (Infantil)",
-    "barrio": "20",
+    "barrio": "Russafa",
     "artista": "Rubén Canet Burillo",
     "categoria": "tercera",
     "lema": "Amparín i el misteri del Casal",
@@ -12086,7 +12086,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0549",
     "nombre": "Plaça Segòvia-Avinguda Doctor Tomàs Sala (Infantil)",
-    "barrio": "4",
+    "barrio": "L'Hort De Senabre",
     "artista": "Emilio Tamarit Simón",
     "categoria": "primera",
     "lema": "Llavor",
@@ -12108,7 +12108,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0550",
     "nombre": "Joan Baptista Vives (Infantil)",
-    "barrio": "20",
+    "barrio": "Nou Moles",
     "artista": "David Zahonero del Fresno",
     "categoria": "tercera",
     "lema": "Musica maestro",
@@ -12130,7 +12130,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0551",
     "nombre": "Avinguda Pianista Martínez Carrasco-Eslida (Infantil)",
-    "barrio": "16",
+    "barrio": "Malilla",
     "artista": "Fet d´encàrrec",
     "categoria": "tercera",
     "lema": "De la bambolla... a la Colla",
@@ -12152,7 +12152,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0552",
     "nombre": "Acàcies-Picaio (Infantil)",
-    "barrio": "16",
+    "barrio": "Benicalap",
     "artista": "Xavi Herrero",
     "categoria": "tercera",
     "lema": "Super falla!",
@@ -12174,7 +12174,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0553",
     "nombre": "Reina-Vicent Guillot (Infantil)",
-    "barrio": "15",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Ramón Lemos Sierra",
     "categoria": "tercera",
     "lema": "Atrapados en la red!",
@@ -12196,7 +12196,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0554",
     "nombre": "Borrull-Socors (Infantil)",
-    "barrio": "18",
+    "barrio": "El Botanic",
     "artista": "Paco Ribes + Pîchiavo",
     "categoria": "tercera",
     "lema": "Per ofrenar",
@@ -12218,7 +12218,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0555",
     "nombre": "Cervantes-Pare Jofré (Infantil)",
-    "barrio": "6",
+    "barrio": "La Roqueta",
     "artista": "Paco Martínez",
     "categoria": "segunda",
     "lema": "Balla Valencia!",
@@ -12240,7 +12240,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0556",
     "nombre": "Sant Ignasi de Loiola-Jesús i Maria (Infantil)",
-    "barrio": "8",
+    "barrio": "La Petxina",
     "artista": "Ángela Grau González",
     "categoria": "segunda",
     "lema": "Els 'niu' 75",
@@ -12262,7 +12262,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0557",
     "nombre": "Arts i Oficis-Actor Llorens (Infantil)",
-    "barrio": "12",
+    "barrio": "Albors",
     "artista": "Vicente Albert García",
     "categoria": "tercera",
     "lema": "Porilàndia",
@@ -12284,7 +12284,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0558",
     "nombre": "Gravador Jordán-Escultor Pastor (Infantil)",
-    "barrio": "15",
+    "barrio": "La Fonteta S.Lluis",
     "artista": "Santa Eulalia",
     "categoria": "tercera",
     "lema": "Tu de qui eres",
@@ -12306,7 +12306,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0559",
     "nombre": "Guillem de Castro-Triador (Infantil)",
-    "barrio": "19",
+    "barrio": "El Pilar",
     "artista": "Celso Sierra Barberá",
     "categoria": "tercera",
     "lema": "TEA companye",
@@ -12328,7 +12328,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0560",
     "nombre": "Oltà-Juan Ramón Jiménez (Infantil)",
-    "barrio": "14",
+    "barrio": "Malilla",
     "artista": "Art, Fusta i Foc",
     "categoria": "tercera",
     "lema": "Estréscolar",
@@ -12350,7 +12350,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0561",
     "nombre": "Guillem Sorolla-Recaredo (Infantil)",
-    "barrio": "19",
+    "barrio": "El Pilar",
     "artista": "Santiago Parrado",
     "categoria": "tercera",
     "lema": "Eureka!",
@@ -12372,7 +12372,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0562",
     "nombre": "Sèneca-Poeta Mas i Ros (Infantil)",
-    "barrio": "20",
+    "barrio": "L'Amistat",
     "artista": "Roberto Climent Cremades",
     "categoria": "tercera",
     "lema": "En un tiempo no muy lejano...",
@@ -12394,7 +12394,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0563",
     "nombre": "En Sendra-Plaça Coll (Infantil)",
-    "barrio": "20",
+    "barrio": "El Pilar",
     "artista": "Creaciones Zazu",
     "categoria": "tercera",
     "lema": "Conta`m un conte",
@@ -12416,7 +12416,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0564",
     "nombre": "Santiago Rusiñol-Comte de Lumiares (Infantil)",
-    "barrio": "14",
+    "barrio": "Els Orriols",
     "artista": "David Guzmán Quiles",
     "categoria": "tercera",
     "lema": "Late motiv",
@@ -12438,7 +12438,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0565",
     "nombre": "Josep Maria Bayarri-Los Isidros (Infantil)",
-    "barrio": "14",
+    "barrio": "La Llum",
     "artista": "Francisco Soriano Gimeno",
     "categoria": "tercera",
     "lema": "Pesadilla antes de fallas",
@@ -12460,7 +12460,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0566",
     "nombre": "Conchita Piquer-Monestir de Poblet (Infantil)",
-    "barrio": "14",
+    "barrio": "El Calvari",
     "artista": "Alejandro Cano Hernández",
     "categoria": "tercera",
     "lema": "Quina frescoreta",
@@ -12482,7 +12482,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0567",
     "nombre": "Cuenca Tramoyeres-La Guàrdia Civil (Infantil)",
-    "barrio": "10",
+    "barrio": "Benimaclet",
     "artista": "Enrique Núñez Núñez",
     "categoria": "tercera",
     "lema": "Invasió fallera...¡error 270!",
@@ -12504,7 +12504,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0568",
     "nombre": "Corretgeria-Bany dels Pavesos (Infantil)",
-    "barrio": "16",
+    "barrio": "La Seu",
     "artista": "José Luis Platero Cosi",
     "categoria": "tercera",
     "lema": "El petit princep",
@@ -12526,7 +12526,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0569",
     "nombre": "Blocs Platja (Infantil)",
-    "barrio": "4",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Víctor Hugo Giner Blasco",
     "categoria": "primera",
     "lema": "Pangea",
@@ -12548,7 +12548,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0570",
     "nombre": " (Infantil)",
-    "barrio": "Valencia",
+    "barrio": "Benicalap",
     "artista": "",
     "categoria": "tercera",
     "lema": "",
@@ -12570,7 +12570,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0571",
     "nombre": "Sant Vicent-Marvà (Infantil)",
-    "barrio": "3",
+    "barrio": "Arrancapins",
     "artista": "José Fuster García",
     "categoria": "primera",
     "lema": "Ai la IA",
@@ -12592,7 +12592,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0572",
     "nombre": "Mestre Bellver-Marià Ribera (Infantil)",
-    "barrio": "13",
+    "barrio": "Patraix",
     "artista": "Rubén Canet Burillo",
     "categoria": "tercera",
     "lema": "Terreta florens",
@@ -12614,7 +12614,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0573",
     "nombre": "Convent de Jerusalem-Matemàtic Marzal (Infantil)",
-    "barrio": "IE",
+    "barrio": "La Roqueta",
     "artista": "José Gallego Gallego",
     "categoria": "tercera",
     "lema": "Somni de Paper",
@@ -12636,7 +12636,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0574",
     "nombre": "Mossén Sorell-Corona (Infantil)",
-    "barrio": "19",
+    "barrio": "El Carme",
     "artista": "Manuel Martín Huguet",
     "categoria": "tercera",
     "lema": "Xocolates Misterio",
@@ -12658,7 +12658,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0575",
     "nombre": "Comte de Salvatierra-Ciril Amorós (Infantil)",
-    "barrio": "IE",
+    "barrio": "El Pla Del Remei",
     "artista": "Borja Lorente -Cartó Pedra",
     "categoria": "tercera",
     "lema": "Kontrastes",
@@ -12680,7 +12680,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0576",
     "nombre": "Maties Perello-Lluís de Santàngel (Infantil)",
-    "barrio": "7",
+    "barrio": "Russafa",
     "artista": "José Campillo Quiles",
     "categoria": "segunda",
     "lema": "El món dels somnis",
@@ -12702,7 +12702,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0577",
     "nombre": "Josep Benlliure-Vicent Guillot (Infantil)",
-    "barrio": "16",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Antonio Benavente Alcaina",
     "categoria": "tercera",
     "lema": "L?últim Truc",
@@ -12724,7 +12724,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0578",
     "nombre": "Saineter Arniches-Arquitecte Ribes (Infantil)",
-    "barrio": "18",
+    "barrio": "Soternes",
     "artista": "Santiago Parrado",
     "categoria": "tercera",
     "lema": "Pi...oneres",
@@ -12746,7 +12746,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0579",
     "nombre": "Conserva-Berenguer Mallol (Infantil)",
-    "barrio": "3",
+    "barrio": "Aiora",
     "artista": "Salvador Dolz Rubio",
     "categoria": "primera",
     "lema": "Tinc por a...",
@@ -12768,7 +12768,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0580",
     "nombre": "Pius XI-Fontanars (Infantil)",
-    "barrio": "3",
+    "barrio": "Safranar",
     "artista": "David Ojeda Amorós",
     "categoria": "primera",
     "lema": "El circ imaginari",
@@ -12790,7 +12790,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0581",
     "nombre": "Duc de Gaeta-La Pobla de Farnals (Infantil)",
-    "barrio": "IE",
+    "barrio": "Albors",
     "artista": "Mario Pérez",
     "categoria": "tercera",
     "lema": "Som com som",
@@ -12812,7 +12812,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0582",
     "nombre": "Poeta Alberola-Totana (Infantil)",
-    "barrio": "5",
+    "barrio": "Nou Moles",
     "artista": "Roberto Moratalla Gómez",
     "categoria": "segunda",
     "lema": "Komoremi",
@@ -12834,7 +12834,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0583",
     "nombre": "Avinguda l'Equador-Alcalde Gurrea (Infantil)",
-    "barrio": "10",
+    "barrio": "Benicalap",
     "artista": "Emilio Tamarit Simón",
     "categoria": "tercera",
     "lema": "Deuets i deuetes",
@@ -12856,7 +12856,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0584",
     "nombre": "Llorers-Arquitecte Lucini (Infantil)",
-    "barrio": "20",
+    "barrio": "Tormos",
     "artista": "Isidro Martínez Aparicio",
     "categoria": "tercera",
     "lema": "Estelar",
@@ -12878,7 +12878,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0585",
     "nombre": "La Vall de Laguar-Pare Ferris (Infantil)",
-    "barrio": "8",
+    "barrio": "Les Tendetes",
     "artista": "Xavi Bonilla",
     "categoria": "segunda",
     "lema": "Juguetes rotos",
@@ -12900,7 +12900,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0586",
     "nombre": "Plaça del Poble.-Sant Roc (Infantil)",
-    "barrio": "21",
+    "barrio": "Carpesa",
     "artista": "Cristian García Carrasco",
     "categoria": "tercera",
     "lema": "Anem a peixcar?",
@@ -12922,7 +12922,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0587",
     "nombre": "Ramiro de Maeztu-Humanista Furió (Infantil)",
-    "barrio": "5",
+    "barrio": "Aiora",
     "artista": "Daniel Campillo Quiles",
     "categoria": "segunda",
     "lema": "Quina dolçor!",
@@ -12944,7 +12944,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0588",
     "nombre": "Plaça Santa Creu (Infantil)",
-    "barrio": "22",
+    "barrio": "El Carme",
     "artista": "Francisco Javier Ribes López",
     "categoria": "tercera",
     "lema": "Pardals, pardalets i pardalots",
@@ -12966,7 +12966,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0589",
     "nombre": "Hort de Sant Valer-Avinguda de la Plata (Infantil)",
-    "barrio": "21",
+    "barrio": "Ciutat De Les Arts I De Les Ciencies",
     "artista": "Mon de Color",
     "categoria": "tercera",
     "lema": "El somni de Enma",
@@ -12988,7 +12988,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0590",
     "nombre": "Barraca-Espadà (Infantil)",
-    "barrio": "3",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Alejandro López Sánchez",
     "categoria": "primera",
     "lema": "Nuvologia",
@@ -13010,7 +13010,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0591",
     "nombre": "Doctor Manuel Candela-Avinguda del Port (Infantil)",
-    "barrio": "18",
+    "barrio": "Aiora",
     "artista": "Sergio Rodríguez Pons",
     "categoria": "tercera",
     "lema": "Rio",
@@ -13032,7 +13032,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0592",
     "nombre": "Palleter-Erudit Orellana (Infantil)",
-    "barrio": "8",
+    "barrio": "La Petxina",
     "artista": "Miguel Hache",
     "categoria": "segunda",
     "lema": "Mà a mà",
@@ -13054,7 +13054,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0593",
     "nombre": "Periodista Gil Sumbiela-Assutzena (Infantil)",
-    "barrio": "5",
+    "barrio": "Benicalap",
     "artista": "Kuebien Valencia SLU",
     "categoria": "segunda",
     "lema": "Album familiar",
@@ -13076,7 +13076,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0594",
     "nombre": "Manuel Melià i Fuster-Carles Cortina (Infantil)",
-    "barrio": "11",
+    "barrio": "Benicalap",
     "artista": "Manuel García Lleonart",
     "categoria": "tercera",
     "lema": "Animalá de pantá",
@@ -13098,7 +13098,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0595",
     "nombre": "Marqués de Montortal-Berní i Català (Infantil)",
-    "barrio": "6",
+    "barrio": "Torrefiel",
     "artista": "Xaume Torrent Arenas",
     "categoria": "segunda",
     "lema": "4+3=7",
@@ -13120,7 +13120,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0596",
     "nombre": "Francesc Climent-L'Uruguai (Infantil)",
-    "barrio": "7",
+    "barrio": "La Raiosa",
     "artista": "Manuel Pons Ferrer",
     "categoria": "segunda",
     "lema": "El sentiments",
@@ -13142,7 +13142,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0597",
     "nombre": "Sant Vicent Màrtir-Pianista Empar Iturbi (Infantil)",
-    "barrio": "5",
+    "barrio": "La Raiosa",
     "artista": "Rubén Canet Burillo",
     "categoria": "segunda",
     "lema": "Qui ha segut?",
@@ -13164,7 +13164,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0598",
     "nombre": "Pintor Salvador Abril-Peris i Valero (Infantil)",
-    "barrio": "6",
+    "barrio": "Russafa",
     "artista": "Jose Manuel Feliu-Superarte",
     "categoria": "segunda",
     "lema": "Sabudets Fallers",
@@ -13186,7 +13186,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0599",
     "nombre": "Barri Beteró (Infantil)",
-    "barrio": "2",
+    "barrio": "Betero",
     "artista": "Sergio Gómez Ferrer",
     "categoria": "primera",
     "lema": "Quina por !",
@@ -13208,7 +13208,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0600",
     "nombre": "Enginyer Josep Sirera-Pius IX (Infantil)",
-    "barrio": "19",
+    "barrio": "Sant Marcel.Li",
     "artista": "Nerea Duro Gómez",
     "categoria": "tercera",
     "lema": "Els Somnis dels Xiquets",
@@ -13230,7 +13230,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0601",
     "nombre": "Avinguda Regne de València-Duc de Calàbria (Infantil)",
-    "barrio": "2",
+    "barrio": "La Gran Via",
     "artista": "Carlos Carsí García",
     "categoria": "primera",
     "lema": "Comença el joc",
@@ -13252,7 +13252,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0602",
     "nombre": "Plaça del Negret (Infantil)",
-    "barrio": "14",
+    "barrio": "La Seu",
     "artista": "Lorenzo Fandos Ayoro",
     "categoria": "tercera",
     "lema": "Cor de fusta",
@@ -13274,7 +13274,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0603",
     "nombre": "Visitació-Oriola (Infantil)",
-    "barrio": "10",
+    "barrio": "Morvedre",
     "artista": "Antonio Nicolás Ramos Asensi",
     "categoria": "tercera",
     "lema": "Amores imposibles",
@@ -13296,7 +13296,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0604",
     "nombre": "Just Vilar-Mercat del Cabanyal (Infantil)",
-    "barrio": "3",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Vicente Domínguez Pérez",
     "categoria": "primera",
     "lema": "El gran circ de les diferències",
@@ -13318,7 +13318,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0605",
     "nombre": "Fontcalent-Lebon (Infantil)",
-    "barrio": "17",
+    "barrio": "La Creu Del Grau",
     "artista": "Pascual Montes Carrasco",
     "categoria": "tercera",
     "lema": "Sueños espaciales",
@@ -13340,7 +13340,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0606",
     "nombre": "Ferran el Catòlic-Àngel Guimerà (Infantil)",
-    "barrio": "7",
+    "barrio": "Arrancapins",
     "artista": "Noel Hervás García",
     "categoria": "segunda",
     "lema": "Colorama",
@@ -13362,7 +13362,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0607",
     "nombre": "Avinguda de Burjassot-Joaquim Ballester (Infantil)",
-    "barrio": "10",
+    "barrio": "Les Tendetes",
     "artista": "José Badía Roca",
     "categoria": "tercera",
     "lema": "Anem de ruta",
@@ -13384,7 +13384,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0608",
     "nombre": "Joan d'Aguiló-Gaspar Aguilar (Infantil)",
-    "barrio": "5",
+    "barrio": "Safranar",
     "artista": "Jaime Torrent Arenas",
     "categoria": "segunda",
     "lema": "Foc, materia i cor; falles en reacció",
@@ -13406,7 +13406,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0609",
     "nombre": "Evarist Bas-Cullera (Infantil)",
-    "barrio": "19",
+    "barrio": "Benimamet",
     "artista": "La Comissió",
     "categoria": "tercera",
     "lema": "Excavant",
@@ -13428,7 +13428,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0610",
     "nombre": "Plaça Doctor Berenguer Ferrer (Infantil)",
-    "barrio": "22",
+    "barrio": "La Fontsanta",
     "artista": "Joserra Lisarde",
     "categoria": "tercera",
     "lema": "No hay 2 sin 3",
@@ -13450,7 +13450,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0611",
     "nombre": "Avinguda Tarongers-Universitat Politècnica (Infantil)",
-    "barrio": "15",
+    "barrio": "La Carrasca",
     "artista": "Vicente Julián García Pastor",
     "categoria": "tercera",
     "lema": "Serem",
@@ -13472,7 +13472,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0612",
     "nombre": "Monestir de Poblet-Aparicio Albiñana (Infantil)",
-    "barrio": "3",
+    "barrio": "Campanar",
     "artista": "Zvonimir Ostoic",
     "categoria": "primera",
     "lema": "Esperanza",
@@ -13494,7 +13494,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0613",
     "nombre": "Ripalda-Beneficència-Sant Ramon (Infantil)",
-    "barrio": "14",
+    "barrio": "El Carme",
     "artista": "Reyes Pe",
     "categoria": "tercera",
     "lema": "Soroll",
@@ -13516,7 +13516,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0614",
     "nombre": "Ferros-Joan Baptista Perales (Infantil)",
-    "barrio": "4",
+    "barrio": "Aiora",
     "artista": "Emilio Tamarit Simón",
     "categoria": "primera",
     "lema": "Porque rias",
@@ -13538,7 +13538,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0615",
     "nombre": "Isabel la Catòlica-Ciril Amorós (Infantil)",
-    "barrio": "3",
+    "barrio": "El Pla Del Remei",
     "artista": "Pepe Gómez Olmos",
     "categoria": "primera",
     "lema": "En qué estrella estará",
@@ -13560,7 +13560,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0616",
     "nombre": "Grup de Peixcadors  del Perellonet (Infantil)",
-    "barrio": "15",
+    "barrio": "El Perellonet",
     "artista": "Fernando López Cabañero",
     "categoria": "tercera",
     "lema": "Els guardians del planeta",
@@ -13582,7 +13582,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0617",
     "nombre": "Sagunt-Sant Guillem (Infantil)",
-    "barrio": "14",
+    "barrio": "Morvedre",
     "artista": "Mario N. Núñez Hernández",
     "categoria": "tercera",
     "lema": "Dia de pluja",
@@ -13604,7 +13604,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0618",
     "nombre": "Arxiduc Carles-Músic Gomis (Infantil)",
-    "barrio": "2",
+    "barrio": "Safranar",
     "artista": "Borja Llorens Mata",
     "categoria": "primera",
     "lema": "Estelar",
@@ -13626,7 +13626,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0619",
     "nombre": "Campament-La Iessa (Infantil)",
-    "barrio": "11",
+    "barrio": "Benimamet",
     "artista": "Álvaro Dutrús Montes",
     "categoria": "tercera",
     "lema": "Carnestoltes baix la mar",
@@ -13648,7 +13648,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0620",
     "nombre": "Doctor Manuel Candela-Beatriz Tortosa (Infantil)",
-    "barrio": "12",
+    "barrio": "L'Amistat",
     "artista": "Andreu Sánchez Hernández",
     "categoria": "tercera",
     "lema": "Bee mod",
@@ -13670,7 +13670,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0621",
     "nombre": "Cadis-Literat Azorín (Infantil)",
-    "barrio": "11",
+    "barrio": "Russafa",
     "artista": "Toni Ramos Asensi",
     "categoria": "tercera",
     "lema": "Diari d'un viatge",
@@ -13692,7 +13692,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0622",
     "nombre": "Vidal de Canyelles-Sánchez Coello (Infantil)",
-    "barrio": "17",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Víctor Caballero Gutiérrez",
     "categoria": "tercera",
     "lema": "Per damunt del sostre",
@@ -13714,7 +13714,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0623",
     "nombre": "Cases de Bàrcena (Infantil)",
-    "barrio": "20",
+    "barrio": "Les Cases De Barcena",
     "artista": "Álvaro Dutrus Montes",
     "categoria": "tercera",
     "lema": "Carnestoltes baix la mar",
@@ -13736,7 +13736,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0624",
     "nombre": "Fèlix Pizcueta-Ciril Amorós (Infantil)",
-    "barrio": "8",
+    "barrio": "El Pla Del Remei",
     "artista": "Xaume Torrent Arenas",
     "categoria": "segunda",
     "lema": "Meravella",
@@ -13758,7 +13758,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0625",
     "nombre": "Reina-Pau-Sant Vicent (Infantil)",
-    "barrio": "IE",
+    "barrio": "La Seu",
     "artista": "Ceballos y Sanabria",
     "categoria": "tercera",
     "lema": "Benvolguts...",
@@ -13780,7 +13780,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0626",
     "nombre": "Goya-El Brasil (Infantil)",
-    "barrio": "12",
+    "barrio": "Nou Moles",
     "artista": "Juan Martí Martínez",
     "categoria": "tercera",
     "lema": "Els conqueridors del nord",
@@ -13802,7 +13802,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0627",
     "nombre": "Azcàrraga-Ferran el Catòlic (Infantil)",
-    "barrio": "11",
+    "barrio": "La Petxina",
     "artista": "Enrique Nuñez Nuñez",
     "categoria": "tercera",
     "lema": "¡A l'abordage!",
@@ -13824,7 +13824,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0628",
     "nombre": "Jesús-Sant Francesc de Borja (Infantil)",
-    "barrio": "2",
+    "barrio": "Arrancapins",
     "artista": "José Fuster García",
     "categoria": "primera",
     "lema": "Pantone",
@@ -13846,7 +13846,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0629",
     "nombre": "Plaça de la Tenda (Infantil)",
-    "barrio": "7",
+    "barrio": "Benimamet",
     "artista": "Salvador Ferrís Cerveró",
     "categoria": "segunda",
     "lema": "Som Benimamet",
@@ -13868,7 +13868,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0630",
     "nombre": "Senent Ibáñez-Massarrojos (Infantil)",
-    "barrio": "18",
+    "barrio": "Massarrojos",
     "artista": "Isidro Martínez Aparicio",
     "categoria": "tercera",
     "lema": "La musica la polvora i jo",
@@ -13890,7 +13890,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0631",
     "nombre": "Sèneca-Iecla (Infantil)",
-    "barrio": "14",
+    "barrio": "L'Amistat",
     "artista": "Georgina Torres García",
     "categoria": "tercera",
     "lema": "INSECTARIUM",
@@ -13912,7 +13912,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0632",
     "nombre": "Escultor García Mas-Puerto de Santa María (Infantil)",
-    "barrio": "19",
+    "barrio": "Sant Pau",
     "artista": "Arturo Valles Bea",
     "categoria": "tercera",
     "lema": "Que seré",
@@ -13934,7 +13934,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0633",
     "nombre": "Lleons-Poeta Mas i Ros (Infantil)",
-    "barrio": "10",
+    "barrio": "Ciutat Jardi",
     "artista": "Juanfran Jesús Ortíz",
     "categoria": "tercera",
     "lema": "Jo de major vull ser",
@@ -13956,7 +13956,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0634",
     "nombre": "Plaça Mossén Milà (Infantil)",
-    "barrio": "21",
+    "barrio": "La Xerea",
     "artista": "Vicente Albert García",
     "categoria": "tercera",
     "lema": "Natura viva",
@@ -13978,7 +13978,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0635",
     "nombre": "Avinguda de la Plata-La Senyera (Infantil)",
-    "barrio": "13",
+    "barrio": "Montolivet",
     "artista": "Juan Carlos Banacloy Cuevas",
     "categoria": "tercera",
     "lema": "Ohana",
@@ -14000,7 +14000,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0636",
     "nombre": "Sant Josep de Pignatelli-Doctor Peset Aleixandre (Infantil)",
-    "barrio": "14",
+    "barrio": "Benicalap",
     "artista": "Rubén Canet Burillo",
     "categoria": "tercera",
     "lema": "Coret mix vol. 1",
@@ -14022,7 +14022,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0637",
     "nombre": "Pintor Stolz-Burgos (Infantil)",
-    "barrio": "9",
+    "barrio": "Nou Moles",
     "artista": "Daniel López Iglesias",
     "categoria": "tercera",
     "lema": "On hi haguè foc",
@@ -14044,7 +14044,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0638",
     "nombre": "La Pobla del Duc-Benipeixcar (Infantil)",
-    "barrio": "13",
+    "barrio": "Sant Antoni",
     "artista": "Ramón Lemos Sierra",
     "categoria": "tercera",
     "lema": "Namaste",
@@ -14066,7 +14066,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0639",
     "nombre": "Camí de Barcelona-Travessera i Camí de Montcada (Infantil)",
-    "barrio": "16",
+    "barrio": "Tormos",
     "artista": "Javier Bonilla Silvestre",
     "categoria": "tercera",
     "lema": "Las estaciones",
@@ -14088,7 +14088,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0640",
     "nombre": "Josep Benlliure-Teatre de la Marina (Infantil)",
-    "barrio": "12",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Vicente Domínguez",
     "categoria": "tercera",
     "lema": "En busca del tresor del Canyamelar'",
@@ -14110,7 +14110,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0641",
     "nombre": "Doctor Joan Josep Dómine-Port (Infantil)",
-    "barrio": "12",
+    "barrio": "El Grau",
     "artista": "Fet d´encàrrec",
     "categoria": "tercera",
     "lema": "Somiant",
@@ -14132,7 +14132,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0642",
     "nombre": "Plaça Lluís Cano (Infantil)",
-    "barrio": "8",
+    "barrio": "Benimamet",
     "artista": "Xaume Torrent Arenas",
     "categoria": "segunda",
     "lema": "Imaginaçio al poder",
@@ -14154,7 +14154,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0643",
     "nombre": "Ciutat de l'Artista Faller (Infantil)",
-    "barrio": "11",
+    "barrio": "Ciutat Fallera",
     "artista": "Manolo García Lleonart",
     "categoria": "tercera",
     "lema": "Lectures i aventures",
@@ -14176,7 +14176,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0644",
     "nombre": "Albacete-Marvà (Infantil)",
-    "barrio": "2",
+    "barrio": "Arrancapins",
     "artista": "Andreu Sánchez Hernández",
     "categoria": "primera",
     "lema": "Cromágica",
@@ -14198,7 +14198,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0645",
     "nombre": "Mestre Arambul Sanz-Campanar (Infantil)",
-    "barrio": "5",
+    "barrio": "Campanar",
     "artista": "Javier Álvarez-Salas Salinas",
     "categoria": "segunda",
     "lema": "Game Over",
@@ -14220,7 +14220,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0646",
     "nombre": "República Argentina-Doctor Pallarés Iranzo (Infantil)",
-    "barrio": "17",
+    "barrio": "L'Amistat",
     "artista": "David Zahonero del Fresno",
     "categoria": "tercera",
     "lema": "Gunny gunny guniland",
@@ -14242,7 +14242,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0647",
     "nombre": "Castielfabib-Marqués de Sant Joan (Infantil)",
-    "barrio": "12",
+    "barrio": "Campanar",
     "artista": "Agustín Torralba Soto",
     "categoria": "tercera",
     "lema": "A un clic i... atrapats",
@@ -14264,7 +14264,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0648",
     "nombre": "Plaça Jesús (Infantil)",
-    "barrio": "15",
+    "barrio": "La Raiosa",
     "artista": "Rocío Harriero Montesinos",
     "categoria": "tercera",
     "lema": "PER L'AIRE",
@@ -14286,7 +14286,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0649",
     "nombre": "Marqués de Montortal-Josep Esteve (Infantil)",
-    "barrio": "6",
+    "barrio": "Torrefiel",
     "artista": "Xavier Gurrea Belenguer",
     "categoria": "segunda",
     "lema": "Mediterrània",
@@ -14308,7 +14308,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0650",
     "nombre": "Rodríguez de Cepeda-Llorenç Palmireno (Infantil)",
-    "barrio": "9",
+    "barrio": "Albors",
     "artista": "El Talleret",
     "categoria": "tercera",
     "lema": "El cicle del aigua",
@@ -14330,7 +14330,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0651",
     "nombre": " (Infantil)",
-    "barrio": "Valencia",
+    "barrio": "Sant Pau",
     "artista": "",
     "categoria": "tercera",
     "lema": "",
@@ -14352,7 +14352,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0652",
     "nombre": "Bisbe Jaume Pérez-Lluís Oliag (Infantil)",
-    "barrio": "3",
+    "barrio": "Montolivet",
     "artista": "Andreu Sánchez Hernández",
     "categoria": "primera",
     "lema": "Valen-piades",
@@ -14374,7 +14374,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0653",
     "nombre": "Sant Josep de la Muntanya-Terol (Infantil)",
-    "barrio": "5",
+    "barrio": "La Petxina",
     "artista": "José Fuster García",
     "categoria": "segunda",
     "lema": "Eugeni mal geni",
@@ -14396,7 +14396,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0654",
     "nombre": "Pintor Salvador Abril-Pere III El Gran (Infantil)",
-    "barrio": "13",
+    "barrio": "Russafa",
     "artista": "Sergio Gómez Ferrer",
     "categoria": "tercera",
     "lema": "United colors of Valencia",
@@ -14418,7 +14418,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0655",
     "nombre": "Polo y Peyrolón-Ciutat de Mula (Infantil)",
-    "barrio": "17",
+    "barrio": "Mestalla",
     "artista": "Mario N. Núñez Hernández",
     "categoria": "tercera",
     "lema": "Vuela con nosotros",
@@ -14440,7 +14440,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0656",
     "nombre": "Pare Viñas-Agustín Lara (Infantil)",
-    "barrio": "17",
+    "barrio": "Els Orriols",
     "artista": "Pau Vicente Belda",
     "categoria": "tercera",
     "lema": "Música",
@@ -14462,7 +14462,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0657",
     "nombre": "Ministre Luis Mayans-Argenter Suárez (Infantil)",
-    "barrio": "15",
+    "barrio": "Morvedre",
     "artista": "José Luis Platero Cosí",
     "categoria": "tercera",
     "lema": "Carnivale",
@@ -14484,7 +14484,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0658",
     "nombre": "Plaça Vicent Castell Maíques (Infantil)",
-    "barrio": "21",
+    "barrio": "La Llum",
     "artista": "Ramón Lemos Sierra",
     "categoria": "tercera",
     "lema": "Desitges el que desitges, no et quedes a mitjes.",
@@ -14506,7 +14506,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0659",
     "nombre": " (Infantil)",
-    "barrio": "Valencia",
+    "barrio": "Sant Francesc",
     "artista": "",
     "categoria": "tercera",
     "lema": "",
@@ -14528,7 +14528,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0660",
     "nombre": "Avinguda de Valladolid-Enginyer Vicent Pichó (Infantil)",
-    "barrio": "9",
+    "barrio": "Cami De Vera",
     "artista": "Laura Martínez Peralta",
     "categoria": "tercera",
     "lema": "Un any molt dolç",
@@ -14550,7 +14550,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0661",
     "nombre": "Sapadors-Vicent Lleó (Infantil)",
-    "barrio": "3",
+    "barrio": "En Corts",
     "artista": "Ángel Navarro Requena",
     "categoria": "primera",
     "lema": "Al pie de la letra",
@@ -14572,7 +14572,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0662",
     "nombre": "Almirall Cadarso-Comte d'Altea (Infantil)",
-    "barrio": "IE",
+    "barrio": "La Gran Via",
     "artista": "Vicente Gomar Vidal",
     "categoria": "tercera",
     "lema": "Hiperbórea",
@@ -14594,7 +14594,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0663",
     "nombre": "Cuba-Puerto Rico (Infantil)",
-    "barrio": "6",
+    "barrio": "Russafa",
     "artista": "Alejandro López Sánchez",
     "categoria": "segunda",
     "lema": "Quina gossada!",
@@ -14616,7 +14616,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0664",
     "nombre": "Pere Cabanes-Joan XXIII (Infantil)",
-    "barrio": "9",
+    "barrio": "Benicalap",
     "artista": "Santiago Muñoz Girón",
     "categoria": "tercera",
     "lema": "Missió: Salv(art)",
@@ -14638,7 +14638,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0665",
     "nombre": "Josep Maria Haro-Poeta Mas i Ros (Infantil)",
-    "barrio": "15",
+    "barrio": "L'Illa Perduda",
     "artista": "Rubén Vela Romero",
     "categoria": "tercera",
     "lema": "Perill!!! Tresor molt fragil",
@@ -14660,7 +14660,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0666",
     "nombre": "Frederic Mistral-Murta (Infantil)",
-    "barrio": "11",
+    "barrio": "Benimaclet",
     "artista": "Francisco Martínez Heredia",
     "categoria": "tercera",
     "lema": "Un passeig per l'India",
@@ -14682,7 +14682,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0667",
     "nombre": "Peu de La Creu-En Joan de Vila-Rasa (Infantil)",
-    "barrio": "5",
+    "barrio": "El Pilar",
     "artista": "David Mourelle Nicolás",
     "categoria": "segunda",
     "lema": "El mon del que no vull despertar",
@@ -14704,7 +14704,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0668",
     "nombre": "Avinguda Malva-Rosa-Antoni Ponz-Cavite (Infantil)",
-    "barrio": "IE",
+    "barrio": "La Malva-Rosa",
     "artista": "Xavier Gurrea Belenguer",
     "categoria": "tercera",
     "lema": "Nono",
@@ -14726,7 +14726,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0669",
     "nombre": "Plaça Mercé (Infantil)",
-    "barrio": "4",
+    "barrio": "El Mercat",
     "artista": "Art En Foc",
     "categoria": "primera",
     "lema": "Sistema solar",
@@ -14748,7 +14748,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0670",
     "nombre": "Enginyer Manuel Soto - Avinguda França (Infantil)",
-    "barrio": "9",
+    "barrio": "El Grau",
     "artista": "Jorge Gil Sapiña",
     "categoria": "tercera",
     "lema": "jo love mediterrani",
@@ -14770,7 +14770,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0671",
     "nombre": "Riu Segura-Forn d'Alcedo (Infantil)",
-    "barrio": "15",
+    "barrio": "El Forn D'Alcedo",
     "artista": "Jordi Palanca Marqués",
     "categoria": "tercera",
     "lema": "La falleta dels somnis",
@@ -14792,7 +14792,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0672",
     "nombre": "Avinguda Ausiàs March-Na Rovella (Infantil)",
-    "barrio": "13",
+    "barrio": "Malilla",
     "artista": "Víctor Caballero Gutiérrez",
     "categoria": "tercera",
     "lema": "Que comence l'espectacle",
@@ -14814,7 +14814,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0673",
     "nombre": "Avinguda Regne de València-Sant Valer (Infantil)",
-    "barrio": "7",
+    "barrio": "Russafa",
     "artista": "David Mourelle Nicolás",
     "categoria": "segunda",
     "lema": "Que resta per descobrir?",
@@ -14836,7 +14836,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0674",
     "nombre": "Barraca-Columbretes (Infantil)",
-    "barrio": "15",
+    "barrio": "Cabanyal-Canyamelar",
     "artista": "Fusta i Cartó S.L.",
     "categoria": "tercera",
     "lema": "A qué tens por?",
@@ -14858,7 +14858,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0675",
     "nombre": "Plaça Sant Miquel-Vicent Iborra (Infantil)",
-    "barrio": "11",
+    "barrio": "El Carme",
     "artista": "Marta Póvez López",
     "categoria": "tercera",
     "lema": "Una falleta de llegendes valencianes",
@@ -14880,7 +14880,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0676",
     "nombre": "Espartero-Ramón y Cajal (Infantil)",
-    "barrio": "IE",
+    "barrio": "La Roqueta",
     "artista": "Zvonimir Ostoic",
     "categoria": "tercera",
     "lema": "El viatge de pepet",
@@ -14902,7 +14902,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0677",
     "nombre": "Tres Camins-Pinedo (Infantil)",
-    "barrio": "14",
+    "barrio": "La Punta",
     "artista": "Jaume Chornet Roig",
     "categoria": "tercera",
     "lema": "Realitats paral·leles",
@@ -14924,7 +14924,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0678",
     "nombre": "Arquebisbe Olaechea-Sant Marcel·lí (Infantil)",
-    "barrio": "1",
+    "barrio": "Sant Marcel.Li",
     "artista": "Rubén Moya",
     "categoria": "especial",
     "lema": "Art Antic",
@@ -14946,7 +14946,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0679",
     "nombre": "Bosseria-Tossal (Infantil)",
-    "barrio": "9",
+    "barrio": "El Mercat",
     "artista": "Juan Carlos Banacloy Cuevas",
     "categoria": "tercera",
     "lema": "Batalles de comunitat, batalles de pau",
@@ -14968,7 +14968,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0680",
     "nombre": "Molinell-Alboraia (Infantil)",
-    "barrio": "1",
+    "barrio": "Trinitat",
     "artista": "Rubén Canet Burillo",
     "categoria": "especial",
     "lema": "Sava nova",
@@ -14990,7 +14990,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0681",
     "nombre": "Murillo-Palomar (Infantil)",
-    "barrio": "20",
+    "barrio": "El Pilar",
     "artista": "Celso Sierra Barberá",
     "categoria": "tercera",
     "lema": "Algo més que quatre gats!",
@@ -15012,7 +15012,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0682",
     "nombre": "Ciutat de Córdova-Vicent Tomàs Martí (Infantil)",
-    "barrio": "17",
+    "barrio": "Beniferri",
     "artista": "David Sanruperto Pérez",
     "categoria": "tercera",
     "lema": "El món animal, en equilibri vital !",
@@ -15034,7 +15034,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0683",
     "nombre": " (Infantil)",
-    "barrio": "Valencia",
+    "barrio": "El Perellonet",
     "artista": "",
     "categoria": "tercera",
     "lema": "",
@@ -15056,7 +15056,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0684",
     "nombre": "Mare de Déu de la Fontsanta (Infantil)",
-    "barrio": "17",
+    "barrio": "La Fontsanta",
     "artista": "Mónica López Gonzales",
     "categoria": "tercera",
     "lema": "Ama",
@@ -15078,7 +15078,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0685",
     "nombre": "Doctor Serrano-Carles Cervera-Clero (Infantil)",
-    "barrio": "2",
+    "barrio": "Russafa",
     "artista": "Ausias Estrugo Maño",
     "categoria": "primera",
     "lema": "El futur comença ací",
@@ -15100,7 +15100,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0686",
     "nombre": "Olivereta-Cerdà i Rico (Infantil)",
-    "barrio": "7",
+    "barrio": "Nou Moles",
     "artista": "Juan Carlos Banacloy Cuevas",
     "categoria": "segunda",
     "lema": "'Sensibot' el robot de mis emociones",
@@ -15122,7 +15122,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0687",
     "nombre": "Suïssa-L'Alquería del Favero (Infantil)",
-    "barrio": "19",
+    "barrio": "La Punta",
     "artista": "Paco y David",
     "categoria": "tercera",
     "lema": "El soldadet de plom",
@@ -15144,7 +15144,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0688",
     "nombre": "Avinguda Burjassot-Carretera de Paterna (Infantil)",
-    "barrio": "22",
+    "barrio": "Marxalenes",
     "artista": "Jorge A.Mas Martí",
     "categoria": "tercera",
     "lema": "CCCP",
@@ -15166,7 +15166,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0689",
     "nombre": "Plaça Doctor Collado (Infantil)",
-    "barrio": "7",
+    "barrio": "El Mercat",
     "artista": "Tedi Chichanova",
     "categoria": "segunda",
     "lema": "Una dieta molt saludabe",
@@ -15188,7 +15188,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0690",
     "nombre": "Josep Maestre (Infantil)",
-    "barrio": "18",
+    "barrio": "Tres Forques",
     "artista": "Iván Gómez Villalba",
     "categoria": "tercera",
     "lema": "El bosque encantado de Isabella",
@@ -15210,7 +15210,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0691",
     "nombre": "Plaça Mercat de Russafa (Infantil)",
-    "barrio": "14",
+    "barrio": "Russafa",
     "artista": "Eliot García Martín",
     "categoria": "tercera",
     "lema": "Volarás volarás volarás",
@@ -15232,7 +15232,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0692",
     "nombre": "Plaça Bisbe Amigó-Conca (Infantil)",
-    "barrio": "1",
+    "barrio": "Arrancapins",
     "artista": "Gonzalo Gabriel Rojas Rodríguez",
     "categoria": "especial",
     "lema": "Cos i ment",
@@ -15254,7 +15254,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0693",
     "nombre": "Pintor Pasqual Capuz-Fontanars (Infantil)",
-    "barrio": "10",
+    "barrio": "Safranar",
     "artista": "Jesús Liñana Ferrando",
     "categoria": "tercera",
     "lema": "Retro o actual?",
@@ -15276,7 +15276,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0694",
     "nombre": "Sants Just i Pastor-Serradora (Infantil)",
-    "barrio": "10",
+    "barrio": "Aiora",
     "artista": "Alejandro Cano Hernández",
     "categoria": "tercera",
     "lema": "Som Sol",
@@ -15298,7 +15298,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0695",
     "nombre": "Barri de La Llum (Infantil)",
-    "barrio": "4",
+    "barrio": "La Llum",
     "artista": "Alex Estarlich Fortea",
     "categoria": "primera",
     "lema": "En Ruta",
@@ -15320,7 +15320,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0696",
     "nombre": "Pintor Domingo-Guillem de Castro (Infantil)",
-    "barrio": "20",
+    "barrio": "El Mercat",
     "artista": "Franciso Ribes López",
     "categoria": "tercera",
     "lema": "Fem massa fem",
@@ -15342,7 +15342,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0697",
     "nombre": "Joaquim Costa-Comte d'Altea (Infantil)",
-    "barrio": "IE",
+    "barrio": "La Gran Via",
     "artista": "Ausias Estrugo Maño",
     "categoria": "tercera",
     "lema": "Com estan vostés?",
@@ -15364,7 +15364,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0698",
     "nombre": "Bilbao-Maximilià Thous (Infantil)",
-    "barrio": "5",
+    "barrio": "Sant Antoni",
     "artista": "Adrián Ballesteros Rubio",
     "categoria": "segunda",
     "lema": "Fantasia",
@@ -15386,7 +15386,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0699",
     "nombre": "Manuel Arnau-La Creu Coberta (Infantil)",
-    "barrio": "19",
+    "barrio": "La Creu Coberta",
     "artista": "Manuel Pons Ferrer",
     "categoria": "tercera",
     "lema": "Angels i dimonis",
@@ -15408,7 +15408,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0700",
     "nombre": "Tomasos-Carles Cervera (Infantil)",
-    "barrio": "8",
+    "barrio": "Russafa",
     "artista": "Enrique Nuñez Nuñez",
     "categoria": "segunda",
     "lema": "L'hora de...",
@@ -15430,7 +15430,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0701",
     "nombre": "Marqués de Lozoya-Poeta Josep Cervera i Grifol (Infantil)",
-    "barrio": "16",
+    "barrio": "Ciutat De Les Arts I De Les Ciencies",
     "artista": "Fallas i Fogueres Paco y David",
     "categoria": "tercera",
     "lema": "Una festa baix el mar",
@@ -15452,7 +15452,7 @@ export const JCF_FALLAS_2026: FallaData[] =
   {
     "id": "falla-0702",
     "nombre": "Glòria-Felicitat-El Tremolar (Infantil)",
-    "barrio": "5",
+    "barrio": "Castellar-L'Oliveral",
     "artista": "Álvaro Guija Moreno",
     "categoria": "segunda",
     "lema": "Les  rondalles",
