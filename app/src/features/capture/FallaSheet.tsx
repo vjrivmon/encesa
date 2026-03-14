@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { db, type Falla, type Valoracion, type Foto } from '../../lib/db'
 import BottomSheet from '../../components/BottomSheet'
 import Badge from '../../components/Badge'
@@ -6,6 +6,7 @@ import ProgressRing from '../../components/ProgressRing'
 import StarRating from '../../components/StarRating'
 import { calcularCompletitud, getEstadoFromCompletitud } from '../../lib/completitud'
 import { SEED_FALLAS } from '../../lib/jcf-seed'
+import VideoImporter from '../camera/VideoImporter'
 
 interface FallaSheetProps {
   falla: Falla | null
@@ -44,6 +45,13 @@ export default function FallaSheet({ falla, isOpen, onClose, onOpenCamera }: Fal
   const [notas, setNotas] = useState('')
   const [saving, setSaving] = useState(false)
   const [imprescindible, setImprescindible] = useState(false)
+  const [showImporter, setShowImporter] = useState(false)
+
+  const reloadFotos = useCallback(async () => {
+    if (!falla) return
+    const fotasDB = await db.fotos.where('falla_id').equals(falla.id).toArray()
+    setFotos(fotasDB)
+  }, [falla])
 
   useEffect(() => {
     if (!falla) return
@@ -265,29 +273,55 @@ export default function FallaSheet({ falla, isOpen, onClose, onOpenCamera }: Fal
         </div>
 
         {/* Action buttons */}
-        <div style={{ display: 'flex', gap: '10px', marginBottom: '24px' }}>
-          <button
-            onClick={() => onOpenCamera?.(falla.id)}
-            style={{
-              flex: 1,
-              background: '#FF6B35',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '12px',
-              padding: '12px',
-              fontSize: '14px',
-              fontWeight: 600,
-              cursor: 'pointer',
-              fontFamily: 'Inter, -apple-system, sans-serif',
-            }}
-          >
-            {botonCaptura}
-          </button>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '24px' }}>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <button
+              onClick={() => onOpenCamera?.(falla.id)}
+              style={{
+                flex: 1,
+                background: '#FF6B35',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '12px',
+                padding: '12px',
+                fontSize: '14px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                fontFamily: 'Inter, -apple-system, sans-serif',
+              }}
+            >
+              {botonCaptura}
+            </button>
+            <button
+              onClick={() => setShowImporter(true)}
+              style={{
+                flexShrink: 0,
+                background: '#2c2c2e',
+                color: '#ebebf5',
+                border: '0.5px solid #3a3a3c',
+                borderRadius: '12px',
+                padding: '12px 14px',
+                fontSize: '13px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+              }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M12 16V4M12 4l-4 4M12 4l4 4" stroke="#ebebf5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M4 20h16" stroke="#ebebf5" strokeWidth="2" strokeLinecap="round"/>
+              </svg>
+              Importar
+            </button>
+          </div>
           {boceto && (
             <button
               onClick={() => window.open(boceto, '_blank')}
               style={{
-                flex: 1,
+                width: '100%',
                 background: '#2c2c2e',
                 color: '#8e8e93',
                 border: '0.5px solid #3a3a3c',
@@ -382,6 +416,16 @@ export default function FallaSheet({ falla, isOpen, onClose, onOpenCamera }: Fal
         </div>
 
       </div>
+
+      {showImporter && (
+        <VideoImporter
+          fallaId={falla.id}
+          onDone={() => {
+            setShowImporter(false)
+            reloadFotos()
+          }}
+        />
+      )}
     </BottomSheet>
   )
 }
