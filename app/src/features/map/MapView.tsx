@@ -16,6 +16,7 @@ function UserLocationControl({ onLocation }: { onLocation: (pos: [number, number
   const [position, setPosition] = useState<[number, number] | null>(null)
   const [accuracy, setAccuracy] = useState<number>(0)
   const watchRef = useRef<number | null>(null)
+  const centeredOnce = useRef(false)
 
   useEffect(() => {
     if (!navigator.geolocation) return
@@ -26,6 +27,10 @@ function UserLocationControl({ onLocation }: { onLocation: (pos: [number, number
         setPosition(coords)
         setAccuracy(pos.coords.accuracy)
         onLocation(coords)
+        if (!centeredOnce.current) {
+          centeredOnce.current = true
+          map.flyTo(coords, 16, { animate: true, duration: 1 })
+        }
       },
       () => {},
       { enableHighAccuracy: true, maximumAge: 5000, timeout: 10000 }
