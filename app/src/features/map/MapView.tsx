@@ -298,8 +298,8 @@ export default function MapView({ onOpenCamera, onGoToFicha, activeRoute, setAct
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-      {/* Progress bar — bottom, solo si no hay ruta activa */}
-      {!activeRoute && <div
+      {/* Progress bar — bottom, solo si no hay ruta activa ni RouteBuilder abierto */}
+      {!activeRoute && !showRouteBuilder && <div
         style={{
           position: 'absolute',
           bottom: 0,
