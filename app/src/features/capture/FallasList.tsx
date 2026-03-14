@@ -59,19 +59,32 @@ export default function FallasList({ onOpenCamera, autoOpenFallaId, onAutoOpenDo
       await db.fallas.bulkAdd(seedFallas)
       dbFallas = seedFallas
     }
-    setFallas(dbFallas.sort((a, b) => ORDEN_CATEGORIA[a.categoria] - ORDEN_CATEGORIA[b.categoria]))
+    const seedMap = Object.fromEntries(SEED_FALLAS.map(s => [s.id, s]))
+    setFallas(dbFallas.sort((a, b) => {
+      const catA = seedMap[a.id]?.categoria ?? a.categoria
+      const catB = seedMap[b.id]?.categoria ?? b.categoria
+      return (ORDEN_CATEGORIA[catA] ?? 99) - (ORDEN_CATEGORIA[catB] ?? 99)
+    }))
   }
 
+  // Usar categoría y barrio del seed (evita usar datos cacheados incorrectos de IndexedDB)
+  const SEED_MAP = Object.fromEntries(SEED_FALLAS.map(s => [s.id, s]))
+
   const filtered = fallas
-    .filter(f => categoriaFilter === 'todas' || f.categoria === categoriaFilter)
+    .filter(f => {
+      if (categoriaFilter === 'todas') return true
+      const cat = SEED_MAP[f.id]?.categoria ?? f.categoria
+      return cat === categoriaFilter
+    })
     .filter(f => {
       if (!search) return true
       const q = search.toLowerCase()
+      const seed = SEED_MAP[f.id]
       return (
         f.nombre.toLowerCase().includes(q) ||
-        f.artista.toLowerCase().includes(q) ||
-        f.barrio.toLowerCase().includes(q) ||
-        (f.lema ?? '').toLowerCase().includes(q)
+        (seed?.artista ?? f.artista).toLowerCase().includes(q) ||
+        (seed?.barrio ?? f.barrio ?? '').toLowerCase().includes(q) ||
+        (seed?.lema ?? f.lema ?? '').toLowerCase().includes(q)
       )
     })
 
