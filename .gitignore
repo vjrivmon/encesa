@@ -36,3 +36,4 @@ models/checkpoints/
 output/
 logs/
 .venv-fallai/
+app/dist
