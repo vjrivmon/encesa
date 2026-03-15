@@ -4,8 +4,16 @@ import { SEED_FALLAS } from '../../lib/jcf-seed'
 import FallaCard from './FallaCard'
 import FallaSheet from './FallaSheet'
 
+type EstadoFilter = 'todas' | 'pendientes' | 'favoritas'
+
+const ESTADOS: { value: EstadoFilter; label: string; icon: string }[] = [
+  { value: 'todas', label: 'Todas', icon: '' },
+  { value: 'pendientes', label: 'Pendientes', icon: '○' },
+  { value: 'favoritas', label: 'Favoritas', icon: '★' },
+]
+
 const CATEGORIAS: { value: Falla['categoria'] | 'todas'; label: string }[] = [
-  { value: 'todas', label: 'Todas' },
+  { value: 'todas', label: 'Cualquier categoría' },
   { value: 'especial', label: 'Especial' },
   { value: 'primera', label: '1a' },
   { value: 'segunda', label: '2a' },
@@ -27,12 +35,15 @@ interface FallasListProps {
 
 export default function FallasList({ onOpenCamera, autoOpenFallaId, onAutoOpenDone }: FallasListProps) {
   const [fallas, setFallas] = useState<Falla[]>([])
+  const [fotoCount, setFotoCount] = useState<Record<string, number>>({})
   const [search, setSearch] = useState('')
+  const [estadoFilter, setEstadoFilter] = useState<EstadoFilter>('pendientes')
   const [categoriaFilter, setCategoriaFilter] = useState<Falla['categoria'] | 'todas'>('todas')
   const [selectedFalla, setSelectedFalla] = useState<Falla | null>(null)
 
   useEffect(() => {
     loadFallas()
+    loadFotoCount()
   }, [])
 
   useEffect(() => {
@@ -44,6 +55,15 @@ export default function FallasList({ onOpenCamera, autoOpenFallaId, onAutoOpenDo
       }
     }
   }, [autoOpenFallaId, fallas])
+
+  async function loadFotoCount() {
+    const fotos = await db.fotos.toArray()
+    const counts: Record<string, number> = {}
+    for (const foto of fotos) {
+      counts[foto.falla_id] = (counts[foto.falla_id] ?? 0) + 1
+    }
+    setFotoCount(counts)
+  }
 
   async function loadFallas() {
     let dbFallas = await db.fallas.toArray()
@@ -71,6 +91,11 @@ export default function FallasList({ onOpenCamera, autoOpenFallaId, onAutoOpenDo
   const SEED_MAP = Object.fromEntries(SEED_FALLAS.map(s => [s.id, s]))
 
   const filtered = fallas
+    .filter(f => {
+      if (estadoFilter === 'pendientes') return (fotoCount[f.id] ?? 0) === 0
+      if (estadoFilter === 'favoritas') return f.imprescindible === true
+      return true
+    })
     .filter(f => {
       if (categoriaFilter === 'todas') return true
       const cat = SEED_MAP[f.id]?.categoria ?? f.categoria
@@ -133,34 +158,71 @@ export default function FallasList({ onOpenCamera, autoOpenFallaId, onAutoOpenDo
         </div>
       </div>
 
-      {/* Category filter */}
-      <div style={{ padding: '0 16px 12px', display: 'flex', gap: '8px', overflowX: 'auto' }}>
-        {CATEGORIAS.map(({ value, label }) => (
-          <button
-            key={value}
-            onClick={() => setCategoriaFilter(value)}
-            style={{
-              padding: '6px 14px',
-              borderRadius: '20px',
-              border: categoriaFilter === value ? 'none' : '0.5px solid #3a3a3c',
-              background: categoriaFilter === value ? '#FF6B35' : '#2c2c2e',
-              color: categoriaFilter === value ? '#fff' : '#8e8e93',
-              fontSize: '13px',
-              fontWeight: 600,
-              cursor: 'pointer',
-              whiteSpace: 'nowrap',
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              transition: 'all 0.2s',
-            }}
-          >
-            {label}
-          </button>
-        ))}
+      {/* Fila 1: filtros de estado */}
+      <div style={{ padding: '0 16px 8px', display: 'flex', gap: '8px', overflowX: 'auto', scrollbarWidth: 'none' }}>
+        {ESTADOS.map(({ value, label, icon }) => {
+          const active = estadoFilter === value
+          return (
+            <button
+              key={value}
+              onClick={() => setEstadoFilter(value)}
+              style={{
+                padding: '7px 14px',
+                borderRadius: '20px',
+                border: active ? 'none' : '0.5px solid #3a3a3c',
+                background: active ? '#FF6B35' : '#2c2c2e',
+                color: active ? '#fff' : '#8e8e93',
+                fontSize: '13px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                whiteSpace: 'nowrap',
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                transition: 'all 0.15s',
+                display: 'flex',
+                alignItems: 'center',
+                gap: icon ? '5px' : '0',
+              }}
+            >
+              {icon && <span style={{ fontSize: '11px' }}>{icon}</span>}
+              {label}
+            </button>
+          )
+        })}
+      </div>
+
+      {/* Fila 2: filtros de categoría */}
+      <div style={{ padding: '0 16px 10px', display: 'flex', gap: '6px', overflowX: 'auto', scrollbarWidth: 'none' }}>
+        {CATEGORIAS.map(({ value, label }) => {
+          const active = categoriaFilter === value
+          return (
+            <button
+              key={value}
+              onClick={() => setCategoriaFilter(value)}
+              style={{
+                padding: '5px 12px',
+                borderRadius: '20px',
+                border: active ? '1.5px solid #8e8e93' : '0.5px solid #3a3a3c',
+                background: active ? '#3a3a3c' : 'transparent',
+                color: active ? '#fff' : '#636366',
+                fontSize: '12px',
+                fontWeight: 500,
+                cursor: 'pointer',
+                whiteSpace: 'nowrap',
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                transition: 'all 0.15s',
+              }}
+            >
+              {label}
+            </button>
+          )
+        })}
       </div>
 
       {/* Count */}
       <div style={{ padding: '0 16px 8px', fontSize: '12px', color: '#636366', fontFamily: 'Inter, -apple-system, sans-serif' }}>
         {filtered.length} falla{filtered.length !== 1 ? 's' : ''}
+        {estadoFilter === 'pendientes' && <span style={{ color: '#ff9500', marginLeft: 6 }}>sin capturar</span>}
+        {estadoFilter === 'favoritas' && <span style={{ color: '#FF6B35', marginLeft: 6 }}>marcadas con ★</span>}
       </div>
 
       {/* List */}
@@ -188,6 +250,7 @@ export default function FallasList({ onOpenCamera, autoOpenFallaId, onAutoOpenDo
         onClose={() => {
           setSelectedFalla(null)
           loadFallas()
+          loadFotoCount()
         }}
         onOpenCamera={onOpenCamera}
       />
