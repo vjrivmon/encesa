@@ -33,7 +33,18 @@ export default function UrlImporter({ fallaId, onDone }: UrlImporterProps) {
     setLoadingMsg('Obteniendo URL de descarga...')
 
     try {
-      // Llamar a cobalt.tools para obtener URL directa del vídeo
+      // Limpiar parámetros de tracking (?s=, ?t=, etc.)
+      let cleanUrl = trimmed
+      try {
+        const u = new URL(trimmed)
+        u.searchParams.delete('s')
+        u.searchParams.delete('t')
+        u.searchParams.delete('ref_src')
+        u.searchParams.delete('ref_url')
+        cleanUrl = u.toString()
+      } catch { /* URL inválida, usar tal cual */ }
+
+      // Llamar a cobalt.tools para obtener URL directa
       const cobaltRes = await fetch(COBALT_API, {
         method: 'POST',
         headers: {
@@ -41,7 +52,7 @@ export default function UrlImporter({ fallaId, onDone }: UrlImporterProps) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          url: trimmed,
+          url: cleanUrl,
           vQuality: '720',
           filenamePattern: 'basic',
           isAudioOnly: false,
@@ -50,47 +61,88 @@ export default function UrlImporter({ fallaId, onDone }: UrlImporterProps) {
       })
 
       if (!cobaltRes.ok) {
-        throw new Error(`cobalt.tools respondió ${cobaltRes.status}`)
+        throw new Error(`Error al conectar con cobalt.tools (${cobaltRes.status})`)
       }
 
       const data = await cobaltRes.json()
 
-      let videoUrl: string | null = null
+      // Manejar respuesta de cobalt
       if (data.status === 'stream' || data.status === 'redirect') {
-        videoUrl = data.url
+        // Vídeo directo
+        setLoadingMsg('Descargando vídeo...')
+        const blob = await downloadBlob(data.url)
+        const objectUrl = URL.createObjectURL(blob)
+        setLoadingMsg('Extrayendo frames...')
+        await extractFrames(objectUrl)
+
       } else if (data.status === 'picker') {
-        // Tweet con múltiples medios — coger primer vídeo
-        const item = (data.picker as { type?: string; url: string }[])
-          ?.find(p => p.type === 'video') ?? data.picker?.[0]
-        videoUrl = item?.url ?? null
+        // Múltiples medios — buscar vídeo primero, si no imagen
+        const items = data.picker as { type?: string; url: string; thumb?: string }[]
+        const videoItem = items.find(p => p.type === 'video')
+
+        if (videoItem) {
+          setLoadingMsg('Descargando vídeo...')
+          const blob = await downloadBlob(videoItem.url)
+          const objectUrl = URL.createObjectURL(blob)
+          setLoadingMsg('Extrayendo frames...')
+          await extractFrames(objectUrl)
+        } else {
+          // Son imágenes — importarlas directamente
+          setLoadingMsg('Descargando imágenes...')
+          await importImages(items.map(i => i.url))
+        }
+
       } else {
-        throw new Error(data.text ?? 'cobalt no devolvió vídeo')
+        // Error de cobalt
+        const msg = data.text ?? 'No se pudo obtener el contenido'
+        if (msg === 'TypeLoad failed' || msg.includes('TypeLoad')) {
+          throw new Error('Este tweet no contiene vídeo. Prueba con un tweet que tenga vídeo adjunto.')
+        }
+        throw new Error(msg)
       }
-
-      if (!videoUrl) throw new Error('No se encontró vídeo en esa URL')
-
-      setLoadingMsg('Descargando vídeo...')
-
-      // Intentar descarga directa; si falla CORS usar proxy
-      let blob: Blob
-      try {
-        const direct = await fetch(videoUrl)
-        if (!direct.ok) throw new Error('direct failed')
-        blob = await direct.blob()
-      } catch {
-        const proxied = await fetch(CORS_PROXY + encodeURIComponent(videoUrl))
-        if (!proxied.ok) throw new Error('Error al descargar el vídeo')
-        blob = await proxied.blob()
-      }
-
-      const objectUrl = URL.createObjectURL(blob)
-      setLoadingMsg('Extrayendo frames...')
-      await extractFrames(objectUrl)
 
     } catch (err) {
       setError(String(err).replace('Error: ', ''))
       setStage('input')
     }
+  }
+
+  async function downloadBlob(videoUrl: string): Promise<Blob> {
+    try {
+      const direct = await fetch(videoUrl)
+      if (!direct.ok) throw new Error('direct failed')
+      return await direct.blob()
+    } catch {
+      const proxied = await fetch(CORS_PROXY + encodeURIComponent(videoUrl))
+      if (!proxied.ok) throw new Error('No se pudo descargar el vídeo')
+      return await proxied.blob()
+    }
+  }
+
+  async function importImages(urls: string[]) {
+    const now = new Date().toISOString()
+    for (const imgUrl of urls) {
+      try {
+        const blob = await downloadBlob(imgUrl)
+        const reader = new FileReader()
+        await new Promise<void>((resolve) => {
+          reader.onload = async (e) => {
+            const dataUrl = e.target?.result as string
+            await db.fotos.add({
+              id: crypto.randomUUID(),
+              falla_id: fallaId,
+              angulo: 'libre',
+              data_url: dataUrl,
+              synced: false,
+              capturada_at: now,
+            })
+            resolve()
+          }
+          reader.readAsDataURL(blob)
+        })
+      } catch { /* ignorar imágenes que fallen */ }
+    }
+    onDone()
   }
 
   async function extractFrames(src: string): Promise<void> {
@@ -304,21 +356,10 @@ export default function UrlImporter({ fallaId, onDone }: UrlImporterProps) {
 
         {stage === 'input' ? (
           <>
-            {/* Info */}
-            <div style={{
-              background: '#2c2c2e', borderRadius: '10px', padding: '12px',
-              marginBottom: '16px', fontSize: '13px', color: '#8e8e93',
-              fontFamily: 'Inter, -apple-system, sans-serif', lineHeight: 1.5,
-            }}>
-              Pega el enlace de un tweet de{' '}
-              <span style={{ color: '#FF6B35', fontWeight: 600 }}>@SendraDigital</span>
-              {' '}u otra cuenta con vídeo de fallas. Extrae los mejores frames automáticamente.
-            </div>
-
             {/* Input URL */}
             <input
               type="url"
-              placeholder="https://twitter.com/SendraDigital/status/..."
+              placeholder="https://x.com/cendradigital/status/..."
               value={url}
               onChange={e => { setUrl(e.target.value); setError('') }}
               onKeyDown={e => e.key === 'Enter' && handleImport()}
