@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { db, type Falla, type Foto } from '../../lib/db'
 import { SEED_FALLAS } from '../../lib/jcf-seed'
+import { calcularCompletitud, getEstadoFromCompletitud } from '../../lib/completitud'
 import FallaSheet from '../capture/FallaSheet'
 
 interface FallaWithCover extends Falla {
@@ -30,15 +31,33 @@ export default function GalleryView() {
       dbFallas = seed
     }
 
-    // Get cover photos
+    // Get fotos, valoraciones y OCR para recalcular completitud
     const allFotos: Foto[] = await db.fotos.toArray()
+    const allValoraciones = await db.valoraciones.toArray()
+    const allOcr = await db.ocr_results.toArray()
+
     const fotosByFalla: Record<string, Foto[]> = {}
     allFotos.forEach(foto => {
       if (!fotosByFalla[foto.falla_id]) fotosByFalla[foto.falla_id] = []
       fotosByFalla[foto.falla_id].push(foto)
     })
+    const valoracionByFalla = Object.fromEntries(allValoraciones.map(v => [v.falla_id, v]))
+    const ocrByFalla = Object.fromEntries(allOcr.map(o => [o.falla_id, o]))
 
-    const withCovers: FallaWithCover[] = dbFallas
+    // Recalcular completitud y actualizar DB si cambió
+    const updates: Promise<unknown>[] = []
+    const recalculated = dbFallas.map(f => {
+      const pct = calcularCompletitud(f, fotosByFalla[f.id] ?? [], valoracionByFalla[f.id], ocrByFalla[f.id])
+      const estado = getEstadoFromCompletitud(pct)
+      if (pct !== f.completitud_pct || estado !== f.estado) {
+        updates.push(db.fallas.update(f.id, { completitud_pct: pct, estado }))
+        return { ...f, completitud_pct: pct, estado }
+      }
+      return f
+    })
+    await Promise.all(updates)
+
+    const withCovers: FallaWithCover[] = recalculated
       .sort((a, b) => b.updated_at.localeCompare(a.updated_at))
       .map(f => ({
         ...f,
