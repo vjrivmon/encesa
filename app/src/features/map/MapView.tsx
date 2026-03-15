@@ -154,6 +154,14 @@ function UserLocationControl({ onLocation }: { onLocation: (pos: [number, number
   )
 }
 
+// ─── Zoom tracker ──────────────────────────────────────────────────────────────
+function ZoomTracker({ onZoom }: { onZoom: (z: number) => void }) {
+  useMapEvents({
+    zoomend(e) { onZoom(e.target.getZoom()) },
+  })
+  return null
+}
+
 // ─── Fly suave al target ───────────────────────────────────────────────────────
 function MapFlyer({ target }: { target: [number, number] | null }) {
   const map = useMap()
@@ -231,6 +239,7 @@ export default function MapView({ onOpenCamera, onGoToFicha, activeRoute, setAct
   const [userPos, setUserPos] = useState<[number, number] | null>(null)
   const [showNearby, setShowNearby] = useState(false)
   const [selectedFalla, setSelectedFalla] = useState<Falla | null>(null)
+  const [mapZoom, setMapZoom] = useState(14)
 
   // ─── Estado de ruta ─────────────────────────────────────────────────────────
   const [showRouteBuilder, setShowRouteBuilder] = useState(false)
@@ -350,8 +359,10 @@ export default function MapView({ onOpenCamera, onGoToFicha, activeRoute, setAct
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-        {/* Marcadores de fallas */}
-        {fallas.map(falla => {
+        <ZoomTracker onZoom={setMapZoom} />
+
+        {/* Marcadores de fallas — solo cuando zoom >= 12 para evitar OOM en iOS */}
+        {mapZoom >= 12 && fallas.map(falla => {
           if (activeRoute) {
             const routeIdx = activeRoute.fallas.findIndex(rf => rf.id === falla.id)
             if (routeIdx >= 0) {
