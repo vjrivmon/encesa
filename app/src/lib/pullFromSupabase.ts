@@ -21,11 +21,11 @@ export async function pullFromSupabase(): Promise<{ fallas: number; fotos: numbe
     const localFallas = await db.fallas.toArray()
     const localMap = Object.fromEntries(localFallas.map(f => [f.id, f]))
 
+    const fallasToUpdate: Falla[] = []
     for (const remote of remoteFallas) {
       const local = localMap[remote.id]
-      // Actualizar si no existe localmente o si el remoto es más reciente
       if (!local || remote.updated_at > local.updated_at) {
-        await db.fallas.put({
+        fallasToUpdate.push({
           id: remote.id,
           nombre: remote.nombre,
           barrio: remote.barrio,
@@ -45,8 +45,11 @@ export async function pullFromSupabase(): Promise<{ fallas: number; fotos: numbe
           synced: true,
           imprescindible: remote.imprescindible ?? false,
         } as Falla)
-        fallasSynced++
       }
+    }
+    if (fallasToUpdate.length > 0) {
+      await db.fallas.bulkPut(fallasToUpdate)
+      fallasSynced = fallasToUpdate.length
     }
   }
 
@@ -60,21 +63,24 @@ export async function pullFromSupabase(): Promise<{ fallas: number; fotos: numbe
     const localFotos = await db.fotos.toArray()
     const localIds = new Set(localFotos.map(f => f.id))
 
+    const fotosToAdd: Foto[] = []
     for (const remote of remoteFotos) {
       if (!remote.url_storage) continue
       if (!localIds.has(remote.id)) {
-        // Foto remota que no existe localmente — guardar con url_storage como fuente
-        await db.fotos.put({
+        fotosToAdd.push({
           id: remote.id,
           falla_id: remote.falla_id,
           angulo: remote.angulo ?? 'libre',
-          data_url: remote.url_storage, // usar URL pública como data_url
+          data_url: remote.url_storage,
           url_storage: remote.url_storage,
           synced: true,
           capturada_at: remote.capturada_at,
         } as Foto)
-        fotosSynced++
       }
+    }
+    if (fotosToAdd.length > 0) {
+      await db.fotos.bulkPut(fotosToAdd)
+      fotosSynced = fotosToAdd.length
     }
   }
 
@@ -87,10 +93,11 @@ export async function pullFromSupabase(): Promise<{ fallas: number; fotos: numbe
     const localVals = await db.valoraciones.toArray()
     const localMap = Object.fromEntries(localVals.map(v => [v.falla_id, v]))
 
+    const valsToUpdate: Valoracion[] = []
     for (const remote of remoteVals) {
       const local = localMap[remote.falla_id]
       if (!local || remote.updated_at > local.updated_at) {
-        await db.valoraciones.put({
+        valsToUpdate.push({
           id: remote.id,
           falla_id: remote.falla_id,
           originalidad: remote.originalidad,
@@ -100,8 +107,11 @@ export async function pullFromSupabase(): Promise<{ fallas: number; fotos: numbe
           updated_at: remote.updated_at,
           synced: true,
         } as Valoracion)
-        valoracionesSynced++
       }
+    }
+    if (valsToUpdate.length > 0) {
+      await db.valoraciones.bulkPut(valsToUpdate)
+      valoracionesSynced = valsToUpdate.length
     }
   }
 

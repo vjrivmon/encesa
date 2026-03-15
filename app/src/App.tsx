@@ -1,5 +1,4 @@
-import { useState, useCallback, useEffect } from 'react'
-import { pullFromSupabase } from './lib/pullFromSupabase'
+import { useState, useCallback } from 'react'
 import type { RouteResult } from './lib/routing'
 import TabBar from './components/TabBar'
 import NavBar from './components/NavBar'
@@ -28,10 +27,7 @@ export default function App() {
   const [activeRoute, setActiveRoute] = useState<RouteResult | null>(null)
   const [routeStep, setRouteStep] = useState(0)
 
-  // Auto-pull desde Supabase al arrancar (sync bidireccional)
-  useEffect(() => {
-    pullFromSupabase().catch(() => { /* offline — ignorar */ })
-  }, [])
+  // Pull manual desde SyncView — no auto al arrancar (causa OOM en iOS con 703 fallas)
   const clearRoute = useCallback(() => { setActiveRoute(null); setRouteStep(0) }, [])
 
   function openCamera(fallaId?: string) {
