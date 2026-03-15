@@ -57,7 +57,10 @@ export default function GalleryView() {
     })
     await Promise.all(updates)
 
-    const withCovers: FallaWithCover[] = recalculated
+    // Solo mostrar fallas con fotos — evitar cargar 703 imágenes simultáneamente
+    const fallasConFotos = recalculated.filter(f => (fotosByFalla[f.id]?.length ?? 0) > 0)
+
+    const withCovers: FallaWithCover[] = fallasConFotos
       .sort((a, b) => b.updated_at.localeCompare(a.updated_at))
       .map(f => ({
         ...f,
