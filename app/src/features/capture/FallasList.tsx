@@ -40,6 +40,7 @@ export default function FallasList({ onOpenCamera, autoOpenFallaId, onAutoOpenDo
   const [estadoFilter, setEstadoFilter] = useState<EstadoFilter>('pendientes')
   const [categoriaFilter, setCategoriaFilter] = useState<Falla['categoria'] | 'todas'>('todas')
   const [selectedFalla, setSelectedFalla] = useState<Falla | null>(null)
+  const [visibleCount, setVisibleCount] = useState(50)
 
   useEffect(() => {
     loadFallas()
@@ -90,6 +91,9 @@ export default function FallasList({ onOpenCamera, autoOpenFallaId, onAutoOpenDo
   // Usar categoría y barrio del seed (evita usar datos cacheados incorrectos de IndexedDB)
   const SEED_MAP = Object.fromEntries(SEED_FALLAS.map(s => [s.id, s]))
 
+  // Reset visible count when filters change
+  const resetVisible = () => setVisibleCount(50)
+
   const filtered = fallas
     .filter(f => {
       if (estadoFilter === 'pendientes') return (fotoCount[f.id] ?? 0) === 0
@@ -133,7 +137,7 @@ export default function FallasList({ onOpenCamera, autoOpenFallaId, onAutoOpenDo
           </svg>
           <input
             value={search}
-            onChange={e => setSearch(e.target.value)}
+            onChange={e => { setSearch(e.target.value); resetVisible() }}
             placeholder="Buscar falla, barrio o artista..."
             style={{
               flex: 1,
@@ -165,7 +169,7 @@ export default function FallasList({ onOpenCamera, autoOpenFallaId, onAutoOpenDo
           return (
             <button
               key={value}
-              onClick={() => setEstadoFilter(value)}
+              onClick={() => { setEstadoFilter(value); resetVisible() }}
               style={{
                 padding: '7px 14px',
                 borderRadius: '20px',
@@ -197,7 +201,7 @@ export default function FallasList({ onOpenCamera, autoOpenFallaId, onAutoOpenDo
           return (
             <button
               key={value}
-              onClick={() => setCategoriaFilter(value)}
+              onClick={() => { setCategoriaFilter(value); resetVisible() }}
               style={{
                 padding: '5px 12px',
                 borderRadius: '20px',
@@ -227,9 +231,22 @@ export default function FallasList({ onOpenCamera, autoOpenFallaId, onAutoOpenDo
 
       {/* List */}
       <div style={{ flex: 1, overflowY: 'auto', padding: '0 16px', display: 'flex', flexDirection: 'column', gap: '10px', paddingBottom: '16px' }}>
-        {filtered.map(falla => (
+        {filtered.slice(0, visibleCount).map(falla => (
           <FallaCard key={falla.id} falla={falla} onClick={setSelectedFalla} />
         ))}
+        {filtered.length > visibleCount && (
+          <button
+            onClick={() => setVisibleCount(n => n + 50)}
+            style={{
+              width: '100%', padding: '14px', background: '#2c2c2e',
+              border: '0.5px solid #3a3a3c', borderRadius: '13px',
+              color: '#0a84ff', fontSize: '14px', fontWeight: 600,
+              cursor: 'pointer', fontFamily: 'Inter, -apple-system, sans-serif',
+            }}
+          >
+            Cargar más ({filtered.length - visibleCount} restantes)
+          </button>
+        )}
         {filtered.length === 0 && (
           <div style={{
             textAlign: 'center',

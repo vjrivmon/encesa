@@ -17,50 +17,32 @@ export default function GalleryView() {
   }, [])
 
   async function loadFallas() {
-    let dbFallas = await db.fallas.toArray()
-    if (dbFallas.length === 0) {
-      const now = new Date().toISOString()
-      const seed: Falla[] = SEED_FALLAS.map(f => ({
-        ...f,
-        completitud_pct: 0,
-        created_at: now,
-        updated_at: now,
-        synced: false,
-      }))
-      await db.fallas.bulkAdd(seed)
-      dbFallas = seed
-    }
-
-    // Get fotos, valoraciones y OCR para recalcular completitud
+    // Solo cargar fallas que tienen fotos — evitar OOM con 703 registros
     const allFotos: Foto[] = await db.fotos.toArray()
-    const allValoraciones = await db.valoraciones.toArray()
-    const allOcr = await db.ocr_results.toArray()
+    if (allFotos.length === 0) {
+      setFallas([])
+      return
+    }
 
     const fotosByFalla: Record<string, Foto[]> = {}
     allFotos.forEach(foto => {
       if (!fotosByFalla[foto.falla_id]) fotosByFalla[foto.falla_id] = []
       fotosByFalla[foto.falla_id].push(foto)
     })
+
+    const fallaIds = Object.keys(fotosByFalla)
+    const dbFallas = await db.fallas.where('id').anyOf(fallaIds).toArray()
+
+    const allValoraciones = await db.valoraciones.where('falla_id').anyOf(fallaIds).toArray()
     const valoracionByFalla = Object.fromEntries(allValoraciones.map(v => [v.falla_id, v]))
-    const ocrByFalla = Object.fromEntries(allOcr.map(o => [o.falla_id, o]))
 
-    // Recalcular completitud y actualizar DB si cambió
-    const updates: Promise<unknown>[] = []
     const recalculated = dbFallas.map(f => {
-      const pct = calcularCompletitud(f, fotosByFalla[f.id] ?? [], valoracionByFalla[f.id], ocrByFalla[f.id])
+      const pct = calcularCompletitud(f, fotosByFalla[f.id] ?? [], valoracionByFalla[f.id], undefined)
       const estado = getEstadoFromCompletitud(pct)
-      if (pct !== f.completitud_pct || estado !== f.estado) {
-        updates.push(db.fallas.update(f.id, { completitud_pct: pct, estado }))
-        return { ...f, completitud_pct: pct, estado }
-      }
-      return f
+      return { ...f, completitud_pct: pct, estado }
     })
-    await Promise.all(updates)
 
-    // Solo mostrar fallas con fotos — evitar cargar 703 imágenes simultáneamente
-    const fallasConFotos = recalculated.filter(f => (fotosByFalla[f.id]?.length ?? 0) > 0)
-
-    const withCovers: FallaWithCover[] = fallasConFotos
+    const withCovers: FallaWithCover[] = recalculated
       .sort((a, b) => b.updated_at.localeCompare(a.updated_at))
       .map(f => ({
         ...f,
