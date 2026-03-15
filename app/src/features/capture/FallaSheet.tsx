@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 import { db, type Falla, type Valoracion, type Foto } from '../../lib/db'
 import BottomSheet from '../../components/BottomSheet'
 import Badge from '../../components/Badge'
@@ -48,6 +49,7 @@ export default function FallaSheet({ falla, isOpen, onClose, onOpenCamera }: Fal
   const [imprescindible, setImprescindible] = useState(false)
   const [showImporter, setShowImporter] = useState(false)
   const [showUrlImporter, setShowUrlImporter] = useState(false)
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
 
   const reloadFotos = useCallback(async () => {
     if (!falla) return
@@ -257,6 +259,38 @@ export default function FallaSheet({ falla, isOpen, onClose, onOpenCamera }: Fal
           </div>
         )}
 
+        {/* Grid de fotos capturadas */}
+        {fotos.length > 0 && (
+          <div style={{ marginBottom: '20px' }}>
+            <div style={{ fontSize: '12px', color: '#8e8e93', fontWeight: 600, marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              Mis fotos ({fotos.length})
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '3px', borderRadius: '12px', overflow: 'hidden' }}>
+              {fotos.map((foto, i) => (
+                <div
+                  key={foto.id}
+                  onClick={() => setLightboxIndex(i)}
+                  style={{ aspectRatio: '1', cursor: 'pointer', overflow: 'hidden', background: '#2c2c2e', position: 'relative' }}
+                >
+                  <img
+                    src={foto.data_url}
+                    alt={`Foto ${i + 1}`}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                  />
+                  {!foto.synced && (
+                    <div style={{
+                      position: 'absolute', bottom: 4, right: 4,
+                      width: 8, height: 8, borderRadius: '50%',
+                      background: '#ff9500',
+                      boxShadow: '0 0 0 1.5px rgba(0,0,0,0.5)',
+                    }} />
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Checklist */}
         <div style={{
           background: '#2c2c2e',
@@ -461,6 +495,88 @@ export default function FallaSheet({ falla, isOpen, onClose, onOpenCamera }: Fal
             reloadFotos()
           }}
         />
+      )}
+
+      {/* Lightbox fullscreen */}
+      {lightboxIndex !== null && fotos.length > 0 && createPortal(
+        <div
+          style={{ position: 'fixed', inset: 0, background: '#000', zIndex: 20000, display: 'flex', flexDirection: 'column' }}
+          onClick={() => setLightboxIndex(null)}
+        >
+          {/* Header */}
+          <div style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            padding: '16px 20px',
+            paddingTop: 'calc(16px + env(safe-area-inset-top, 0px))',
+            flexShrink: 0,
+          }} onClick={e => e.stopPropagation()}>
+            <span style={{ color: '#8e8e93', fontSize: '14px', fontFamily: 'Inter, -apple-system, sans-serif' }}>
+              {lightboxIndex + 1} / {fotos.length}
+            </span>
+            <button
+              onClick={() => setLightboxIndex(null)}
+              style={{ background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '50%', width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M18 6L6 18M6 6l12 12" stroke="#fff" strokeWidth="2" strokeLinecap="round"/>
+              </svg>
+            </button>
+          </div>
+
+          {/* Imagen */}
+          <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 8px' }}
+               onClick={e => e.stopPropagation()}>
+            <img
+              src={fotos[lightboxIndex].data_url}
+              alt={`Foto ${lightboxIndex + 1}`}
+              style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', borderRadius: '8px' }}
+            />
+          </div>
+
+          {/* Navegación prev / next */}
+          <div style={{
+            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+            padding: '16px 20px',
+            paddingBottom: 'calc(16px + env(safe-area-inset-bottom, 0px))',
+            flexShrink: 0,
+          }} onClick={e => e.stopPropagation()}>
+            <button
+              onClick={() => setLightboxIndex(i => i !== null && i > 0 ? i - 1 : fotos.length - 1)}
+              style={{ background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '50%', width: 44, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M15 18l-6-6 6-6" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+
+            {/* Thumbnails strip */}
+            <div style={{ display: 'flex', gap: '6px', overflow: 'hidden', maxWidth: 'calc(100% - 120px)' }}>
+              {fotos.map((foto, i) => (
+                <div
+                  key={foto.id}
+                  onClick={() => setLightboxIndex(i)}
+                  style={{
+                    width: 40, height: 40, borderRadius: '6px', overflow: 'hidden', cursor: 'pointer', flexShrink: 0,
+                    border: i === lightboxIndex ? '2px solid #FF6B35' : '2px solid transparent',
+                    opacity: i === lightboxIndex ? 1 : 0.5,
+                  }}
+                >
+                  <img src={foto.data_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </div>
+              ))}
+            </div>
+
+            <button
+              onClick={() => setLightboxIndex(i => i !== null && i < fotos.length - 1 ? i + 1 : 0)}
+              style={{ background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '50%', width: 44, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M9 18l6-6-6-6" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>,
+        document.body
       )}
     </BottomSheet>
   )
