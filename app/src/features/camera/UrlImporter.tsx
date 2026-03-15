@@ -102,10 +102,9 @@ export default function UrlImporter({ fallaId, onDone }: UrlImporterProps) {
       }
 
       if (videoUrl) {
-        const PROXY = await getProxyBase()
-        const proxiedUrl = PROXY + encodeURIComponent(videoUrl)
-        setLoadingMsg('Cargando vídeo...')
-        await extractFrames(proxiedUrl)
+        const proxyBase = (await getProxyBase()).replace('/?url=', '')
+        setLoadingMsg('Extrayendo frames...')
+        await extractFramesServer(proxyBase, videoUrl)
 
       } else if (directImages.length > 0) {
         // Tweet con fotos — importarlas directamente
@@ -139,66 +138,15 @@ export default function UrlImporter({ fallaId, onDone }: UrlImporterProps) {
     }
   }
 
-  async function extractFrames(src: string): Promise<void> {
-    const isBlob = src.startsWith('blob:')
-    return new Promise<void>((resolve, reject) => {
-      const video = document.createElement('video')
-      video.muted = true
-      video.playsInline = true
-      video.preload = 'metadata'
-      video.crossOrigin = 'anonymous'
-      video.src = src
-
-      video.addEventListener('error', () => {
-        if (isBlob) URL.revokeObjectURL(src)
-        reject(new Error('No se pudo cargar el vídeo'))
-      })
-
-      video.addEventListener('loadedmetadata', () => {
-        const duration = video.duration
-        const MAX_FRAMES = 20
-        const totalFrames = Math.min(MAX_FRAMES, Math.floor(duration / 2) + 1)
-        const step = totalFrames > 1 ? duration / totalFrames : duration
-        const times: number[] = []
-        for (let i = 0; i < totalFrames; i++) {
-          times.push(Math.min(i * step, duration - 0.1))
-        }
-
-        const canvas = document.createElement('canvas')
-        const capturedFrames: Frame[] = []
-        let idx = 0
-
-        function captureNext() {
-          if (idx >= times.length) {
-            if (isBlob) URL.revokeObjectURL(src)
-            setFrames(capturedFrames)
-            setStage('frames')
-            resolve()
-            return
-          }
-          video.currentTime = times[idx]
-        }
-
-        video.addEventListener('seeked', () => {
-          canvas.width = video.videoWidth
-          canvas.height = video.videoHeight
-          const ctx = canvas.getContext('2d')
-          if (ctx) {
-            ctx.drawImage(video, 0, 0)
-            capturedFrames.push({
-              dataUrl: canvas.toDataURL('image/jpeg', 0.92),
-              selected: false,
-            })
-          }
-          idx++
-          captureNext()
-        })
-
-        captureNext()
-      })
-
-      video.load()
-    })
+  /** Extracción server-side via ffmpeg en el proxy — evita todos los problemas de iOS con canvas */
+  async function extractFramesServer(proxyBase: string, videoUrl: string): Promise<void> {
+    const endpoint = `${proxyBase}/frames?url=${encodeURIComponent(videoUrl)}`
+    const res = await fetch(endpoint)
+    if (!res.ok) throw new Error(`Error del servidor: ${res.status}`)
+    const data = await res.json() as { ok: boolean; frames?: string[]; error?: string }
+    if (!data.ok || !data.frames?.length) throw new Error(data.error ?? 'Sin frames extraídos')
+    setFrames(data.frames.map(f => ({ dataUrl: f, selected: false })))
+    setStage('frames')
   }
 
   function toggleFrame(i: number) {
