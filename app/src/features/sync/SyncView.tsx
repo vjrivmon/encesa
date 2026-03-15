@@ -130,6 +130,53 @@ export default function SyncView() {
         }
       }
 
+      // Upload valoraciones
+      const valoraciones = (await db.valoraciones.toArray()).filter(v => !v.synced)
+      for (const val of valoraciones) {
+        const { error } = await supabase.from('valoraciones').upsert({
+          id: val.id,
+          falla_id: val.falla_id,
+          originalidad: val.originalidad,
+          ejecucion: val.ejecucion,
+          tematica: val.tematica,
+          humor: val.humor,
+          updated_at: val.updated_at,
+        })
+        if (!error) {
+          await db.valoraciones.update(val.id, { synced: true })
+          uploaded++
+        } else {
+          lastError = `Valoracion ${val.falla_id}: ${error.message}`
+          errors++
+        }
+      }
+
+      // También subir fallas que tengan valoración aunque ya estuvieran synced
+      // (para que completitud_pct refleje el estado real)
+      const fallasConValoracion = valoraciones.map(v => v.falla_id)
+      if (fallasConValoracion.length > 0) {
+        const fallasUpdate = await db.fallas.where('id').anyOf(fallasConValoracion).toArray()
+        for (const falla of fallasUpdate) {
+          await supabase.from('fallas').upsert({
+            id: falla.id,
+            nombre: falla.nombre,
+            barrio: falla.barrio,
+            artista: falla.artista,
+            categoria: falla.categoria,
+            lema: falla.lema,
+            anyo: falla.anyo,
+            lat: falla.lat,
+            lng: falla.lng,
+            estado: falla.estado,
+            completitud_pct: falla.completitud_pct,
+            notas: falla.notas,
+            ocr_realizado: falla.ocr_realizado,
+            created_at: falla.created_at,
+            updated_at: new Date().toISOString(),
+          })
+        }
+      }
+
       // Upload photos to Storage
       for (const foto of fotos) {
         try {
@@ -175,14 +222,14 @@ export default function SyncView() {
       const now = new Date().toISOString()
       localStorage.setItem('encesa_last_sync', now)
 
-      const fotosSubidas = fotos.length > 0 ? uploaded : 0
+      const totalSubido = uploaded
       setSyncResult({
-        ok: errors === 0 && fotosSubidas > 0,
-        message: fotos.length === 0
-          ? `Sin fotos pendientes (${allFotos.length} en DB, ${fallas.length} fallas pendientes)`
-          : errors === 0
-            ? `Sync completado: ${fotosSubidas} fotos subidas`
-            : `Sync parcial: ${fotosSubidas} ok, ${errors} errores — ${lastError}`,
+        ok: errors === 0 && (totalSubido > 0 || fotos.length === 0),
+        message: errors === 0
+          ? totalSubido > 0
+            ? `Sync completado: ${fotos.length} fotos, ${valoraciones.length} valoraciones subidas`
+            : `Todo al día — no hay cambios pendientes`
+          : `Sync parcial: ${totalSubido} ok, ${errors} errores — ${lastError}`,
       })
       await loadStats()
     } catch (err) {
