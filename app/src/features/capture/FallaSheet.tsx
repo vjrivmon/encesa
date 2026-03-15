@@ -7,6 +7,7 @@ import StarRating from '../../components/StarRating'
 import { calcularCompletitud, getEstadoFromCompletitud } from '../../lib/completitud'
 import { SEED_FALLAS } from '../../lib/jcf-seed'
 import VideoImporter from '../camera/VideoImporter'
+import UrlImporter from '../camera/UrlImporter'
 
 interface FallaSheetProps {
   falla: Falla | null
@@ -46,6 +47,7 @@ export default function FallaSheet({ falla, isOpen, onClose, onOpenCamera }: Fal
   const [saving, setSaving] = useState(false)
   const [imprescindible, setImprescindible] = useState(false)
   const [showImporter, setShowImporter] = useState(false)
+  const [showUrlImporter, setShowUrlImporter] = useState(false)
 
   const reloadFotos = useCallback(async () => {
     if (!falla) return
@@ -319,6 +321,28 @@ export default function FallaSheet({ falla, isOpen, onClose, onOpenCamera }: Fal
               </svg>
               Importar
             </button>
+            {/* Botón URL — importar desde Twitter/X u otra URL */}
+            <button
+              onClick={() => setShowUrlImporter(true)}
+              title="Importar desde URL (Twitter, YouTube...)"
+              style={{
+                flexShrink: 0,
+                background: '#2c2c2e',
+                color: '#ebebf5',
+                border: '0.5px solid #3a3a3c',
+                borderRadius: '12px',
+                padding: '12px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="10" stroke="#ebebf5" strokeWidth="2"/>
+                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke="#ebebf5" strokeWidth="2"/>
+              </svg>
+            </button>
           </div>
           {boceto && (
             <button
@@ -425,6 +449,15 @@ export default function FallaSheet({ falla, isOpen, onClose, onOpenCamera }: Fal
           fallaId={falla.id}
           onDone={() => {
             setShowImporter(false)
+            reloadFotos()
+          }}
+        />
+      )}
+      {showUrlImporter && (
+        <UrlImporter
+          fallaId={falla.id}
+          onDone={() => {
+            setShowUrlImporter(false)
             reloadFotos()
           }}
         />
