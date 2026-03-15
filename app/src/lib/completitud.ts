@@ -13,11 +13,9 @@ export function calcularCompletitud(
     total += 30
   }
 
-  // Tiene al menos 1 foto: 30% (+ bonus hasta 10% por más fotos)
+  // Tiene al menos 1 foto: 35%
   if (fotos.length >= 1) {
-    total += 30
-    if (fotos.length >= 3) total += 5
-    if (fotos.length >= 6) total += 5
+    total += 35
   }
 
   // Valoracion completada (los 4 criterios > 0): 25%
