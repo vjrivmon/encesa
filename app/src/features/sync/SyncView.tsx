@@ -75,6 +75,18 @@ export default function SyncView() {
     await loadStats()
   }
 
+  /** Convierte data URL a Blob sin usar fetch() — compatible con Safari iOS */
+  function dataUrlToBlob(dataUrl: string): Blob {
+    const [header, base64] = dataUrl.split(',')
+    const mime = header.match(/:(.*?);/)![1]
+    const binary = atob(base64)
+    const bytes = new Uint8Array(binary.length)
+    for (let i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i)
+    }
+    return new Blob([bytes], { type: mime })
+  }
+
   async function syncAll() {
     setSyncing(true)
     setSyncResult(null)
@@ -111,42 +123,49 @@ export default function SyncView() {
           await db.fallas.update(falla.id, { synced: true })
           uploaded++
         } else {
+          lastError = `Falla ${falla.id}: ${error.message}`
           errors++
         }
       }
 
       // Upload photos to Storage
       for (const foto of fotos) {
-        // Conversión eficiente data_url → blob (no bloquea el thread)
-        const blob = await fetch(foto.data_url).then(r => r.blob())
-        const path = `fotos/${foto.falla_id}/${foto.id}.jpg`
+        try {
+          // Conversión data_url → blob compatible con Safari iOS
+          // (fetch('data:...') no es fiable en WebKit para imágenes grandes)
+          const blob = dataUrlToBlob(foto.data_url)
+          const path = `fotos/${foto.falla_id}/${foto.id}.jpg`
 
-        const { error: uploadError } = await supabase.storage
-          .from('fotos')
-          .upload(path, blob, { upsert: true })
-
-        if (!uploadError) {
-          const { data: { publicUrl } } = supabase.storage
+          const { error: uploadError } = await supabase.storage
             .from('fotos')
-            .getPublicUrl(path)
+            .upload(path, blob, { contentType: 'image/jpeg', upsert: true })
 
-          const { error: insertError } = await supabase.from('fotos').upsert({
-            id: foto.id,
-            falla_id: foto.falla_id,
-            angulo: foto.angulo ?? 'frontal',
-            url_storage: publicUrl,
-            synced: true,
-            capturada_at: foto.capturada_at ?? new Date().toISOString(),
-          })
-          if (!insertError) {
-            await db.fotos.update(foto.id, { synced: true, url_storage: publicUrl })
-            uploaded++
+          if (!uploadError) {
+            const { data: { publicUrl } } = supabase.storage
+              .from('fotos')
+              .getPublicUrl(path)
+
+            const { error: insertError } = await supabase.from('fotos').upsert({
+              id: foto.id,
+              falla_id: foto.falla_id,
+              angulo: foto.angulo ?? 'libre',
+              url_storage: publicUrl,
+              synced: true,
+              capturada_at: foto.capturada_at ?? new Date().toISOString(),
+            })
+            if (!insertError) {
+              await db.fotos.update(foto.id, { synced: true, url_storage: publicUrl })
+              uploaded++
+            } else {
+              lastError = `DB ${foto.id.slice(0, 8)}: ${insertError.message}`
+              errors++
+            }
           } else {
-            lastError = `DB insert: ${insertError.message}`
+            lastError = `Storage ${foto.id.slice(0, 8)}: ${uploadError.message}`
             errors++
           }
-        } else {
-          lastError = `Storage: ${uploadError.message}`
+        } catch (fotoErr) {
+          lastError = `Foto ${foto.id.slice(0, 8)}: ${String(fotoErr)}`
           errors++
         }
       }
@@ -154,17 +173,18 @@ export default function SyncView() {
       const now = new Date().toISOString()
       localStorage.setItem('encesa_last_sync', now)
 
+      const fotosSubidas = fotos.length > 0 ? uploaded : 0
       setSyncResult({
-        ok: errors === 0 && uploaded > 0,
-        message: errors === 0 && uploaded > 0
-          ? `Sync completado: ${uploaded} registros subidos`
-          : uploaded === 0 && errors === 0
-            ? `Sin fotos pendientes (${fotos.length} encontradas, ${allFotos.length} en DB)`
-            : `Sync parcial: ${uploaded} ok, ${errors} errores${lastError ? ` — ${lastError}` : ''}`,
+        ok: errors === 0 && fotosSubidas > 0,
+        message: fotos.length === 0
+          ? `Sin fotos pendientes (${allFotos.length} en DB, ${fallas.length} fallas pendientes)`
+          : errors === 0
+            ? `Sync completado: ${fotosSubidas} fotos subidas`
+            : `Sync parcial: ${fotosSubidas} ok, ${errors} errores — ${lastError}`,
       })
       await loadStats()
     } catch (err) {
-      setSyncResult({ ok: false, message: `Error de conexion: ${String(err)}` })
+      setSyncResult({ ok: false, message: `Error: ${String(err)}` })
     }
 
     setSyncing(false)
