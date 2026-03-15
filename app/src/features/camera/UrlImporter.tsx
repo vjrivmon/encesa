@@ -14,8 +14,16 @@ interface Frame {
 
 type Stage = 'input' | 'loading' | 'frames'
 
-const COBALT_API = 'https://cobalt.tools/api/json'
-const CORS_PROXY = 'https://corsproxy.io/?'
+/** Extrae el tweet ID de una URL de twitter.com o x.com */
+function extractTweetId(raw: string): string | null {
+  try {
+    const u = new URL(raw)
+    const match = u.pathname.match(/\/status\/(\d+)/)
+    return match?.[1] ?? null
+  } catch {
+    return null
+  }
+}
 
 export default function UrlImporter({ fallaId, onDone }: UrlImporterProps) {
   const [stage, setStage] = useState<Stage>('input')
@@ -30,119 +38,74 @@ export default function UrlImporter({ fallaId, onDone }: UrlImporterProps) {
     if (!trimmed) return
     setError('')
     setStage('loading')
-    setLoadingMsg('Obteniendo URL de descarga...')
+    setLoadingMsg('Buscando vídeo...')
 
     try {
-      // Limpiar parámetros de tracking (?s=, ?t=, etc.)
-      let cleanUrl = trimmed
-      try {
-        const u = new URL(trimmed)
-        u.searchParams.delete('s')
-        u.searchParams.delete('t')
-        u.searchParams.delete('ref_src')
-        u.searchParams.delete('ref_url')
-        cleanUrl = u.toString()
-      } catch { /* URL inválida, usar tal cual */ }
+      const tweetId = extractTweetId(trimmed)
+      if (!tweetId) throw new Error('URL no válida. Pega el enlace de un tweet de x.com o twitter.com')
 
-      // Llamar a cobalt.tools para obtener URL directa
-      const cobaltRes = await fetch(COBALT_API, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          url: cleanUrl,
-          vQuality: '720',
-          filenamePattern: 'basic',
-          isAudioOnly: false,
-          disableMetadata: true,
-        }),
-      })
+      // fxtwitter API — CORS abierto, devuelve metadatos del tweet con variantes de vídeo
+      const res = await fetch(`https://api.fxtwitter.com/status/${tweetId}`)
+      if (!res.ok) throw new Error(`fxtwitter respondió ${res.status}`)
 
-      if (!cobaltRes.ok) {
-        throw new Error(`Error al conectar con cobalt.tools (${cobaltRes.status})`)
-      }
+      const data = await res.json()
+      const tweet = data.tweet
+      if (!tweet) throw new Error('Tweet no encontrado o privado')
 
-      const data = await cobaltRes.json()
+      const allMedia: { type: string; url: string; formats?: { url: string; bitrate?: number; container: string }[] }[] =
+        tweet.media?.all ?? []
 
-      // Manejar respuesta de cobalt
-      if (data.status === 'stream' || data.status === 'redirect') {
-        // Vídeo directo
+      const videoMedia = allMedia.find(m => m.type === 'video' || m.type === 'gif')
+      const imageMedia = allMedia.filter(m => m.type === 'photo')
+
+      if (videoMedia) {
+        // Elegir la calidad más baja entre los MP4 disponibles (más rápido en móvil)
+        const mp4Formats = (videoMedia.formats ?? []).filter(f => f.container === 'mp4' && f.bitrate)
+        const best = mp4Formats.length > 0
+          ? mp4Formats.reduce((a, b) => (b.bitrate! < a.bitrate! ? b : a)) // menor bitrate para móvil
+          : null
+        const videoUrl = best?.url ?? videoMedia.url
+
         setLoadingMsg('Descargando vídeo...')
-        const blob = await downloadBlob(data.url)
+        // video.twimg.com tiene CORS abierto — descarga directa como blob
+        const blob = await fetch(videoUrl).then(r => {
+          if (!r.ok) throw new Error('Error al descargar el vídeo')
+          return r.blob()
+        })
         const objectUrl = URL.createObjectURL(blob)
         setLoadingMsg('Extrayendo frames...')
         await extractFrames(objectUrl)
 
-      } else if (data.status === 'picker') {
-        // Múltiples medios — buscar vídeo primero, si no imagen
-        const items = data.picker as { type?: string; url: string; thumb?: string }[]
-        const videoItem = items.find(p => p.type === 'video')
-
-        if (videoItem) {
-          setLoadingMsg('Descargando vídeo...')
-          const blob = await downloadBlob(videoItem.url)
-          const objectUrl = URL.createObjectURL(blob)
-          setLoadingMsg('Extrayendo frames...')
-          await extractFrames(objectUrl)
-        } else {
-          // Son imágenes — importarlas directamente
-          setLoadingMsg('Descargando imágenes...')
-          await importImages(items.map(i => i.url))
+      } else if (imageMedia.length > 0) {
+        // Es un tweet con fotos — importarlas directamente
+        setLoadingMsg(`Importando ${imageMedia.length} imagen${imageMedia.length > 1 ? 'es' : ''}...`)
+        const now = new Date().toISOString()
+        for (const img of imageMedia) {
+          const imgBlob = await fetch(img.url).then(r => r.blob())
+          const dataUrl = await new Promise<string>((resolve) => {
+            const reader = new FileReader()
+            reader.onload = e => resolve(e.target?.result as string)
+            reader.readAsDataURL(imgBlob)
+          })
+          await db.fotos.add({
+            id: crypto.randomUUID(),
+            falla_id: fallaId,
+            angulo: 'libre',
+            data_url: dataUrl,
+            synced: false,
+            capturada_at: now,
+          })
         }
+        onDone()
 
       } else {
-        // Error de cobalt
-        const msg = data.text ?? 'No se pudo obtener el contenido'
-        if (msg === 'TypeLoad failed' || msg.includes('TypeLoad')) {
-          throw new Error('Este tweet no contiene vídeo. Prueba con un tweet que tenga vídeo adjunto.')
-        }
-        throw new Error(msg)
+        throw new Error('Este tweet no tiene vídeo ni imágenes adjuntas')
       }
 
     } catch (err) {
       setError(String(err).replace('Error: ', ''))
       setStage('input')
     }
-  }
-
-  async function downloadBlob(videoUrl: string): Promise<Blob> {
-    try {
-      const direct = await fetch(videoUrl)
-      if (!direct.ok) throw new Error('direct failed')
-      return await direct.blob()
-    } catch {
-      const proxied = await fetch(CORS_PROXY + encodeURIComponent(videoUrl))
-      if (!proxied.ok) throw new Error('No se pudo descargar el vídeo')
-      return await proxied.blob()
-    }
-  }
-
-  async function importImages(urls: string[]) {
-    const now = new Date().toISOString()
-    for (const imgUrl of urls) {
-      try {
-        const blob = await downloadBlob(imgUrl)
-        const reader = new FileReader()
-        await new Promise<void>((resolve) => {
-          reader.onload = async (e) => {
-            const dataUrl = e.target?.result as string
-            await db.fotos.add({
-              id: crypto.randomUUID(),
-              falla_id: fallaId,
-              angulo: 'libre',
-              data_url: dataUrl,
-              synced: false,
-              capturada_at: now,
-            })
-            resolve()
-          }
-          reader.readAsDataURL(blob)
-        })
-      } catch { /* ignorar imágenes que fallen */ }
-    }
-    onDone()
   }
 
   async function extractFrames(src: string): Promise<void> {
