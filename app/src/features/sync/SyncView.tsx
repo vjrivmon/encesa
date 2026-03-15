@@ -115,8 +115,11 @@ export default function SyncView() {
 
     try {
       const fallas = (await db.fallas.toArray()).filter(f => !f.synced)
-      const allFotos = (await db.fotos.toArray()).filter(f => !f.synced)
-      const fotos = allFotos.filter(f => selectedIds.has(f.id))
+      // Solo cargar IDs, no el data_url — evitar 42 × 3MB en RAM simultáneamente
+      const allFotoIds = (await db.fotos
+        .filter(f => !f.synced && f.data_url.startsWith('data:'))
+        .primaryKeys()) as string[]
+      const selectedFotoIds = allFotoIds.filter(id => selectedIds.has(id))
 
       let uploaded = 0
       let errors = 0
@@ -197,11 +200,15 @@ export default function SyncView() {
         }
       }
 
-      // Upload photos to Storage
-      for (const foto of fotos) {
+      // Upload photos to Storage — una a una para no saturar RAM en iOS
+      const totalFotos = selectedFotoIds.length
+      for (let i = 0; i < totalFotos; i++) {
+        const fotoId = selectedFotoIds[i]
+        setSyncResult({ ok: true, message: `Subiendo foto ${i + 1} de ${totalFotos}…` })
         try {
-          // Conversión data_url → blob compatible con Safari iOS
-          // (fetch('data:...') no es fiable en WebKit para imágenes grandes)
+          const foto = await db.fotos.get(fotoId)
+          if (!foto || !foto.data_url.startsWith('data:')) { errors++; continue }
+
           const blob = dataUrlToBlob(foto.data_url)
           const path = `fotos/${foto.falla_id}/${foto.id}.jpg`
 
@@ -234,7 +241,7 @@ export default function SyncView() {
             errors++
           }
         } catch (fotoErr) {
-          lastError = `Foto ${foto.id.slice(0, 8)}: ${String(fotoErr)}`
+          lastError = `Foto ${fotoId.slice(0, 8)}: ${String(fotoErr)}`
           errors++
         }
       }
@@ -244,10 +251,10 @@ export default function SyncView() {
 
       const totalSubido = uploaded
       setSyncResult({
-        ok: errors === 0 && (totalSubido > 0 || fotos.length === 0),
+        ok: errors === 0 && (totalSubido > 0 || totalFotos === 0),
         message: errors === 0
           ? totalSubido > 0
-            ? `Sync completado: ${fotos.length} fotos, ${valoraciones.length} valoraciones subidas`
+            ? `Sync completado: ${totalFotos} fotos, ${valoraciones.length} valoraciones subidas`
             : `Todo al día — no hay cambios pendientes`
           : `Sync parcial: ${totalSubido} ok, ${errors} errores — ${lastError}`,
       })
