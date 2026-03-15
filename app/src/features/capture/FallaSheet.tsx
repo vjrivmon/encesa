@@ -70,10 +70,8 @@ export default function FallaSheet({ falla, isOpen, onClose, onOpenCamera }: Fal
       setValoracion(valDB ?? null)
     })
 
-    // Auto-marcar OCR como completado: los datos del cartel ya vienen de la API
-    if (!falla.ocr_realizado) {
-      db.fallas.update(falla.id, { ocr_realizado: true, synced: false })
-    }
+    // Los datos del cartel vienen siempre de la API — no marcar ocr_realizado automáticamente
+    // (hacerlo aquí cambiaría el estado solo con abrir la ficha)
   }, [falla])
 
   if (!falla) return null
