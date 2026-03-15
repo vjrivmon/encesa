@@ -141,7 +141,8 @@ export default function UrlImporter({ fallaId, onDone }: UrlImporterProps) {
   /** Extracción server-side via ffmpeg en el proxy — evita todos los problemas de iOS con canvas */
   async function extractFramesServer(proxyBase: string, videoUrl: string): Promise<void> {
     const endpoint = `${proxyBase}/frames?url=${encodeURIComponent(videoUrl)}`
-    const res = await fetch(endpoint)
+    // Bypass-Tunnel-Reminder: loca.lt devuelve 511 en primeras peticiones si no se incluye
+    const res = await fetch(endpoint, { headers: { 'Bypass-Tunnel-Reminder': 'true' } })
     if (!res.ok) throw new Error(`Error del servidor: ${res.status}`)
     const data = await res.json() as { ok: boolean; frames?: string[]; error?: string }
     if (!data.ok || !data.frames?.length) throw new Error(data.error ?? 'Sin frames extraídos')
