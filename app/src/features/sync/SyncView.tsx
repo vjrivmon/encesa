@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { db, type Falla, type Foto } from '../../lib/db'
 import { supabase } from '../../lib/supabase'
+import { pullFromSupabase } from '../../lib/pullFromSupabase'
 
 interface SyncStats {
   totalFallas: number
@@ -25,6 +26,7 @@ export default function SyncView() {
     lastSync: null,
   })
   const [syncing, setSyncing] = useState(false)
+  const [pulling, setPulling] = useState(false)
   const [syncResult, setSyncResult] = useState<{ ok: boolean; message: string } | null>(null)
   const [fotasPendientes, setFotasPendientes] = useState<FotoWithFalla[]>([])
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
@@ -188,6 +190,25 @@ export default function SyncView() {
     }
 
     setSyncing(false)
+  }
+
+  async function pullAll() {
+    setPulling(true)
+    setSyncResult(null)
+    try {
+      const result = await pullFromSupabase()
+      const total = result.fallas + result.fotos + result.valoraciones
+      setSyncResult({
+        ok: true,
+        message: total > 0
+          ? `Nube descargada: ${result.fallas} fallas, ${result.fotos} fotos, ${result.valoraciones} valoraciones`
+          : 'Todo al día — no hay cambios nuevos en la nube',
+      })
+      await loadStats()
+    } catch (err) {
+      setSyncResult({ ok: false, message: `Error al descargar: ${String(err)}` })
+    }
+    setPulling(false)
   }
 
   const lastSyncDate = stats.lastSync ? new Date(stats.lastSync) : null
@@ -406,6 +427,36 @@ export default function SyncView() {
           {syncResult.message}
         </div>
       )}
+
+      {/* Pull desde nube */}
+      <button
+        onClick={pullAll}
+        disabled={pulling || syncing || !isSupabaseConfigured}
+        style={{
+          width: '100%',
+          padding: '14px',
+          background: pulling || !isSupabaseConfigured ? '#2c2c2e' : '#0a84ff',
+          color: pulling || !isSupabaseConfigured ? '#636366' : '#fff',
+          border: 'none',
+          borderRadius: '14px',
+          fontSize: '15px',
+          fontWeight: 600,
+          cursor: pulling || !isSupabaseConfigured ? 'not-allowed' : 'pointer',
+          fontFamily: 'Inter, -apple-system, sans-serif',
+          marginBottom: '10px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '8px',
+          transition: 'all 0.2s',
+        }}
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M12 3v9m0 0l-3-3m3 3l3-3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M20 16v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+        </svg>
+        {pulling ? 'Descargando...' : 'Actualizar desde nube'}
+      </button>
 
       {/* Sync button */}
       <button
