@@ -45,7 +45,8 @@ export default function SyncView() {
       db.fallas.toArray(),
       db.fotos.toArray(),
     ])
-    const pendientes = fotos.filter(f => !f.synced)
+    // Solo fotos con datos locales reales (no URLs remotas de pullFromSupabase)
+    const pendientes = fotos.filter(f => !f.synced && f.data_url?.startsWith('data:'))
     const totalBytes = pendientes.reduce((sum, f) => sum + (f.data_url?.length ?? 0) * 0.75, 0)
     const fallasMap = Object.fromEntries(fallas.map(f => [f.id, f.nombre]))
 
@@ -114,6 +115,26 @@ export default function SyncView() {
     setSyncResult(null)
 
     try {
+      // ── Reconciliación previa ──────────────────────────────────────────────
+      // Puede haber fotos que ya están en Supabase pero con synced=false local
+      // (el app crasheó justo después de subir pero antes de confirmar)
+      setSyncResult({ ok: true, message: 'Verificando estado con servidor…' })
+      const localUnsynced = (await db.fotos
+        .filter(f => !f.synced && f.data_url.startsWith('data:'))
+        .primaryKeys()) as string[]
+      if (localUnsynced.length > 0) {
+        const { data: remoteExisting } = await supabase
+          .from('fotos')
+          .select('id')
+          .in('id', localUnsynced)
+        if (remoteExisting && remoteExisting.length > 0) {
+          const alreadySyncedIds = remoteExisting.map((r: { id: string }) => r.id)
+          await db.fotos.where('id').anyOf(alreadySyncedIds).modify({ synced: true })
+          // Refrescar lista en pantalla — las fotos ya synced desaparecen del contador
+          await loadStats()
+        }
+      }
+
       const fallas = (await db.fallas.toArray()).filter(f => !f.synced)
       // Solo cargar IDs, no el data_url — evitar 42 × 3MB en RAM simultáneamente
       const allFotoIds = (await db.fotos
