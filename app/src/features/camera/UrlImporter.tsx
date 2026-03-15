@@ -66,15 +66,10 @@ export default function UrlImporter({ fallaId, onDone }: UrlImporterProps) {
           : null
         const videoUrl = best?.url ?? videoMedia.url
 
-        setLoadingMsg('Descargando vídeo...')
-        // video.twimg.com tiene CORS abierto — descarga directa como blob
-        const blob = await fetch(videoUrl).then(r => {
-          if (!r.ok) throw new Error('Error al descargar el vídeo')
-          return r.blob()
-        })
-        const objectUrl = URL.createObjectURL(blob)
-        setLoadingMsg('Extrayendo frames...')
-        await extractFrames(objectUrl)
+        // Pasar la URL directamente al <video> — evita descargar el blob entero en iOS
+        // video.twimg.com tiene CORS abierto así que canvas.toDataURL() funciona
+        setLoadingMsg('Cargando vídeo...')
+        await extractFrames(videoUrl)
 
       } else if (imageMedia.length > 0) {
         // Es un tweet con fotos — importarlas directamente
@@ -109,6 +104,7 @@ export default function UrlImporter({ fallaId, onDone }: UrlImporterProps) {
   }
 
   async function extractFrames(src: string): Promise<void> {
+    const isBlob = src.startsWith('blob:')
     return new Promise<void>((resolve, reject) => {
       const video = document.createElement('video')
       video.muted = true
@@ -118,8 +114,8 @@ export default function UrlImporter({ fallaId, onDone }: UrlImporterProps) {
       video.src = src
 
       video.addEventListener('error', () => {
-        URL.revokeObjectURL(src)
-        reject(new Error('No se pudo cargar el vídeo descargado'))
+        if (isBlob) URL.revokeObjectURL(src)
+        reject(new Error('No se pudo cargar el vídeo'))
       })
 
       video.addEventListener('loadedmetadata', () => {
@@ -138,7 +134,7 @@ export default function UrlImporter({ fallaId, onDone }: UrlImporterProps) {
 
         function captureNext() {
           if (idx >= times.length) {
-            URL.revokeObjectURL(src)
+            if (isBlob) URL.revokeObjectURL(src)
             setFrames(capturedFrames)
             setStage('frames')
             resolve()
