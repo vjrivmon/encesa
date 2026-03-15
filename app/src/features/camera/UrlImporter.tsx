@@ -66,10 +66,11 @@ export default function UrlImporter({ fallaId, onDone }: UrlImporterProps) {
           : null
         const videoUrl = best?.url ?? videoMedia.url
 
-        // Pasar la URL directamente al <video> — evita descargar el blob entero en iOS
-        // video.twimg.com tiene CORS abierto así que canvas.toDataURL() funciona
+        // Proxy HTTPS — evita que Twitter bloquee Sec-Fetch-Mode:cors desde el browser
+        const PROXY = 'https://099ffd8b696f20ee-77-42-16-230.serveousercontent.com/?url='
+        const proxiedUrl = PROXY + encodeURIComponent(videoUrl)
         setLoadingMsg('Cargando vídeo...')
-        await extractFrames(videoUrl)
+        await extractFrames(proxiedUrl)
 
       } else if (imageMedia.length > 0) {
         // Es un tweet con fotos — importarlas directamente
