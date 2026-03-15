@@ -117,13 +117,8 @@ export default function SyncView() {
 
       // Upload photos to Storage
       for (const foto of fotos) {
-        const base64 = foto.data_url.split(',')[1]
-        const binary = atob(base64)
-        const bytes = new Uint8Array(binary.length)
-        for (let i = 0; i < binary.length; i++) {
-          bytes[i] = binary.charCodeAt(i)
-        }
-        const blob = new Blob([bytes], { type: 'image/jpeg' })
+        // Conversión eficiente data_url → blob (no bloquea el thread)
+        const blob = await fetch(foto.data_url).then(r => r.blob())
         const path = `fotos/${foto.falla_id}/${foto.id}.jpg`
 
         const { error: uploadError } = await supabase.storage
