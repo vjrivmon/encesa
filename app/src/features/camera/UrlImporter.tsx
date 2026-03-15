@@ -14,7 +14,19 @@ interface Frame {
 
 type Stage = 'input' | 'loading' | 'frames'
 
-const PROXY = 'https://48ad08e8a1b56528-77-42-16-230.serveousercontent.com/?url='
+// URL del proxy — se carga desde /proxy-config.json para poder actualizarla sin rebuildar
+let _proxyBase: string | null = null
+async function getProxyBase(): Promise<string> {
+  if (_proxyBase) return _proxyBase
+  try {
+    const r = await fetch('/encesa/proxy-config.json', { cache: 'no-store' })
+    const d = await r.json()
+    _proxyBase = d.url + '/?url='
+  } catch {
+    _proxyBase = 'https://a9a59556e026a55a-77-42-16-230.serveousercontent.com/?url='
+  }
+  return _proxyBase!
+}
 
 /** Extrae el tweet ID de una URL de twitter.com o x.com */
 function extractTweetId(raw: string): string | null {
@@ -90,6 +102,7 @@ export default function UrlImporter({ fallaId, onDone }: UrlImporterProps) {
       }
 
       if (videoUrl) {
+        const PROXY = await getProxyBase()
         const proxiedUrl = PROXY + encodeURIComponent(videoUrl)
         setLoadingMsg('Cargando vídeo...')
         await extractFrames(proxiedUrl)
