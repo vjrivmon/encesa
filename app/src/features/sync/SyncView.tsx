@@ -10,6 +10,8 @@ interface SyncStats {
   fotasPendientes: number
   tamanoEstimadoMB: number
   lastSync: string | null
+  fotosEnServidor: number
+  fallasCubiertas: number
 }
 
 interface FotoWithFalla extends Foto {
@@ -24,6 +26,8 @@ export default function SyncView() {
     fotasPendientes: 0,
     tamanoEstimadoMB: 0,
     lastSync: null,
+    fotosEnServidor: 0,
+    fallasCubiertas: 0,
   })
   const [syncing, setSyncing] = useState(false)
   const [pulling, setPulling] = useState(false)
@@ -52,6 +56,20 @@ export default function SyncView() {
     setFotasPendientes(enriched)
     setSelectedIds(new Set(enriched.map(f => f.id)))
 
+    // Contar fotos en el servidor (Supabase)
+    let fotosEnServidor = 0
+    let fallasCubiertas = 0
+    try {
+      const { data: remoteCount } = await supabase
+        .from('fotos')
+        .select('falla_id')
+        .limit(5000)
+      if (remoteCount) {
+        fotosEnServidor = remoteCount.length
+        fallasCubiertas = new Set(remoteCount.map(r => r.falla_id)).size
+      }
+    } catch { /* offline */ }
+
     setStats({
       totalFallas: fallas.length,
       enProgreso: fallas.filter(f => f.estado === 'en_progreso').length,
@@ -59,6 +77,8 @@ export default function SyncView() {
       fotasPendientes: pendientes.length,
       tamanoEstimadoMB: Math.round(totalBytes / (1024 * 1024) * 10) / 10,
       lastSync: localStorage.getItem('encesa_last_sync'),
+      fotosEnServidor,
+      fallasCubiertas,
     })
   }
 
@@ -342,6 +362,63 @@ export default function SyncView() {
           {stats.tamanoEstimadoMB} MB
         </span>
       </div>
+
+      {/* Progreso hacia el modelo IA */}
+      {stats.fotosEnServidor > 0 && (() => {
+        const META_BASICO = 300
+        const META_BUENO = 700
+        const META_OPTIMO = 2000
+        const actual = stats.fotosEnServidor
+        let meta = META_BASICO
+        let metaLabel = 'modelo básico'
+        let metaColor = '#ff9500'
+        if (actual >= META_BASICO) { meta = META_BUENO; metaLabel = 'modelo completo'; metaColor = '#34c759' }
+        if (actual >= META_BUENO) { meta = META_OPTIMO; metaLabel = 'modelo óptimo'; metaColor = '#0a84ff' }
+        const pct = Math.min(100, Math.round((actual / meta) * 100))
+        const faltan = Math.max(0, meta - actual)
+        return (
+          <div style={{ background: '#1c1c1e', border: '0.5px solid #3a3a3c', borderRadius: '13px', padding: '14px 16px', marginBottom: '12px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '10px' }}>
+              <span style={{ fontSize: '13px', fontWeight: 700, color: '#fff', fontFamily: 'Inter, -apple-system, sans-serif', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Progreso del modelo
+              </span>
+              <span style={{ fontSize: '12px', color: metaColor, fontWeight: 600, fontFamily: 'Inter, -apple-system, sans-serif' }}>
+                {metaLabel}
+              </span>
+            </div>
+
+            {/* Números clave */}
+            <div style={{ display: 'flex', gap: '12px', marginBottom: '12px' }}>
+              <div style={{ flex: 1, background: '#2c2c2e', borderRadius: '10px', padding: '10px 12px', textAlign: 'center' }}>
+                <div style={{ fontSize: '22px', fontWeight: 700, color: '#fff', fontFamily: 'Inter, -apple-system, sans-serif' }}>{actual}</div>
+                <div style={{ fontSize: '11px', color: '#8e8e93', fontFamily: 'Inter, -apple-system, sans-serif' }}>fotos en servidor</div>
+              </div>
+              <div style={{ flex: 1, background: '#2c2c2e', borderRadius: '10px', padding: '10px 12px', textAlign: 'center' }}>
+                <div style={{ fontSize: '22px', fontWeight: 700, color: '#fff', fontFamily: 'Inter, -apple-system, sans-serif' }}>{stats.fallasCubiertas}</div>
+                <div style={{ fontSize: '11px', color: '#8e8e93', fontFamily: 'Inter, -apple-system, sans-serif' }}>fallas cubiertas</div>
+              </div>
+              <div style={{ flex: 1, background: '#2c2c2e', borderRadius: '10px', padding: '10px 12px', textAlign: 'center' }}>
+                <div style={{ fontSize: '22px', fontWeight: 700, color: faltan > 0 ? '#ff9500' : '#34c759', fontFamily: 'Inter, -apple-system, sans-serif' }}>
+                  {faltan > 0 ? `-${faltan}` : '✓'}
+                </div>
+                <div style={{ fontSize: '11px', color: '#8e8e93', fontFamily: 'Inter, -apple-system, sans-serif' }}>para {metaLabel.split(' ')[1]}</div>
+              </div>
+            </div>
+
+            {/* Barra de progreso con hitos */}
+            <div style={{ position: 'relative', height: '8px', background: '#3a3a3c', borderRadius: '4px', overflow: 'hidden', marginBottom: '6px' }}>
+              <div style={{ width: `${pct}%`, height: '100%', background: `linear-gradient(90deg, #FF6B35, ${metaColor})`, borderRadius: '4px', transition: 'width 0.5s ease' }} />
+            </div>
+
+            {/* Hitos */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', color: '#636366', fontFamily: 'Inter, -apple-system, sans-serif' }}>
+              <span style={{ color: actual >= META_BASICO ? '#ff9500' : '#636366' }}>Básico {META_BASICO}</span>
+              <span style={{ color: actual >= META_BUENO ? '#34c759' : '#636366' }}>Bueno {META_BUENO}</span>
+              <span style={{ color: actual >= META_OPTIMO ? '#0a84ff' : '#636366' }}>Óptimo {META_OPTIMO}</span>
+            </div>
+          </div>
+        )
+      })()}
 
       {/* Preview fotos pendientes */}
       {fotasPendientes.length > 0 && (
