@@ -14,6 +14,8 @@ interface Frame {
 
 type Stage = 'input' | 'loading' | 'frames'
 
+const PROXY = 'https://48ad08e8a1b56528-77-42-16-230.serveousercontent.com/?url='
+
 /** Extrae el tweet ID de una URL de twitter.com o x.com */
 function extractTweetId(raw: string): string | null {
   try {
@@ -23,6 +25,14 @@ function extractTweetId(raw: string): string | null {
   } catch {
     return null
   }
+}
+
+/** Detecta si es una URL de TikTok */
+function isTikTok(raw: string): boolean {
+  try {
+    const u = new URL(raw)
+    return u.hostname.endsWith('tiktok.com')
+  } catch { return false }
 }
 
 export default function UrlImporter({ fallaId, onDone }: UrlImporterProps) {
@@ -41,42 +51,54 @@ export default function UrlImporter({ fallaId, onDone }: UrlImporterProps) {
     setLoadingMsg('Buscando vídeo...')
 
     try {
-      const tweetId = extractTweetId(trimmed)
-      if (!tweetId) throw new Error('URL no válida. Pega el enlace de un tweet de x.com o twitter.com')
+      let videoUrl: string | null = null
+      let directImages: { url: string }[] = []
 
-      // fxtwitter API — CORS abierto, devuelve metadatos del tweet con variantes de vídeo
-      const res = await fetch(`https://api.fxtwitter.com/status/${tweetId}`)
-      if (!res.ok) throw new Error(`fxtwitter respondió ${res.status}`)
+      if (isTikTok(trimmed)) {
+        // ── TikTok via tikwm API ─────────────────────────────────────────
+        setLoadingMsg('Obteniendo vídeo de TikTok...')
+        const res = await fetch(`https://www.tikwm.com/api/?url=${encodeURIComponent(trimmed)}`)
+        if (!res.ok) throw new Error(`tikwm respondió ${res.status}`)
+        const data = await res.json()
+        if (data.code !== 0 || !data.data?.play) throw new Error('No se pudo obtener el vídeo de TikTok')
+        videoUrl = data.data.play
 
-      const data = await res.json()
-      const tweet = data.tweet
-      if (!tweet) throw new Error('Tweet no encontrado o privado')
+      } else {
+        // ── Twitter/X via fxtwitter API ──────────────────────────────────
+        const tweetId = extractTweetId(trimmed)
+        if (!tweetId) throw new Error('URL no válida. Pega un enlace de x.com, twitter.com o tiktok.com')
 
-      const allMedia: { type: string; url: string; formats?: { url: string; bitrate?: number; container: string }[] }[] =
-        tweet.media?.all ?? []
+        const res = await fetch(`https://api.fxtwitter.com/status/${tweetId}`)
+        if (!res.ok) throw new Error(`fxtwitter respondió ${res.status}`)
+        const data = await res.json()
+        const tweet = data.tweet
+        if (!tweet) throw new Error('Tweet no encontrado o privado')
 
-      const videoMedia = allMedia.find(m => m.type === 'video' || m.type === 'gif')
-      const imageMedia = allMedia.filter(m => m.type === 'photo')
+        const allMedia: { type: string; url: string; formats?: { url: string; bitrate?: number; container: string }[] }[] =
+          tweet.media?.all ?? []
 
-      if (videoMedia) {
-        // Elegir la calidad más baja entre los MP4 disponibles (más rápido en móvil)
-        const mp4Formats = (videoMedia.formats ?? []).filter(f => f.container === 'mp4' && f.bitrate)
-        const best = mp4Formats.length > 0
-          ? mp4Formats.reduce((a, b) => (b.bitrate! < a.bitrate! ? b : a)) // menor bitrate para móvil
-          : null
-        const videoUrl = best?.url ?? videoMedia.url
+        const videoMedia = allMedia.find(m => m.type === 'video' || m.type === 'gif')
+        directImages = allMedia.filter(m => m.type === 'photo')
 
-        // Proxy HTTPS — evita que Twitter bloquee Sec-Fetch-Mode:cors desde el browser
-        const PROXY = 'https://099ffd8b696f20ee-77-42-16-230.serveousercontent.com/?url='
+        if (videoMedia) {
+          const mp4Formats = (videoMedia.formats ?? []).filter(f => f.container === 'mp4' && f.bitrate)
+          const best = mp4Formats.length > 0
+            ? mp4Formats.reduce((a, b) => (b.bitrate! < a.bitrate! ? b : a))
+            : null
+          videoUrl = best?.url ?? videoMedia.url
+        }
+      }
+
+      if (videoUrl) {
         const proxiedUrl = PROXY + encodeURIComponent(videoUrl)
         setLoadingMsg('Cargando vídeo...')
         await extractFrames(proxiedUrl)
 
-      } else if (imageMedia.length > 0) {
-        // Es un tweet con fotos — importarlas directamente
-        setLoadingMsg(`Importando ${imageMedia.length} imagen${imageMedia.length > 1 ? 'es' : ''}...`)
+      } else if (directImages.length > 0) {
+        // Tweet con fotos — importarlas directamente
+        setLoadingMsg(`Importando ${directImages.length} imagen${directImages.length > 1 ? 'es' : ''}...`)
         const now = new Date().toISOString()
-        for (const img of imageMedia) {
+        for (const img of directImages) {
           const imgBlob = await fetch(img.url).then(r => r.blob())
           const dataUrl = await new Promise<string>((resolve) => {
             const reader = new FileReader()
@@ -95,7 +117,7 @@ export default function UrlImporter({ fallaId, onDone }: UrlImporterProps) {
         onDone()
 
       } else {
-        throw new Error('Este tweet no tiene vídeo ni imágenes adjuntas')
+        throw new Error('Este contenido no tiene vídeo ni imágenes adjuntas')
       }
 
     } catch (err) {
@@ -319,7 +341,7 @@ export default function UrlImporter({ fallaId, onDone }: UrlImporterProps) {
             {/* Input URL */}
             <input
               type="url"
-              placeholder="https://x.com/cendradigital/status/..."
+              placeholder="https://x.com/... o https://vm.tiktok.com/..."
               value={url}
               onChange={e => { setUrl(e.target.value); setError('') }}
               onKeyDown={e => e.key === 'Enter' && handleImport()}
