@@ -93,11 +93,10 @@ export default function UrlImporter({ fallaId, onDone }: UrlImporterProps) {
         directImages = allMedia.filter(m => m.type === 'photo')
 
         if (videoMedia) {
-          const mp4Formats = (videoMedia.formats ?? []).filter(f => f.container === 'mp4' && f.bitrate)
-          const best = mp4Formats.length > 0
-            ? mp4Formats.reduce((a, b) => (b.bitrate! < a.bitrate! ? b : a))
-            : null
-          videoUrl = best?.url ?? videoMedia.url
+          // Para Twitter, pasar la URL del tweet directamente al proxy
+          // (yt-dlp maneja la descarga — las CDN URLs de video.twimg.com
+          //  están bloqueadas para descargas directas desde servidor)
+          videoUrl = trimmed
         }
       }
 
